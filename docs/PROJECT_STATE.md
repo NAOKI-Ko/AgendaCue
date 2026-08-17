@@ -1,24 +1,26 @@
 # Project State
 
-- Phase: **WU-01**
-- Current Work: **Product Foundation**
+- Phase: **WU-02**
+- Current Work: **Calendar Source**
 - Status: **AUTOMATED GATE COMPLETE**
-- Next: **WU-02 Calendar Source**
+- Next: **WU-03 Alarm Rule Engine**
 - WU-00: **AUTOMATED GATE COMPLETE; DEVICE EVIDENCE DEFERRED**
 - WU-01: **AUTOMATED GATE COMPLETE**
+- WU-02: **AUTOMATED GATE COMPLETE**
+- WU-03: **NOT STARTED**
 - Human Gate: **OWNER WAIVED / DEFERRED TO WU-10**
 
 ## Automated evidence
 
 Environment: Xcode 26.6 (17F113), iOS SDK 26.5, iOS 26.5 iPhone 17 Pro Simulator.
 
-- XCTest: 11 tests passed, 0 failures.
+- XCTest: 19 tests passed, 0 failures.
 - Specific iOS Simulator build: succeeded.
 - Generic iOS Simulator build: succeeded.
 - Generic iOS Device build with code signing disabled: succeeded.
 - No signed real-device or Production device behavior was executed by Codex.
 
-WU-01 establishes the Production composition root, framework-light domain values, SwiftData storage for minimal app-owned state, default five-minute lead time, and explicit EventKit/AlarmKit permission abstractions. The WU-00 feasibility UI/services remain isolated and are not the Production app entry point.
+WU-02 adds a read-only EventKit calendar source, framework-independent calendar/event mapping, deterministic event ordering, and persisted enabled-calendar selection. First discovery enables all available calendars; later new calendars stay disabled, while temporarily missing selected identifiers remain stored for safe restoration.
 
 ## Consolidated Human Review
 

@@ -23,6 +23,9 @@
 		A0010000000000000000000E /* PersistenceFoundation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000011 /* PersistenceFoundation.swift */; };
 		A0010000000000000000000F /* PermissionServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000012 /* PermissionServices.swift */; };
 		A00100000000000000000010 /* ProductFoundationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000013 /* ProductFoundationTests.swift */; };
+		A00100000000000000000011 /* CalendarSelectionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000014 /* CalendarSelectionStore.swift */; };
+		A00100000000000000000012 /* CalendarSourceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000015 /* CalendarSourceService.swift */; };
+		A00100000000000000000013 /* CalendarSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000016 /* CalendarSourceTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +58,9 @@
 		B00100000000000000000011 /* PersistenceFoundation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Persistence/PersistenceFoundation.swift; sourceTree = "<group>"; };
 		B00100000000000000000012 /* PermissionServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Services/PermissionServices.swift; sourceTree = "<group>"; };
 		B00100000000000000000013 /* ProductFoundationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFoundationTests.swift; sourceTree = "<group>"; };
+		B00100000000000000000014 /* CalendarSelectionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Persistence/CalendarSelectionStore.swift; sourceTree = "<group>"; };
+		B00100000000000000000015 /* CalendarSourceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Services/CalendarSourceService.swift; sourceTree = "<group>"; };
+		B00100000000000000000016 /* CalendarSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSourceTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +99,8 @@
 				B00100000000000000000010 /* DomainModels.swift */,
 				B00100000000000000000011 /* PersistenceFoundation.swift */,
 				B00100000000000000000012 /* PermissionServices.swift */,
+				B00100000000000000000014 /* CalendarSelectionStore.swift */,
+				B00100000000000000000015 /* CalendarSourceService.swift */,
 				B00100000000000000000002 /* FeasibilityModels.swift */,
 				B00100000000000000000003 /* FeasibilityProtocols.swift */,
 				B00100000000000000000004 /* AlarmCandidate.swift */,
@@ -111,6 +119,7 @@
 				B00100000000000000000009 /* AlarmCandidateTests.swift */,
 				B0010000000000000000000A /* ServiceBoundaryTests.swift */,
 				B00100000000000000000013 /* ProductFoundationTests.swift */,
+				B00100000000000000000016 /* CalendarSourceTests.swift */,
 			);
 			path = CalendarAlarmFeasibilityTests;
 			sourceTree = "<group>";
@@ -235,6 +244,8 @@
 				A0010000000000000000000D /* DomainModels.swift in Sources */,
 				A0010000000000000000000E /* PersistenceFoundation.swift in Sources */,
 				A0010000000000000000000F /* PermissionServices.swift in Sources */,
+				A00100000000000000000011 /* CalendarSelectionStore.swift in Sources */,
+				A00100000000000000000012 /* CalendarSourceService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,6 +256,7 @@
 				A00100000000000000000009 /* AlarmCandidateTests.swift in Sources */,
 				A0010000000000000000000A /* ServiceBoundaryTests.swift in Sources */,
 				A00100000000000000000010 /* ProductFoundationTests.swift in Sources */,
+				A00100000000000000000013 /* CalendarSourceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

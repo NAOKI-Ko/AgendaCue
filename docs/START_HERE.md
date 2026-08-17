@@ -1,6 +1,6 @@
 # Start Here
 
-Calendar Alarm is at WU-01 Product Foundation. The initial Production boundaries and automated evidence exist; calendar-source behavior begins in WU-02.
+Calendar Alarm is at WU-02 Calendar Source. Read-only discovery, enabled-calendar persistence, and bounded event fetching now exist behind a Production boundary.
 
 ## Reading order
 
@@ -15,7 +15,7 @@ Calendar Alarm is at WU-01 Product Foundation. The initial Production boundaries
 
 ## Current stop line
 
-WU-01 automated work is complete. Intermediate Human Gates are owner-waived and deferred to consolidated WU-10 review; no deferred device behavior is considered verified. The next planned unit is WU-02 on its own branch. Do not merge work-unit branches directly to `main` or promote feasibility code into Production behavior.
+WU-02 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10; provider/device behavior is not considered verified. The next planned unit is WU-03 on its own branch. Do not begin it without separate authorization.
 
 ## Product invariants
 

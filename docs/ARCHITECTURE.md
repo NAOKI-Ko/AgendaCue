@@ -34,3 +34,12 @@ Views consume feature/presentation interfaces and never directly own EventKit or
 - Side effects occur only in service adapters; domain candidate generation and reconciliation planning remain deterministic and unit-testable.
 - Background behavior is best-effort and may not weaken foreground correctness or claim guaranteed execution.
 - Full event fetching/listing is WU-02, rule evaluation is WU-03, alarm lifecycle is WU-04, reconciliation is WU-05, and Production UX is WU-07.
+
+## WU-02 calendar source
+
+- `CalendarSourceProviding` exposes async discovery and bounded event fetch using only domain values.
+- `EventKitCalendarSource` is an actor, so synchronous `events(matching:)` work runs off the main actor and EventKit access is serialized.
+- EventKit calendars are passed directly to `predicateForEvents`; disabled calendars are not fetched and filtered afterward.
+- `CalendarSelectionStore` owns SwiftData selection identifiers. Initial discovery enables all; later new calendars default disabled. Missing selected calendars are ignored without deletion, so a returning calendar restores its prior enabled state.
+- Missing `eventIdentifier` is preserved as `nil`; an interval-local deterministic fallback supplies `Identifiable.id`. Long-term identifier instability remains WU-03/WU-05 scope.
+- Calendar source interfaces expose no write operations, permission prompts, provider APIs, or networking.

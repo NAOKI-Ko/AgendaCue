@@ -31,6 +31,17 @@ final class SelectedCalendarRecord {
 }
 
 @Model
+final class CalendarSelectionStateRecord {
+    @Attribute(.unique) var key: String
+    var isEstablished: Bool
+
+    init(key: String = "calendar-selection", isEstablished: Bool = false) {
+        self.key = key
+        self.isEstablished = isEstablished
+    }
+}
+
+@Model
 final class EventOverrideRecord {
     @Attribute(.unique) var id: UUID
     var eventIdentifier: String
@@ -55,6 +66,7 @@ enum PersistenceContainer {
         let schema = Schema([
             AppSettingsRecord.self,
             SelectedCalendarRecord.self,
+            CalendarSelectionStateRecord.self,
             EventOverrideRecord.self
         ])
         let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: inMemory)
