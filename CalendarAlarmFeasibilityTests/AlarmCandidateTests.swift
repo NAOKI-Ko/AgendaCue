@@ -8,7 +8,7 @@ final class AlarmCandidateTests: XCTestCase {
     func testFutureEventSubtractsFiveMinutes() {
         let start = now.addingTimeInterval(30 * 60)
         XCTAssertEqual(
-            AlarmCandidate.evaluate(
+            FeasibilityAlarmCandidate.evaluate(
                 eventStart: start,
                 isAllDay: false,
                 leadTime: 5 * 60,
@@ -20,7 +20,7 @@ final class AlarmCandidateTests: XCTestCase {
 
     func testAllDayEventIsIneligible() {
         XCTAssertEqual(
-            AlarmCandidate.evaluate(
+            FeasibilityAlarmCandidate.evaluate(
                 eventStart: now.addingTimeInterval(60 * 60),
                 isAllDay: true,
                 leadTime: 5 * 60,
@@ -32,7 +32,7 @@ final class AlarmCandidateTests: XCTestCase {
 
     func testAlarmDateEqualToNowIsIneligible() {
         XCTAssertEqual(
-            AlarmCandidate.evaluate(
+            FeasibilityAlarmCandidate.evaluate(
                 eventStart: now.addingTimeInterval(5 * 60),
                 isAllDay: false,
                 leadTime: 5 * 60,
@@ -44,7 +44,7 @@ final class AlarmCandidateTests: XCTestCase {
 
     func testAlarmDateBeforeNowIsIneligible() {
         XCTAssertEqual(
-            AlarmCandidate.evaluate(
+            FeasibilityAlarmCandidate.evaluate(
                 eventStart: now.addingTimeInterval(4 * 60),
                 isAllDay: false,
                 leadTime: 5 * 60,

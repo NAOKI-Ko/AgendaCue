@@ -1,15 +1,18 @@
+import SwiftData
 import SwiftUI
 
 @main
-struct CalendarAlarmFeasibilityApp: App {
+struct CalendarAlarmApp: App {
+    private let dependencies: AppDependencies
+
+    init() {
+        dependencies = AppDependencies.live()
+    }
+
     var body: some Scene {
         WindowGroup {
-            FeasibilityView(
-                viewModel: FeasibilityViewModel(
-                    calendarProvider: EventKitCalendarEventProvider(),
-                    alarmScheduler: AlarmKitScheduler()
-                )
-            )
+            FoundationRootView()
         }
+        .modelContainer(dependencies.modelContainer)
     }
 }

@@ -2,6 +2,8 @@
 
 Sequence is mandatory: Spec → Work Unit → Scope Gate → Implementation → Build → Unit Test → Visual QA when applicable → Evidence → Report → Human Gate → Review / Merge. Each post-bootstrap WU uses one branch and one PR. A stop condition ends the WU; it does not authorize the next one.
 
+By explicit owner policy recorded for WU-01, intermediate Human Gates are waived and deferred to consolidated WU-10 review. A waiver permits readiness for the next separately authorized WU but is never a PASS and never evidence that device behavior occurred. Automated Gates remain mandatory.
+
 ## WU-00 Feasibility & Platform Gate
 
 - **Goal:** Prove on iOS 26 and real hardware that the minimum read-event-to-prominent-alarm path and native paired-Watch behavior are feasible before Production architecture or UI.

@@ -60,7 +60,7 @@ final class FeasibilityViewModel: ObservableObject {
         }
 
         let currentNow = now()
-        switch AlarmCandidate.evaluate(
+        switch FeasibilityAlarmCandidate.evaluate(
             eventStart: event.startDate,
             isAllDay: event.isAllDay,
             leadTime: 5 * 60,

@@ -1,6 +1,6 @@
 import Foundation
 
-enum AlarmCandidate: Equatable, Sendable {
+enum FeasibilityAlarmCandidate: Equatable, Sendable {
     case eligible(Date)
     case ineligible(Reason)
 
@@ -14,7 +14,7 @@ enum AlarmCandidate: Equatable, Sendable {
         isAllDay: Bool,
         leadTime: TimeInterval,
         now: Date
-    ) -> AlarmCandidate {
+    ) -> FeasibilityAlarmCandidate {
         guard !isAllDay else {
             return .ineligible(.allDay)
         }

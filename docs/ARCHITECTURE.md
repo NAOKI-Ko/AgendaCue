@@ -1,6 +1,6 @@
 # Intended Architecture
 
-This document defines boundaries only. No boundary is implemented by the bootstrap.
+WU-01 establishes the initial Production boundaries below. They remain intentionally small and may be extended only by the Work Unit that owns the relevant behavior.
 
 ## Modules / groups
 
@@ -11,6 +11,15 @@ This document defines boundaries only. No boundary is implemented by the bootstr
 - **Services/Alarm:** an AlarmKit adapter for authorization and app-owned alarm schedule/cancel/status operations.
 - **Persistence:** local preferences, overrides, and app-managed scheduling metadata; no backend or sync service.
 - **Support:** clock, logging, diagnostics, and small platform utilities.
+
+## WU-01 foundation
+
+- The SwiftUI app is the composition root and creates a local SwiftData `ModelContainer` plus permission providers.
+- Domain types are framework-light values: calendar/source descriptors, calendar event facts, lead time, candidate identity/date, event override intent, permission state, and app settings.
+- SwiftData persists only app-owned settings, selected calendar identifiers, and minimal override records. EventKit remains the Source of Truth for event content.
+- EventKit and AlarmKit authorization are represented through testable protocols. Requests are explicit operations and are never triggered automatically by a view or app launch.
+- The default lead time is a domain-safe five-minute value with a finite supported set.
+- WU-00 scheduling/fetch feasibility code remains isolated; it is not wired into the Production root.
 
 ## Dependency direction
 
@@ -24,3 +33,4 @@ Views consume feature/presentation interfaces and never directly own EventKit or
 - Calendar service APIs expose reads only. No save/update/delete/calendar-mutation capability belongs in the interface.
 - Side effects occur only in service adapters; domain candidate generation and reconciliation planning remain deterministic and unit-testable.
 - Background behavior is best-effort and may not weaken foreground correctness or claim guaranteed execution.
+- Full event fetching/listing is WU-02, rule evaluation is WU-03, alarm lifecycle is WU-04, reconciliation is WU-05, and Production UX is WU-07.

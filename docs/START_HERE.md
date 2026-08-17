@@ -1,6 +1,6 @@
 # Start Here
 
-Calendar Alarm is at WU-00 Feasibility & Platform Gate. A minimal feasibility app and automated evidence exist; Production implementation has not started.
+Calendar Alarm is at WU-01 Product Foundation. The initial Production boundaries and automated evidence exist; calendar-source behavior begins in WU-02.
 
 ## Reading order
 
@@ -15,7 +15,7 @@ Calendar Alarm is at WU-00 Feasibility & Platform Gate. A minimal feasibility ap
 
 ## Current stop line
 
-WU-00 automated work is complete. Stop at Human Device Gate H01–H07 until explicit human evidence is recorded. Do not begin WU-01, merge to `main`, or treat the feasibility screen/services as Production UI or architecture.
+WU-01 automated work is complete. Intermediate Human Gates are owner-waived and deferred to consolidated WU-10 review; no deferred device behavior is considered verified. The next planned unit is WU-02 on its own branch. Do not merge work-unit branches directly to `main` or promote feasibility code into Production behavior.
 
 ## Product invariants
 
