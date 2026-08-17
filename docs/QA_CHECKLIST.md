@@ -48,6 +48,9 @@ Apply only the sections relevant to the active WU and record actual evidence aga
 - Visual QA is captured for affected Production UI across relevant device sizes and appearance modes.
 - WU-07 evidence covers onboarding, populated/empty Today, Upcoming, default/custom/OFF detail, calendar selection, Settings, denied guidance, and dark mode without exposing internal identifiers or feasibility controls.
 - WU-09 evidence covers 20 Simulator states across onboarding, Today, multi-date Upcoming grouping, detail default/custom/OFF, calendars, Settings, denied recovery, empty/error, light/dark appearances, long content, small/large devices, and accessibility Dynamic Type sizes.
+- WU-09-02 evidence covers 24 fresh Simulator states for Japanese onboarding, `今日`, display-only `予定`, default/custom/OFF/past details, calendar selection, Settings, recovery/error, long content, light/dark appearances, small/large devices, and Accessibility XXXL.
+- App-owned Production copy is Japanese-first. iOS system UI follows the device language, while calendar/event/source names are rendered as source-provided data without translation.
+- The `予定` display window includes the previous 14 days and next 14 days, remains chronological and read-only, starts at the current boundary/first future event, and exposes `現在へ`. It must not broaden the reconciliation window or schedule past alarms.
 - Core controls have stable semantic accessibility identifiers; event rows expose one conceptual title/start/calendar/alarm label; alarm OFF and recovery meaning are not communicated by color alone.
 - Accessibility Inspector and real VoiceOver reading/order remain explicit WU-10 human/device checks; Simulator screenshots and unit/static assertions do not substitute for them.
 

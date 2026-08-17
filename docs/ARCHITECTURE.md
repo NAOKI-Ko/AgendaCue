@@ -91,3 +91,11 @@ Views consume feature/presentation interfaces and never directly own EventKit or
 - A background opportunity schedules its successor and invokes the same reconciliation actor. It never prompts permissions or shows UI. Denied permissions and partial/issues report non-success while preserving app-owned intent.
 - Expiration cancels the Swift task and completion is guarded against duplicate reporting. A platform call already in flight cannot be assumed atomically cancellable; cancellation is checked between independent reconciliation operations and the next pass safely retries convergence.
 - Background registration/submission failure is retained as debug-local operational state and does not disable foreground reconciliation.
+
+## WU-09-02 Japanese presentation and timeline
+
+- App-owned Production UI is Japanese-first. iOS-owned system UI follows the device language; EventKit calendar, event, and source names remain source-provided content and are not translated or persisted.
+- `ProductionPresentationPolicy` owns formatting, event phase, deterministic day sections, and current/first-future anchor selection. SwiftUI views remain consumers of domain values and feature/service boundaries.
+- `ProductionUXViewModel` fetches a read-only presentation window from the start of the day 14 days before now through 14 days after now. The `予定` screen renders those events chronologically, including a current boundary and a `現在へ` return action.
+- Presentation and alarm ownership are deliberately separate. Every reconciliation trigger still uses `ReconciliationWindow.productionDefault(now:)`, exactly `[now, now + 14 days)`. Past display events are never passed into a new scheduling path, and Timeline views neither schedule nor cancel alarms.
+- DEBUG-only sample scenarios provide deterministic screenshot states. They are allowlisted and do not alter normal Production routing or Release behavior.

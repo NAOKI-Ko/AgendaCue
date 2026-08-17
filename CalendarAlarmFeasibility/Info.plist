@@ -21,9 +21,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAlarmKitUsageDescription</key>
-	<string>WU-00 schedules feasibility alarms selected by the tester.</string>
+	<string>カレンダーの予定前に、時刻を指定したアラームを設定するために使用します。</string>
 	<key>NSCalendarsFullAccessUsageDescription</key>
-	<string>WU-00 reads upcoming calendar events to verify alarm feasibility. It never modifies calendars.</string>
+	<string>予定を読み取り、予定前のアラームを設定するために使用します。カレンダーの内容は変更しません。</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

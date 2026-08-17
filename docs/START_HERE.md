@@ -1,6 +1,6 @@
 # Start Here
 
-Calendar Alarm is at WU-09 Accessibility & Polish. Production behavior through WU-08 is retained while the existing SwiftUI surface now has stronger Dynamic Type, VoiceOver semantics, permission recovery, long-content handling, and visual evidence.
+Calendar Alarm is at WU-09-02 Japanese UI / Visual Redesign / Timeline Correction Pass. Production behavior through WU-09 is retained while app-owned UI is Japanese-first and `予定` presents a read-only past-14-day through future-14-day timeline.
 
 ## Reading order
 
@@ -15,7 +15,7 @@ Calendar Alarm is at WU-09 Accessibility & Polish. Production behavior through W
 
 ## Current stop line
 
-WU-09 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10. The next planned unit is WU-10 Release Gate; it is not started and requires separate authorization.
+WU-09-02 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10. The next planned unit is WU-10 Release Gate; it is not started and requires separate authorization.
 
 ## Product invariants
 
