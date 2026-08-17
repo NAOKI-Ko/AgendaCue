@@ -47,6 +47,9 @@ Apply only the sections relevant to the active WU and record actual evidence aga
 - Dynamic Type, VoiceOver labels/order, contrast, touch targets, Reduce Motion where applicable, and localization-ready text are checked.
 - Visual QA is captured for affected Production UI across relevant device sizes and appearance modes.
 - WU-07 evidence covers onboarding, populated/empty Today, Upcoming, default/custom/OFF detail, calendar selection, Settings, denied guidance, and dark mode without exposing internal identifiers or feasibility controls.
+- WU-09 evidence covers 20 Simulator states across onboarding, Today, multi-date Upcoming grouping, detail default/custom/OFF, calendars, Settings, denied recovery, empty/error, light/dark appearances, long content, small/large devices, and accessibility Dynamic Type sizes.
+- Core controls have stable semantic accessibility identifiers; event rows expose one conceptual title/start/calendar/alarm label; alarm OFF and recovery meaning are not communicated by color alone.
+- Accessibility Inspector and real VoiceOver reading/order remain explicit WU-10 human/device checks; Simulator screenshots and unit/static assertions do not substitute for them.
 
 ## Human/device and release
 

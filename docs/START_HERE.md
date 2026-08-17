@@ -1,6 +1,6 @@
 # Start Here
 
-Calendar Alarm is at WU-08 Reliability. Production lifecycle, calendar-change, significant-time, permission-recovery, and best-effort background opportunities converge through the existing reconciliation coordinator.
+Calendar Alarm is at WU-09 Accessibility & Polish. Production behavior through WU-08 is retained while the existing SwiftUI surface now has stronger Dynamic Type, VoiceOver semantics, permission recovery, long-content handling, and visual evidence.
 
 ## Reading order
 
@@ -15,7 +15,7 @@ Calendar Alarm is at WU-08 Reliability. Production lifecycle, calendar-change, s
 
 ## Current stop line
 
-WU-08 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10. The next planned unit is WU-09 Accessibility & Polish; it is not started and requires separate authorization.
+WU-09 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10. The next planned unit is WU-10 Release Gate; it is not started and requires separate authorization.
 
 ## Product invariants
 

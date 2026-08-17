@@ -1,39 +1,37 @@
 # Project State
 
-- Phase: **WU-08**
-- Current Work: **Reliability**
+- Phase: **WU-09**
+- Current Work: **Accessibility & Polish**
 - Status: **AUTOMATED GATE COMPLETE**
-- Next: **WU-09 Accessibility & Polish**
-- WU-00: **AUTOMATED GATE COMPLETE; DEVICE EVIDENCE DEFERRED**
-- WU-01: **AUTOMATED GATE COMPLETE**
-- WU-02: **AUTOMATED GATE COMPLETE**
-- WU-03: **AUTOMATED GATE COMPLETE**
-- WU-04: **AUTOMATED GATE COMPLETE**
-- WU-05: **AUTOMATED GATE COMPLETE**
-- WU-06: **AUTOMATED GATE COMPLETE**
-- WU-07: **AUTOMATED GATE COMPLETE**
-- WU-08: **AUTOMATED GATE COMPLETE**
-- WU-09: **NOT STARTED**
+- Accessibility QA: **PASS WITH AUTOMATED / SIMULATOR EVIDENCE**
+- Visual QA: **PASS WITH EVIDENCE**
 - Human Gate: **OWNER WAIVED / DEFERRED TO WU-10**
+- Next: **WU-10 Release Gate**
+- WU-00 through WU-09: **AUTOMATED GATE COMPLETE**
+- WU-10: **NOT STARTED**
 
 ## Automated evidence
 
-Environment: Xcode 26.6 (17F113), iOS SDK 26.5, iOS 26.5 iPhone 17 Pro Simulator.
+Environment: Xcode 26.6 (17F113), iOS SDK 26.5, iOS 26.5 Simulators.
 
-- XCTest: 111 tests passed, 0 failures (98 retained plus 13 WU-08 reliability tests).
-- Specific iOS Simulator build: succeeded.
+- XCTest: 120 tests passed, 0 failures (111 retained plus 9 WU-09 accessibility/presentation tests).
+- Specific iPhone 17 Pro Simulator build: succeeded.
 - Generic iOS Simulator build: succeeded.
 - Generic iOS Device build with code signing disabled: succeeded.
-- No signed real-device or Production device behavior was executed by Codex.
+- Production app Simulator launch smoke: passed.
+- Twenty-screen visual matrix: passed; evidence and conditions are indexed in `docs/evidence/WU-09/README.md`.
+- Static accessibility audit: stable identifiers for core actions, conceptual event-row labels, explicit alarm OFF text, native semantic colors/controls, and no WU-00/debug wording in user-facing presentation.
 
-WU-08 keeps foreground/resume reconciliation as the authoritative recovery path and adds a short, best-effort `BGAppRefreshTask` using `com.example.CalendarAlarmFeasibility.refresh`. Initial/active, EventKit change, override/default/calendar mutation, significant day/time/time-zone change, and background opportunities all converge through the existing WU-05 coordinator. The background request uses a conservative six-hour earliest-begin policy; iOS decides whether and when it runs.
+WU-09 polishes the existing Production UI only: Dynamic Type wrapping and scrolling, VoiceOver semantics, permission recovery copy/actions, grouped Upcoming sections, empty/error states, long calendar/event names, native date/time formatting, terminology consistency, and a minimal app icon. DEBUG sample scenarios are allowlisted and compile to no route in Release builds. Production domain, EventKit, AlarmKit, reconciliation, override, persistence, reliability, and background behavior are unchanged.
 
-Permission denial blocks convergence without treating inaccessible data as deletion. Restoration is recovered by the next foreground/trigger pass. Missing/fired system alarms, stale mappings, selected calendar disappearance/reappearance, capacity failures, trigger coalescing, a fresh 14-day horizon, and conservative event identity behavior remain covered by the combined regression suite.
+Accessibility Inspector and real VoiceOver navigation were not automated in this environment. Signed real-device behavior, physical touch/contrast review, release assets/metadata, and the consolidated human/device pass remain WU-10 work. A pre-existing Swift concurrency warning in `EventOverrideService.swift` remains visible; WU-09 did not alter that service.
 
-- Production UI Simulator launch smoke: **PASS**.
-- Background orchestration/configuration: **PASS in unit/static verification**; actual system-scheduled execution timing was not tested on a real device.
-- Background expiration cancels the Swift task and reports failure. An individual EventKit/AlarmKit platform call already in flight may not be atomically interrupted; reconciliation stops before subsequent independent operations and remains safe to retry.
-- WU-07 Visual QA remains recorded under `docs/evidence/WU-07`; WU-08 made no visual redesign.
+## WU-10 carry-forward
+
+- Background task identifier: `com.example.CalendarAlarmFeasibility.refresh`.
+- Current bundle identifier: `com.example.CalendarAlarmFeasibility`.
+- Both identifiers remain unchanged and require Production identity review in WU-10.
+- Actual system-scheduled background execution timing was not tested on a real device; foreground/resume remains authoritative.
 
 ## Consolidated Human Review
 
@@ -41,8 +39,9 @@ Permission denial blocks convergence without treating inaccessible data as delet
 - H02 Alarm fires in Silent Mode.
 - H03 Alarm fires in Focus mode.
 - H04 EventKit fetches iCloud and configured Google calendar events.
-- H05 Calendar event → start date − 5 minutes → AlarmKit → actual firing.
+- H05 Calendar event → start date − lead time → AlarmKit → actual firing.
 - H06 Paired Apple Watch display / haptic behavior.
 - H07 Dismiss/state behavior across Apple Watch and iPhone.
+- WU-09 VoiceOver reading/order, touch targets, device contrast, localization, and final visual acceptance.
 
-No H item is marked passed. By explicit owner policy, intermediate Human Gates are waived and their device/UX/visual verification is deferred to WU-10. This is a schedule decision, not evidence of device behavior.
+No human item is marked passed. By explicit owner policy, intermediate Human Gates are waived and their device/UX/visual verification is deferred to WU-10. This is a schedule decision, not evidence of device behavior.
