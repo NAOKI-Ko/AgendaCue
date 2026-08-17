@@ -43,21 +43,16 @@ final class CalendarSelectionStateRecord {
 
 @Model
 final class EventOverrideRecord {
-    @Attribute(.unique) var id: UUID
-    var eventIdentifier: String
+    @Attribute(.unique) var eventIdentity: String
     var isEnabled: Bool
     var leadTimeMinutes: Int?
 
-    init(
-        id: UUID = UUID(),
-        eventIdentifier: String,
-        isEnabled: Bool,
-        leadTimeMinutes: Int? = nil
-    ) {
-        self.id = id
-        self.eventIdentifier = eventIdentifier
-        self.isEnabled = isEnabled
-        self.leadTimeMinutes = leadTimeMinutes
+    init(eventIdentity: String, state: EventAlarmOverride) {
+        self.eventIdentity = eventIdentity
+        switch state {
+        case .disabled: self.isEnabled = false; self.leadTimeMinutes = nil
+        case .enabled(let lead): self.isEnabled = true; self.leadTimeMinutes = lead?.rawValue
+        }
     }
 }
 

@@ -34,6 +34,9 @@
 		A00100000000000000000019 /* CalendarReconciliationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010000000000000000001C /* CalendarReconciliationService.swift */; };
 		A0010000000000000000001A /* ReconciliationComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010000000000000000001D /* ReconciliationComposition.swift */; };
 		A0010000000000000000001B /* CalendarReconciliationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010000000000000000001E /* CalendarReconciliationTests.swift */; };
+		A0010000000000000000001C /* EventOverrideStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010000000000000000001F /* EventOverrideStore.swift */; };
+		A0010000000000000000001D /* EventOverrideService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000020 /* EventOverrideService.swift */; };
+		A0010000000000000000001E /* EventOverrideTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000021 /* EventOverrideTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +80,9 @@
 		B0010000000000000000001C /* CalendarReconciliationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Services/CalendarReconciliationService.swift; sourceTree = "<group>"; };
 		B0010000000000000000001D /* ReconciliationComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/App/ReconciliationComposition.swift; sourceTree = "<group>"; };
 		B0010000000000000000001E /* CalendarReconciliationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarReconciliationTests.swift; sourceTree = "<group>"; };
+		B0010000000000000000001F /* EventOverrideStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Persistence/EventOverrideStore.swift; sourceTree = "<group>"; };
+		B00100000000000000000020 /* EventOverrideService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Services/EventOverrideService.swift; sourceTree = "<group>"; };
+		B00100000000000000000021 /* EventOverrideTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOverrideTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +128,8 @@
 				B0010000000000000000001A /* AlarmSchedulingService.swift */,
 				B0010000000000000000001C /* CalendarReconciliationService.swift */,
 				B0010000000000000000001D /* ReconciliationComposition.swift */,
+				B0010000000000000000001F /* EventOverrideStore.swift */,
+				B00100000000000000000020 /* EventOverrideService.swift */,
 				B00100000000000000000002 /* FeasibilityModels.swift */,
 				B00100000000000000000003 /* FeasibilityProtocols.swift */,
 				B00100000000000000000004 /* AlarmCandidate.swift */,
@@ -144,6 +152,7 @@
 				B00100000000000000000018 /* AlarmRuleEngineTests.swift */,
 				B0010000000000000000001B /* AlarmSchedulingTests.swift */,
 				B0010000000000000000001E /* CalendarReconciliationTests.swift */,
+				B00100000000000000000021 /* EventOverrideTests.swift */,
 			);
 			path = CalendarAlarmFeasibilityTests;
 			sourceTree = "<group>";
@@ -275,6 +284,8 @@
 				A00100000000000000000017 /* AlarmSchedulingService.swift in Sources */,
 				A00100000000000000000019 /* CalendarReconciliationService.swift in Sources */,
 				A0010000000000000000001A /* ReconciliationComposition.swift in Sources */,
+				A0010000000000000000001C /* EventOverrideStore.swift in Sources */,
+				A0010000000000000000001D /* EventOverrideService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +300,7 @@
 				A00100000000000000000015 /* AlarmRuleEngineTests.swift in Sources */,
 				A00100000000000000000018 /* AlarmSchedulingTests.swift in Sources */,
 				A0010000000000000000001B /* CalendarReconciliationTests.swift in Sources */,
+				A0010000000000000000001E /* EventOverrideTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

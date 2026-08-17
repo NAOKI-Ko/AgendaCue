@@ -13,7 +13,8 @@ struct ReconciliationWindow: Equatable, Sendable {
 
 struct ReconciliationSnapshot: Equatable, Sendable {
     let events: [CalendarEvent]
-    let defaultLeadTime: AlarmLeadTime
+    let settings: AppSettings
+    let overridesByEventIdentity: [String: EventOverride]
 }
 
 protocol ReconciliationInputProviding: Sendable {
@@ -81,6 +82,7 @@ struct ReconciliationReport: Equatable, Sendable {
 actor CalendarReconciliationCoordinator {
     private let input: any ReconciliationInputProviding
     private let rules: any AlarmRuleEvaluating
+    private let overrideResolver = EventOverrideResolver()
     private let scheduler: AlarmSchedulingCoordinator
     private let store: any ScheduledAlarmStoring
     private var running = false; private var dirty = false
@@ -116,7 +118,8 @@ actor CalendarReconciliationCoordinator {
         catch { report.blockedReason = .calendarReadFailed; return report }
         report.fetchedEventCount = snapshot.events.count
         let desired = snapshot.events.compactMap { event -> AlarmCandidate? in
-            if case .candidate(let candidate) = rules.evaluate(event: event, leadTime: snapshot.defaultLeadTime, now: now) { return candidate }
+            guard case .enabled(let leadTime) = overrideResolver.resolve(override: snapshot.overridesByEventIdentity[event.id], settings: snapshot.settings) else { return nil }
+            if case .candidate(let candidate) = rules.evaluate(event: event, leadTime: leadTime, now: now) { return candidate }
             return nil
         }.sorted { ($0.alarmDate, $0.id) < ($1.alarmDate, $1.id) }
         report.desiredCandidateCount = desired.count

@@ -11,6 +11,7 @@ Reviews and evidence are commit-specific. Never reuse approval after the reviewe
 | 2026-08-18 | WU-03 | `wu-03-alarm-rule-engine` | Final WU-03 commit reported at handoff | Codex automated gate only | XCTest 29/29; specific Simulator, generic Simulator, and unsigned generic Device builds succeeded; purity audit passed | **OWNER WAIVED / DEFERRED TO WU-10** | No scheduling/device behavior claimed; WU-04 NOT STARTED. |
 | 2026-08-18 | WU-04 | `wu-04-alarm-scheduling` | Final WU-04 commit reported at handoff | Codex automated gate only | XCTest 42/42; specific Simulator, generic Simulator, and unsigned generic Device builds succeeded; lifecycle scope audit passed | **OWNER WAIVED / DEFERRED TO WU-10** | No device firing claimed; WU-05 NOT STARTED. |
 | 2026-08-18 | WU-05 | `wu-05-calendar-reconciliation` | Final WU-05 commit reported at handoff | Codex automated gate only | XCTest 65/65; specific Simulator, generic Simulator, and unsigned generic Device builds succeeded; reconciliation scope audit passed | **OWNER WAIVED / DEFERRED TO WU-10** | No device reconciliation behavior claimed; WU-06 NOT STARTED. |
+| 2026-08-18 | WU-06 | `wu-06-event-overrides` | Final WU-06 commit reported at handoff | Codex automated gate only | XCTest 87/87; specific Simulator, generic Simulator, and unsigned generic Device builds succeeded; override scope audit passed | **OWNER WAIVED / DEFERRED TO WU-10** | No device/UI behavior claimed; WU-07 NOT STARTED. |
 
 ## Entry requirements
 

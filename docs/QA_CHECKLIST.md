@@ -29,6 +29,7 @@ Apply only the sections relevant to the active WU and record actual evidence aga
 - UI never claims an alarm is scheduled without system-backed evidence.
 - Reconciliation covers new/changed/deleted/ineligible events, missing-system recovery, fired/stale mapping cleanup, orphan cancellation, partial capacity, permission revocation, idempotency, and window-boundary ownership.
 - Foreground/resume and `EKEventStoreChanged` triggers refetch fresh events; overlapping triggers serialize and a change during a pass causes a follow-up pass.
+- Override precedence, reset/inherit, supported custom leads, base eligibility, persistence failure, permission blocks, reconciliation replacement/cancellation, identity isolation, and out-of-window preservation are regression-tested.
 
 ## UX and accessibility
 

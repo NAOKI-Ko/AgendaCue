@@ -66,3 +66,10 @@ Views consume feature/presentation interfaces and never directly own EventKit or
 - The adjustable Production default window is `[now, now + 14 days)`. Only mappings whose alarm date is inside the active window are retired for absence, preventing false deletion at window boundaries.
 - Recovery reschedules a desired missing system alarm with its persisted UUID. Fired/stale mappings and app-owned AlarmKit orphans are cleaned independently; failures are isolated and reported.
 - WU-05 is active-app only. BackgroundTasks and best-effort background reliability remain WU-08 scope.
+
+## WU-06 event overrides
+
+- `EventAlarmOverride` represents only `disabled` or `enabled(optional custom AlarmLeadTime)`; absence of a record means inherit.
+- `EventOverrideResolver` is pure and selects the effective lead before delegating eligibility/date calculation to WU-03.
+- `EventOverrideStoring` isolates SwiftData and loads a coherent identity-keyed map into each reconciliation snapshot. Full EventKit objects/content are never persisted.
+- `EventOverrideService` is the WU-07-facing mutation boundary. It persists/reset intent first, then triggers the existing WU-05 coordinator; it neither imports nor calls EventKit or AlarmKit.

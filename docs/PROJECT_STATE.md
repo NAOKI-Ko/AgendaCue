@@ -1,29 +1,30 @@
 # Project State
 
-- Phase: **WU-05**
-- Current Work: **Calendar Reconciliation**
+- Phase: **WU-06**
+- Current Work: **Event Overrides**
 - Status: **AUTOMATED GATE COMPLETE**
-- Next: **WU-06 Event Overrides**
+- Next: **WU-07 Production UX**
 - WU-00: **AUTOMATED GATE COMPLETE; DEVICE EVIDENCE DEFERRED**
 - WU-01: **AUTOMATED GATE COMPLETE**
 - WU-02: **AUTOMATED GATE COMPLETE**
 - WU-03: **AUTOMATED GATE COMPLETE**
 - WU-04: **AUTOMATED GATE COMPLETE**
 - WU-05: **AUTOMATED GATE COMPLETE**
-- WU-06: **NOT STARTED**
+- WU-06: **AUTOMATED GATE COMPLETE**
+- WU-07: **NOT STARTED**
 - Human Gate: **OWNER WAIVED / DEFERRED TO WU-10**
 
 ## Automated evidence
 
 Environment: Xcode 26.6 (17F113), iOS SDK 26.5, iOS 26.5 iPhone 17 Pro Simulator.
 
-- XCTest: 65 tests passed, 0 failures.
+- XCTest: 87 tests passed, 0 failures.
 - Specific iOS Simulator build: succeeded.
 - Generic iOS Simulator build: succeeded.
 - Generic iOS Device build with code signing disabled: succeeded.
 - No signed real-device or Production device behavior was executed by Codex.
 
-WU-05 adds deterministic desired-state planning and serialized reconciliation across fresh selected-calendar events, WU-03 candidates, persisted mappings, and actual app AlarmKit IDs. Foreground/resume and `EKEventStoreChanged` trigger a bounded 14-day pass; missing alarms, fired/stale mappings, orphan alarms, partial capacity, permission blocks, and WU-04 replacement divergence are handled explicitly.
+WU-06 adds local per-event `disabled` / `enabled(optional custom lead)` intent, SwiftData persistence keyed by framework-independent event identity, a pure effective-policy resolver, and coherent override snapshots in WU-05 reconciliation. Mutations trigger reconciliation only after persistence succeeds; no EventKit or direct AlarmKit mutation occurs in the override layer.
 
 ## Consolidated Human Review
 

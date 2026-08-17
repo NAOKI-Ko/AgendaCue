@@ -15,7 +15,10 @@ These rules are deterministic product intent. Platform-specific details remain s
 - **Event override:** local app-owned state that may disable the event alarm or replace the default lead time. It never modifies EventKit data.
 - **Alarm candidate:** an immutable domain value containing the source-event reference, event start instant, effective lead time, calculated absolute alarm date, and duplicate identity. Candidate creation has no scheduling side effect.
 - **WU-03 exact rule:** for a timed event, `alarmDate = event.startDate - effectiveLeadTime`. A candidate exists only when `alarmDate > now`. Equality is excluded. All-day events are excluded without assigning a clock time.
-- WU-03 uses the app default lead time input only. Event-specific override resolution remains WU-06 scope.
+- **WU-06 precedence:** explicit OFF disables the candidate; explicit ON with custom lead uses that lead; explicit ON without custom lead and no override both use the current app default. Reset deletes the override and restores inherited behavior.
+- Event ON never bypasses WU-03 eligibility. All-day events and `alarmDate <= now` remain excluded.
+- Overrides are local app-owned intent keyed by `CalendarEvent.id`; they never modify EventKit. Missing/nil `eventIdentifier` is safe because the mapped domain fallback identity is used without force unwrap.
+- EventKit identity can change after account or occurrence mutations. WU-06 does not fuzzy-rebind an orphan override to another event; conservative cleanup/recovery remains WU-08 risk work.
 - **Past alarm date:** if `event.startDate - effectiveLeadTime <= now` at reconciliation, do not create or newly schedule that alarm. Any previously managed alarm for that obsolete candidate is stale and should be cleaned up. Boundary behavior must use a single injected `now`.
 
 ## Identity and reconciliation
@@ -30,6 +33,7 @@ These rules are deterministic product intent. Platform-specific details remain s
 - **System divergence:** a desired future candidate with a persisted mapping but no matching system alarm is rescheduled with the stable UUID. If it is no longer desired, or its missing alarm is expired, remove the stale mapping instead.
 - **AlarmKit orphan:** an app-visible AlarmKit alarm with no persisted mapping is cancelled deterministically. If AlarmKit capacity is reached, earlier candidates remain successful, later failures remain unpersisted, and the pass reports a typed partial result without assuming a numeric limit.
 - Calendar read denial/failure blocks the entire pass and preserves alarms/mappings. It must never be interpreted as an empty trustworthy calendar snapshot.
+- Overrides absent from a reconciliation window are preserved. Window absence is not proof that the underlying event was deleted.
 - **Event identifier instability:** EventKit identifiers may not be assumed globally or permanently stable across store changes, account migrations, or recurring-event mutations. Persistence must combine available identifiers with occurrence/time context, tolerate remapping, and use reconciliation to retire stale records. WU-03/WU-05 must validate the precise strategy rather than promise impossible identity.
 
 ## Time semantics

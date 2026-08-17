@@ -63,9 +63,25 @@ struct AlarmCandidate: Identifiable, Equatable, Sendable {
     let appliedLeadTime: AlarmLeadTime
 }
 
+enum EventAlarmOverride: Equatable, Sendable {
+    case enabled(leadTimeOverride: AlarmLeadTime?)
+    case disabled
+}
+
 struct EventOverride: Identifiable, Equatable, Sendable {
-    let id: UUID
-    let eventIdentifier: String
-    var isEnabled: Bool
-    var leadTime: AlarmLeadTime?
+    var id: String { eventIdentity }
+    let eventIdentity: String
+    let state: EventAlarmOverride
+}
+
+enum EffectiveEventAlarmPolicy: Equatable, Sendable { case enabled(AlarmLeadTime), disabled }
+
+struct EventOverrideResolver {
+    func resolve(override: EventOverride?, settings: AppSettings) -> EffectiveEventAlarmPolicy {
+        switch override?.state {
+        case .disabled: .disabled
+        case .enabled(let leadTime): .enabled(leadTime ?? settings.defaultLeadTime)
+        case nil: .enabled(settings.defaultLeadTime)
+        }
+    }
 }

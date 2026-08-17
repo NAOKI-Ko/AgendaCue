@@ -52,9 +52,8 @@ final class ProductFoundationTests: XCTestCase {
         context.insert(settings)
         context.insert(SelectedCalendarRecord(calendarIdentifier: "calendar-id"))
         context.insert(EventOverrideRecord(
-            eventIdentifier: "event-id",
-            isEnabled: false,
-            leadTimeMinutes: AlarmLeadTime.tenMinutes.rawValue
+            eventIdentity: "event-id",
+            state: .disabled
         ))
         try context.save()
 
@@ -64,9 +63,9 @@ final class ProductFoundationTests: XCTestCase {
 
         XCTAssertEqual(savedSettings.settings.defaultLeadTime, .thirtyMinutes)
         XCTAssertEqual(savedCalendar.calendarIdentifier, "calendar-id")
-        XCTAssertEqual(savedOverride.eventIdentifier, "event-id")
+        XCTAssertEqual(savedOverride.eventIdentity, "event-id")
         XCTAssertFalse(savedOverride.isEnabled)
-        XCTAssertEqual(savedOverride.leadTimeMinutes, 10)
+        XCTAssertNil(savedOverride.leadTimeMinutes)
     }
 }
 

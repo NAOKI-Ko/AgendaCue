@@ -122,6 +122,39 @@ final class CalendarReconciliationTests: XCTestCase {
         XCTAssertEqual(x.input.maximumConcurrentSnapshots, 1); XCTAssertEqual(x.input.snapshotCount, 2)
     }
 
+    func testOverrideOffCausesReconciliationCancel() async {
+        let old = mapping(id: "a", date: alarmDate()); let off = EventOverride(eventIdentity: "a", state: .disabled)
+        let x = setup(events: [event(id: "a")], mappings: [old], systemIDs: [old.alarmIdentifier], overrides: ["a": off])
+        let report = await x.reconciler.trigger(now: now, window: window())!
+        XCTAssertEqual(report.cancelledCount, 1)
+    }
+
+    func testOverrideOffToOnSchedules() async {
+        let on = EventOverride(eventIdentity: "a", state: .enabled(leadTimeOverride: nil))
+        let x = setup(events: [event(id: "a")], overrides: ["a": on]); let report = await x.reconciler.trigger(now: now, window: window())!
+        XCTAssertEqual(report.scheduledCount, 1)
+    }
+
+    func testOverrideLeadChangeReplacesAlarm() async {
+        let old = mapping(id: "a", date: alarmDate()); let custom = EventOverride(eventIdentity: "a", state: .enabled(leadTimeOverride: .fifteenMinutes))
+        let x = setup(events: [event(id: "a")], mappings: [old], systemIDs: [old.alarmIdentifier], overrides: ["a": custom])
+        let report = await x.reconciler.trigger(now: now, window: window())!
+        XCTAssertEqual(report.replacedCount, 1); XCTAssertEqual(x.store.values["a"]?.alarmDate, alarmDate().addingTimeInterval(-600))
+    }
+
+    func testResetToDefaultReplacesCustomAlarm() async {
+        let customDate = alarmDate().addingTimeInterval(-600); let old = mapping(id: "a", date: customDate)
+        let x = setup(events: [event(id: "a")], mappings: [old], systemIDs: [old.alarmIdentifier])
+        let report = await x.reconciler.trigger(now: now, window: window())!
+        XCTAssertEqual(report.replacedCount, 1); XCTAssertEqual(x.store.values["a"]?.alarmDate, alarmDate())
+    }
+
+    func testOverrideReconciliationIsIdempotent() async {
+        let custom = EventOverride(eventIdentity: "a", state: .enabled(leadTimeOverride: .fifteenMinutes)); let x = setup(events: [event(id: "a")], overrides: ["a": custom])
+        _ = await x.reconciler.trigger(now: now, window: window()); let second = await x.reconciler.trigger(now: now, window: window())!
+        XCTAssertEqual(second.keptCount, 1); XCTAssertEqual(x.system.scheduleCount, 1)
+    }
+
     private func assertExistingBecomesCancelled(events: [CalendarEvent]) async {
         let old = mapping(id: "a", date: alarmDate()); let x = setup(events: events, mappings: [old], systemIDs: [old.alarmIdentifier])
         let report = await x.reconciler.trigger(now: now, window: window())!
@@ -137,8 +170,8 @@ final class CalendarReconciliationTests: XCTestCase {
     private func candidate(id: String, alarm: Date) -> AlarmCandidate { .init(id: id, calendarIdentifier: "cal", eventIdentifier: id, eventTitle: id, eventStartDate: alarm.addingTimeInterval(300), alarmDate: alarm, appliedLeadTime: .fiveMinutes) }
     private func mapping(id: String, date: Date) -> ScheduledAlarmMapping { .init(candidateIdentity: id, alarmIdentifier: UUID(), alarmDate: date) }
 
-    private func setup(events: [CalendarEvent] = [], permission: PermissionState = .authorized, alarmPermission: PermissionState = .authorized, mappings: [ScheduledAlarmMapping] = [], systemIDs: Set<UUID> = []) -> (reconciler: CalendarReconciliationCoordinator, input: ReconciliationFakeInput, system: ReconciliationFakeSystem, store: ReconciliationFakeStore) {
-        let input = ReconciliationFakeInput(permission: permission, events: events); let system = ReconciliationFakeSystem(state: alarmPermission, ids: systemIDs); let store = ReconciliationFakeStore(mappings)
+    private func setup(events: [CalendarEvent] = [], permission: PermissionState = .authorized, alarmPermission: PermissionState = .authorized, mappings: [ScheduledAlarmMapping] = [], systemIDs: Set<UUID> = [], overrides: [String: EventOverride] = [:]) -> (reconciler: CalendarReconciliationCoordinator, input: ReconciliationFakeInput, system: ReconciliationFakeSystem, store: ReconciliationFakeStore) {
+        let input = ReconciliationFakeInput(permission: permission, events: events, overrides: overrides); let system = ReconciliationFakeSystem(state: alarmPermission, ids: systemIDs); let store = ReconciliationFakeStore(mappings)
         let scheduler = AlarmSchedulingCoordinator(system: system, store: store)
         return (.init(input: input, scheduler: scheduler, store: store), input, system, store)
     }
@@ -156,15 +189,15 @@ private extension ReconciliationOperation {
 }
 
 @MainActor private final class ReconciliationFakeInput: ReconciliationInputProviding, @unchecked Sendable {
-    let permission: PermissionState; var events: [CalendarEvent]; var delayNanoseconds: UInt64 = 0
+    let permission: PermissionState; var events: [CalendarEvent]; var overrides: [String: EventOverride]; var delayNanoseconds: UInt64 = 0
     var snapshotCount = 0; var concurrentSnapshots = 0; var maximumConcurrentSnapshots = 0
-    init(permission: PermissionState, events: [CalendarEvent]) { self.permission = permission; self.events = events }
+    init(permission: PermissionState, events: [CalendarEvent], overrides: [String: EventOverride]) { self.permission = permission; self.events = events; self.overrides = overrides }
     func calendarPermissionState() async -> PermissionState { permission }
     func snapshot(window: ReconciliationWindow) async throws -> ReconciliationSnapshot {
         snapshotCount += 1; concurrentSnapshots += 1; maximumConcurrentSnapshots = max(maximumConcurrentSnapshots, concurrentSnapshots)
         if delayNanoseconds > 0 { try? await Task.sleep(nanoseconds: delayNanoseconds) }
         concurrentSnapshots -= 1
-        return .init(events: events, defaultLeadTime: .fiveMinutes)
+        return .init(events: events, settings: .init(defaultLeadTime: .fiveMinutes), overridesByEventIdentity: overrides)
     }
 }
 
