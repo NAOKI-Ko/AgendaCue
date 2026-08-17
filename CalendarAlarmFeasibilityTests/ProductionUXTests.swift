@@ -223,6 +223,54 @@ final class ProductionUXTests: XCTestCase {
         XCTAssertEqual(AlarmLeadTime.allCases.map(ProductionCopy.minutesBefore), ["5分前", "10分前", "15分前", "30分前", "60分前"])
     }
 
+    func testTodayItemsInsertCurrentMarkerAtDeterministicChronologicalPosition() {
+        let now = Date(timeIntervalSince1970: 10_000)
+        let items = ProductionPresentationPolicy.todayItems(events: [event("future", 20_000), event("past", 1_000)], now: now)
+        XCTAssertEqual(items, [.event(event("past", 1_000)), .current(now), .event(event("future", 20_000))])
+    }
+
+    func testTodayCurrentMarkerSafelyFollowsAllPastEvents() {
+        let now = Date(timeIntervalSince1970: 10_000)
+        let items = ProductionPresentationPolicy.todayItems(events: [event("past", 1_000)], now: now)
+        XCTAssertEqual(items.last, .current(now))
+    }
+
+    func testTodayFutureAlarmPresentsExactAlarmTimeWithoutRepeatedLead() {
+        let now = Date(timeIntervalSince1970: 10_000)
+        let future = event("future", 20_000)
+        let expected = Date(timeIntervalSince1970: 19_700).formatted(date: .omitted, time: .shortened)
+        let output = ProductionPresentationPolicy.todayAlarmText(event: future, override: nil, settings: .init(), now: now)
+        XCTAssertEqual(output, expected)
+        XCTAssertFalse(output.contains("5分前"))
+    }
+
+    func testTodayPastAlarmStateIsExplicitWithoutColor() {
+        let output = ProductionPresentationPolicy.todayAlarmText(event: event("past", 1_000), override: nil, settings: .init(), now: .init(timeIntervalSince1970: 10_000))
+        XCTAssertEqual(output, "5分前・終了済み")
+    }
+
+    func testTodayAlarmOffStateIsExplicit() {
+        let override = EventOverride(eventIdentity: "future", state: .disabled)
+        XCTAssertEqual(ProductionPresentationPolicy.todayAlarmText(event: event("future", 20_000), override: override, settings: .init(), now: .init(timeIntervalSince1970: 10_000)), "アラームなし")
+    }
+
+    func testTodaySummaryCountMatchesDisplayedEventCount() {
+        XCTAssertEqual(ProductionCopy.todaySummary(count: 0), "今日の予定は0件です")
+        XCTAssertEqual(ProductionCopy.todaySummary(count: 5), "今日の予定は5件です")
+    }
+
+    func testTodayCurrentMarkerHasNaturalAccessibilityLabel() {
+        let now = Date(timeIntervalSince1970: 10_000)
+        XCTAssertEqual(ProductionPresentationPolicy.currentTimeAccessibilityLabel(now), "現在、\(ProductionPresentationPolicy.currentTimeText(now))")
+    }
+
+    func testTodayPresentationIdentifiersRemainStableAcrossRepeatedLayoutEvaluation() {
+        let now = Date(timeIntervalSince1970: 10_000)
+        let values = [event("past", 1_000), event("future", 20_000)]
+        XCTAssertEqual(ProductionPresentationPolicy.todayItems(events: values, now: now).map(\.id), ProductionPresentationPolicy.todayItems(events: values, now: now).map(\.id))
+        XCTAssertEqual(ProductionPresentationPolicy.todayItems(events: values, now: now).map(\.id), ["today.event.past", ProductionAccessibilityID.todayCurrentMarker, "today.event.future"])
+    }
+
     @MainActor func testDefaultLeadMutationPersistsAndTriggersReconciliation() async throws {
         let container = try PersistenceContainer.make(inMemory: true); let trigger = UXFakeTrigger(); let service = AppSettingsService(container: container, reconciliation: trigger)
         try await service.setDefaultLeadTime(.thirtyMinutes, now: .init(timeIntervalSince1970: 1_000))

@@ -8,6 +8,8 @@ enum ProductionAccessibilityID {
     static let alarmPermissionAction = "onboarding.alarm.allow"
     static let openSettingsAction = "permissions.open-settings"
     static let todayList = "today.list"
+    static let todayCurrentMarker = "today.current-marker"
+    static let todayEventRowPrefix = "today.event."
     static let timelineList = "timeline.list"
     static let upcomingList = timelineList
     static let timelineCurrentBoundary = "timeline.current-boundary"
@@ -37,6 +39,7 @@ enum ProductionCopy {
     static let permissionRecovery = "設定でアクセスを許可したあと、このアプリに戻ってください。"
 
     static func minutesBefore(_ lead: AlarmLeadTime) -> String { "\(lead.rawValue)分前" }
+    static func todaySummary(count: Int) -> String { "今日の予定は\(count)件です" }
 
     static let primaryAuditStrings = [
         today, timeline, settings, calendars, calendarAccess, alarmAccess,
@@ -47,7 +50,7 @@ enum ProductionCopy {
 
 enum SampleScenarioPolicy {
     static let supported: Set<String> = [
-        "onboarding", "main", "today", "today-long", "timeline", "timeline-past", "timeline-future", "timeline-no-future",
+        "onboarding", "main", "today", "today-long", "today-off", "timeline", "timeline-past", "timeline-future", "timeline-no-future",
         "upcoming", "upcoming-empty", "detail-default", "detail-custom",
         "detail-off", "detail-past", "calendars", "calendars-long",
         "no-calendars", "settings", "denied", "alarm-denied", "empty", "error"
@@ -93,6 +96,18 @@ enum TimelineEventPhase: Equatable {
     case completed
     case inProgress
     case future
+}
+
+enum TodayPresentationItem: Identifiable, Equatable {
+    case event(CalendarEvent)
+    case current(Date)
+
+    var id: String {
+        switch self {
+        case .event(let event): "today.event.\(event.id)"
+        case .current: ProductionAccessibilityID.todayCurrentMarker
+        }
+    }
 }
 
 enum ProductionPresentationPolicy {
@@ -158,6 +173,37 @@ enum ProductionPresentationPolicy {
 
     static func startTimeText(for event: CalendarEvent) -> String {
         event.isAllDay ? "終日" : event.startDate.formatted(date: .omitted, time: .shortened)
+    }
+
+    static func currentTimeText(_ now: Date) -> String {
+        now.formatted(date: .omitted, time: .shortened)
+    }
+
+    static func todayItems(events: [CalendarEvent], now: Date) -> [TodayPresentationItem] {
+        let ordered = sorted(events)
+        let insertion = ordered.firstIndex { $0.startDate >= now } ?? ordered.endIndex
+        var items = ordered.map(TodayPresentationItem.event)
+        items.insert(.current(now), at: insertion)
+        return items
+    }
+
+    static func todayAlarmText(event: CalendarEvent, override: EventOverride?, settings: AppSettings, now: Date) -> String {
+        let policy = EventOverrideResolver().resolve(override: override, settings: settings)
+        guard case .enabled(let lead) = policy else { return "アラームなし" }
+        if event.isAllDay { return "終日予定にはアラームなし" }
+        switch eventPhase(event, now: now) {
+        case .completed: return "\(ProductionCopy.minutesBefore(lead))・終了済み"
+        case .inProgress: return "\(ProductionCopy.minutesBefore(lead))・開催中"
+        case .future: break
+        }
+        guard case .candidate(let candidate) = AlarmRuleEngine().evaluate(event: event, leadTime: lead, now: now) else {
+            return "アラーム時刻を経過"
+        }
+        return candidate.alarmDate.formatted(date: .omitted, time: .shortened)
+    }
+
+    static func currentTimeAccessibilityLabel(_ now: Date) -> String {
+        "現在、\(currentTimeText(now))"
     }
 
     static func todayDateText(_ date: Date) -> String {

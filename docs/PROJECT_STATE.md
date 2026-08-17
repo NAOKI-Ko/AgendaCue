@@ -1,12 +1,11 @@
 # Project State
 
-- Phase: **WU-09-02**
-- Current Work: **Japanese UI / Visual Redesign / Timeline Correction Pass**
+- Phase: **WU-09-03**
+- Current Work: **Today Visual Source of Truth Correction Pass**
 - Status: **AUTOMATED GATE COMPLETE**
-- Japanese UI: **PASS**
-- Visual Redesign: **PASS WITH EVIDENCE**
-- Timeline UX: **PASS**
-- Accessibility QA: **PASS WITH AUTOMATED / SIMULATOR EVIDENCE**
+- Today Visual Source of Truth: **IMPLEMENTED — OWNER APPROVED**
+- Visual QA: **PASS WITH EVIDENCE**
+- Accessibility: **PASS WITH AUTOMATED / SIMULATOR EVIDENCE**
 - Human Gate: **OWNER WAIVED / DEFERRED TO WU-10**
 - Next: **WU-10 Release Gate**
 - WU-10: **NOT STARTED**
@@ -15,18 +14,18 @@
 
 Environment: Xcode 26.6 (17F113), iOS SDK 26.5, iOS 26.5 Simulators.
 
-- XCTest: 142 tests passed, 0 failures (the accepted 120-test WU-09 suite plus 22 WU-09-02 tests).
+- XCTest: 150 tests passed, 0 failures (the accepted 142-test WU-09-02 suite plus 8 focused WU-09-03 tests).
 - Specific iPhone 17 Pro Simulator build: succeeded.
 - Generic iOS Simulator build: succeeded.
 - Generic iOS Device build with code signing disabled: succeeded.
 - Production app Simulator launch smoke without sample arguments: passed.
-- Twenty-four-screen visual matrix: passed; evidence and inspection notes are indexed in `docs/evidence/WU-09-02/README.md`.
+- Twelve-screen Today visual matrix plus the owner-approved Source of Truth: passed; evidence and inspection notes are indexed in `docs/evidence/WU-09-03/README.md`.
 - Japanese residual audit: app-owned primary UI, permission guidance, state copy, accessibility labels, and purpose strings are Japanese. Product/system names and source-provided calendar/event/source content remain unchanged.
-- Scope audit: Production Domain, Services, Persistence, reliability/background orchestration, reconciliation behavior, and calendar-source semantics are byte-for-byte unchanged from accepted WU-09.
+- Scope audit: Production Domain, Services, Persistence, App/reliability/background orchestration, reconciliation behavior, Timeline policy, calendar selection, Settings, and Event Detail business behavior are byte-for-byte unchanged from accepted WU-09-02.
 
-WU-09-02 replaces the app-owned Production presentation with a Japanese-first native SwiftUI design. Tabs are `今日 / 予定 / 設定`; Today uses a lightweight chronological hierarchy; Event Detail is summary-first; onboarding, calendar selection, Settings, permission recovery, empty, and error states use consistent Japanese copy and native controls.
+WU-09-03 applies the owner-approved Today mockup as the Production visual Source of Truth. Today now uses a compact Japanese header, stronger event-title typography, a stable time column, subtle vertical line, checked past markers, outlined future markers, exact alarm times, and a presentation-only current-time divider. Visible repeated calendar labels are removed from Today rows while VoiceOver semantics retain calendar context. Native `今日 / 予定 / 設定` tabs and whole-row Event Detail navigation remain.
 
-The `予定` presentation window is display-only: past 14 days through future 14 days. Its initial position and `現在へ` action resolve to the current boundary or first future event. This does not change alarm ownership: reconciliation remains exactly `[now, now + 14 days)`, past events never become candidates, and the timeline performs no scheduling or cancellation.
+The Today hierarchy is event title > event time > exact alarm time > supporting state. Its current divider is presentation-only and performs no scheduling/reconciliation action. Domain and scheduling semantics are unchanged: reconciliation remains exactly `[now, now + 14 days)`, past events never become candidates, and the separate `予定` past/future 14-day display policy is unchanged.
 
 Accessibility Inspector and real VoiceOver navigation were not automated. Signed real-device behavior, physical touch/contrast review, final human visual acceptance, release assets/metadata, and actual system-scheduled background execution remain WU-10 work. The pre-existing Swift concurrency warning in `EventOverrideService.swift` remains visible and was not changed.
 
@@ -46,6 +45,6 @@ Accessibility Inspector and real VoiceOver navigation were not automated. Signed
 - H05 Calendar event → start date − lead time → AlarmKit → actual firing.
 - H06 Paired Apple Watch display / haptic behavior.
 - H07 Dismiss/state behavior across Apple Watch and iPhone.
-- WU-09/WU-09-02 VoiceOver reading/order, touch targets, physical-device contrast, localization, and final visual acceptance.
+- WU-09/WU-09-02/WU-09-03 VoiceOver reading/order, touch targets, physical-device contrast, localization, and final visual acceptance.
 
 No human item is marked passed. By explicit owner policy, intermediate Human Gates are waived and their device/UX/visual verification is deferred to WU-10. This is a schedule decision, not evidence of device behavior.

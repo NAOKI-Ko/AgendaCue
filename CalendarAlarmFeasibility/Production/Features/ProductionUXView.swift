@@ -135,7 +135,7 @@ final class ProductionUXViewModel: ObservableObject {
         if scenario == "empty" || scenario == "upcoming-empty" { events = [] }
         if scenario == "timeline-no-future" { events = samples.filter { $0.startDate < now } }
         if scenario == "no-calendars" { calendars = []; enabledCalendarIDs = [] }
-        if scenario == "detail-off" { overrides["standup"] = .init(eventIdentity: "standup", state: .disabled) }
+        if scenario == "detail-off" || scenario == "today-off" { overrides["standup"] = .init(eventIdentity: "standup", state: .disabled) }
         if scenario == "detail-custom" { overrides["standup"] = .init(eventIdentity: "standup", state: .enabled(leadTimeOverride: .fifteenMinutes)) }
         loadState = scenario == "error" ? .failed : events.isEmpty ? .empty : .content
     }
@@ -330,32 +330,228 @@ struct TodayView: View {
                     else { list }
                 }
             }
-            .navigationTitle(ProductionCopy.today)
         }
     }
 
     private var list: some View {
-        List {
-            Section {
-                ForEach(model.todayEvents) { event in
-                    NavigationLink { EventDetailView(event: event, model: model) } label: {
-                        EventRow(event: event, model: model, now: now)
+        ScrollView {
+            LazyVStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: 5) {
+                    Text(ProductionCopy.today)
+                        .font(.largeTitle.bold())
+                    Text(ProductionPresentationPolicy.todayDateText(now))
+                        .font(.title3.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                    Text(ProductionCopy.todaySummary(count: model.todayEvents.count))
+                        .font(.body)
+                        .foregroundStyle(.secondary)
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 18)
+                .padding(.bottom, 12)
+
+                let items = ProductionPresentationPolicy.todayItems(events: model.todayEvents, now: now)
+                ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
+                    switch item {
+                    case .event(let event):
+                        NavigationLink { EventDetailView(event: event, model: model) } label: {
+                            TodayTimelineEventRow(
+                                event: event,
+                                model: model,
+                                now: now,
+                                connectsAbove: index > 0,
+                                connectsBelow: index < items.count - 1
+                            )
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier(ProductionAccessibilityID.todayEventRowPrefix + event.id)
+                    case .current(let instant):
+                        TodayCurrentTimeRow(
+                            now: instant,
+                            connectsAbove: index > 0,
+                            connectsBelow: index < items.count - 1
+                        )
                     }
                 }
-            } header: {
-                Text(ProductionPresentationPolicy.todayDateText(now))
-                    .font(.subheadline.weight(.semibold))
-                    .textCase(nil)
-                    .foregroundStyle(.secondary)
             }
+            .padding(.bottom, 20)
         }
-        .listStyle(.plain)
         .accessibilityIdentifier(ProductionAccessibilityID.todayList)
         .refreshable { await model.refresh() }
     }
 
     private var empty: some View {
         ContentUnavailableView(ProductionCopy.emptyTodayTitle, systemImage: "calendar", description: Text("選択したカレンダーの予定がここに表示されます。"))
+            .navigationTitle(ProductionCopy.today)
+    }
+}
+
+private struct TodayTimelineEventRow: View {
+    let event: CalendarEvent
+    @ObservedObject var model: ProductionUXViewModel
+    let now: Date
+    let connectsAbove: Bool
+    let connectsBelow: Bool
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    var body: some View {
+        Group {
+            if dynamicTypeSize.isAccessibilitySize { accessibilityLayout }
+            else { standardLayout }
+        }
+        .padding(.horizontal, 20)
+        .contentShape(Rectangle())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityLabel)
+    }
+
+    private var standardLayout: some View {
+        HStack(alignment: .top, spacing: 0) {
+            timeAndState
+                .frame(width: 70, alignment: .leading)
+                .padding(.top, 16)
+            TodayTimelineRail(phase: phase, connectsAbove: connectsAbove, connectsBelow: connectsBelow)
+                .frame(width: 32)
+            details
+                .padding(.vertical, 14)
+        }
+        .frame(minHeight: 82)
+    }
+
+    private var accessibilityLayout: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            timeAndState.padding(.top, 14)
+            HStack(alignment: .top, spacing: 8) {
+                TodayTimelineRail(phase: phase, connectsAbove: connectsAbove, connectsBelow: connectsBelow)
+                    .frame(width: 30)
+                details.padding(.bottom, 14)
+            }
+        }
+    }
+
+    private var timeAndState: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(ProductionPresentationPolicy.startTimeText(for: event))
+                .font(.title3.monospacedDigit().weight(.semibold))
+                .fixedSize(horizontal: true, vertical: false)
+            if let stateText {
+                Text(stateText)
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .foregroundStyle(isPast ? Color.secondary : Color.primary)
+    }
+
+    private var details: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(event.title)
+                .font(.title2.weight(.semibold))
+                .foregroundStyle(isPast ? Color.secondary : Color.primary)
+                .fixedSize(horizontal: false, vertical: true)
+            Label(alarmText, systemImage: alarmIcon)
+                .font(.subheadline.monospacedDigit().weight(.medium))
+                .foregroundStyle(alarmColor)
+                .fixedSize(horizontal: false, vertical: true)
+            if connectsBelow { Divider().padding(.top, 5) }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var phase: TimelineEventPhase { ProductionPresentationPolicy.eventPhase(event, now: now) }
+    private var isPast: Bool { phase == .completed }
+    private var stateText: String? { ProductionPresentationPolicy.phaseText(phase) }
+    private var isOff: Bool { model.overrides[event.id]?.state == .disabled }
+    private var alarmIcon: String { isOff ? "bell.slash" : "bell" }
+    private var alarmColor: Color { isPast || isOff ? .secondary : .accentColor }
+    private var alarmText: String {
+        ProductionPresentationPolicy.todayAlarmText(event: event, override: model.overrides[event.id], settings: model.settings, now: now)
+    }
+    private var calendarName: String { model.calendars.first(where: { $0.id == event.calendarID })?.title ?? "カレンダー" }
+    private var accessibilityLabel: String {
+        ProductionPresentationPolicy.eventAccessibilityLabel(event: event, calendarTitle: calendarName, override: model.overrides[event.id], settings: model.settings, now: now)
+    }
+}
+
+private struct TodayCurrentTimeRow: View {
+    let now: Date
+    let connectsAbove: Bool
+    let connectsBelow: Bool
+
+    var body: some View {
+        HStack(alignment: .center, spacing: 0) {
+            Text(ProductionPresentationPolicy.currentTimeText(now))
+                .font(.title3.monospacedDigit().weight(.semibold))
+                .foregroundStyle(.tint)
+                .frame(width: 70, alignment: .leading)
+            TodayTimelineRail(phase: nil, connectsAbove: connectsAbove, connectsBelow: connectsBelow)
+                .frame(width: 32)
+            HStack(spacing: 10) {
+                Text("現在")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.tint)
+                    .fixedSize()
+                DashedCurrentRule()
+            }
+        }
+        .frame(minHeight: 58)
+        .padding(.horizontal, 20)
+        .id(ProductionAccessibilityID.todayCurrentMarker)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(ProductionPresentationPolicy.currentTimeAccessibilityLabel(now))
+    }
+
+}
+
+private struct TodayTimelineRail: View {
+    let phase: TimelineEventPhase?
+    let connectsAbove: Bool
+    let connectsBelow: Bool
+
+    var body: some View {
+        ZStack(alignment: .top) {
+            VStack(spacing: 0) {
+                Rectangle().fill(connectsAbove ? Color.secondary.opacity(0.18) : Color.clear)
+                Rectangle().fill(connectsBelow ? Color.secondary.opacity(0.18) : Color.clear)
+            }
+            .frame(width: 1)
+            marker.padding(.top, 22)
+        }
+        .frame(maxHeight: .infinity)
+        .accessibilityHidden(true)
+    }
+
+    @ViewBuilder private var marker: some View {
+        if phase == nil {
+            Circle().fill(Color.accentColor).frame(width: 12, height: 12)
+        } else if phase == .completed {
+            ZStack {
+                Circle().fill(Color.secondary)
+                Image(systemName: "checkmark")
+                    .font(.system(size: 7, weight: .bold))
+                    .foregroundStyle(Color(uiColor: .systemBackground))
+            }
+            .frame(width: 18, height: 18)
+        } else {
+            Circle()
+                .fill(Color(uiColor: .systemBackground))
+                .overlay { Circle().stroke(Color.accentColor, lineWidth: 2) }
+                .frame(width: 16, height: 16)
+        }
+    }
+}
+
+private struct DashedCurrentRule: View {
+    var body: some View {
+        GeometryReader { geometry in
+            Path { path in
+                path.move(to: .init(x: 0, y: geometry.size.height / 2))
+                path.addLine(to: .init(x: geometry.size.width, y: geometry.size.height / 2))
+            }
+            .stroke(Color.accentColor.opacity(0.42), style: .init(lineWidth: 1, dash: [4, 5]))
+        }
+        .frame(height: 1)
+        .accessibilityHidden(true)
     }
 }
 

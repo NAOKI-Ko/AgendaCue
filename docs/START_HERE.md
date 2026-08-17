@@ -1,6 +1,6 @@
 # Start Here
 
-Calendar Alarm is at WU-09-02 Japanese UI / Visual Redesign / Timeline Correction Pass. Production behavior through WU-09 is retained while app-owned UI is Japanese-first and `予定` presents a read-only past-14-day through future-14-day timeline.
+Calendar Alarm is at WU-09-03 Today Visual Source of Truth Correction Pass. Production behavior through WU-09-02 is retained while the owner-approved final mockup now defines Today hierarchy, spacing, typography, timeline markers, and presentation-only current time.
 
 ## Reading order
 
@@ -15,7 +15,7 @@ Calendar Alarm is at WU-09-02 Japanese UI / Visual Redesign / Timeline Correctio
 
 ## Current stop line
 
-WU-09-02 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10. The next planned unit is WU-10 Release Gate; it is not started and requires separate authorization.
+WU-09-03 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10. The next planned unit is WU-10 Release Gate; it is not started and requires separate authorization.
 
 ## Product invariants
 
