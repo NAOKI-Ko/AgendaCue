@@ -1,28 +1,29 @@
 # Project State
 
-- Phase: **WU-04**
-- Current Work: **Alarm Scheduling**
+- Phase: **WU-05**
+- Current Work: **Calendar Reconciliation**
 - Status: **AUTOMATED GATE COMPLETE**
-- Next: **WU-05 Calendar Reconciliation**
+- Next: **WU-06 Event Overrides**
 - WU-00: **AUTOMATED GATE COMPLETE; DEVICE EVIDENCE DEFERRED**
 - WU-01: **AUTOMATED GATE COMPLETE**
 - WU-02: **AUTOMATED GATE COMPLETE**
 - WU-03: **AUTOMATED GATE COMPLETE**
 - WU-04: **AUTOMATED GATE COMPLETE**
-- WU-05: **NOT STARTED**
+- WU-05: **AUTOMATED GATE COMPLETE**
+- WU-06: **NOT STARTED**
 - Human Gate: **OWNER WAIVED / DEFERRED TO WU-10**
 
 ## Automated evidence
 
 Environment: Xcode 26.6 (17F113), iOS SDK 26.5, iOS 26.5 iPhone 17 Pro Simulator.
 
-- XCTest: 42 tests passed, 0 failures.
+- XCTest: 65 tests passed, 0 failures.
 - Specific iOS Simulator build: succeeded.
 - Generic iOS Simulator build: succeeded.
 - Generic iOS Device build with code signing disabled: succeeded.
 - No signed real-device or Production device behavior was executed by Codex.
 
-WU-04 adds a Production AlarmKit adapter and serialized scheduling coordinator with stable persisted UUID mappings, idempotent create/replace/cancel semantics, explicit authorization failures, and minimal lifecycle metadata.
+WU-05 adds deterministic desired-state planning and serialized reconciliation across fresh selected-calendar events, WU-03 candidates, persisted mappings, and actual app AlarmKit IDs. Foreground/resume and `EKEventStoreChanged` trigger a bounded 14-day pass; missing alarms, fired/stale mappings, orphan alarms, partial capacity, permission blocks, and WU-04 replacement divergence are handled explicitly.
 
 ## Consolidated Human Review
 

@@ -1,6 +1,6 @@
 # Start Here
 
-Calendar Alarm is at WU-04 Alarm Scheduling. Production fixed one-shot AlarmKit lifecycle behavior now exists behind a testable boundary.
+Calendar Alarm is at WU-05 Calendar Reconciliation. Production foreground desired-state synchronization now exists behind testable planner and platform boundaries.
 
 ## Reading order
 
@@ -15,7 +15,7 @@ Calendar Alarm is at WU-04 Alarm Scheduling. Production fixed one-shot AlarmKit 
 
 ## Current stop line
 
-WU-04 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10. The next planned unit is WU-05 on its own branch; do not begin it without separate authorization.
+WU-05 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10. The next planned unit is WU-06 on its own branch; do not begin it without separate authorization.
 
 ## Product invariants
 

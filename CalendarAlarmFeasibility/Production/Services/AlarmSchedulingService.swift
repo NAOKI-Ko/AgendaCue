@@ -4,9 +4,12 @@ import SwiftUI
 
 protocol AlarmSystemScheduling: Sendable {
     func authorizationState() async -> PermissionState
+    func scheduledAlarmIDs() async throws -> Set<UUID>
     func schedule(id: UUID, at date: Date, title: String) async throws
     func cancel(id: UUID) async throws
 }
+
+enum AlarmSystemError: Error, Equatable { case capacityReached }
 
 enum AlarmScheduleOutcome: Equatable { case scheduled(UUID), alreadyScheduled(UUID), replaced(UUID) }
 enum AlarmCancelOutcome: Equatable { case cancelled, notScheduled }
@@ -18,6 +21,9 @@ actor AlarmSchedulingCoordinator {
     private var activeIdentities: Set<String> = []
 
     init(system: any AlarmSystemScheduling, store: any ScheduledAlarmStoring) { self.system = system; self.store = store }
+
+    func authorizationState() async -> PermissionState { await system.authorizationState() }
+    func scheduledAlarmIDs() async throws -> Set<UUID> { try await system.scheduledAlarmIDs() }
 
     func schedule(_ candidate: AlarmCandidate) async throws -> AlarmScheduleOutcome {
         await acquire(candidate.id)
@@ -51,6 +57,17 @@ actor AlarmSchedulingCoordinator {
         return .cancelled
     }
 
+    func recover(_ candidate: AlarmCandidate, mapping: ScheduledAlarmMapping) async throws {
+        await acquire(candidate.id)
+        defer { activeIdentities.remove(candidate.id) }
+        let authorization = await system.authorizationState()
+        guard authorization == .authorized else { throw ProductionAlarmSchedulingError.authorizationRequired(authorization) }
+        try await system.schedule(id: mapping.alarmIdentifier, at: candidate.alarmDate, title: presentationTitle(candidate.eventTitle))
+        try await store.save(.init(candidateIdentity: candidate.id, alarmIdentifier: mapping.alarmIdentifier, alarmDate: candidate.alarmDate))
+    }
+
+    func cancelOrphan(id: UUID) async throws { try await system.cancel(id: id) }
+
     private func acquire(_ identity: String) async {
         while activeIdentities.contains(identity) { await Task.yield() }
         activeIdentities.insert(identity)
@@ -64,12 +81,14 @@ private struct ProductionAlarmMetadata: AlarmMetadata { let candidateIdentity: S
 actor AlarmKitSystemScheduler: AlarmSystemScheduling {
     private let manager = AlarmManager.shared
     func authorizationState() -> PermissionState { AlarmPermissionMapping.map(manager.authorizationState) }
+    func scheduledAlarmIDs() throws -> Set<UUID> { Set(try manager.alarms.map(\.id)) }
     func schedule(id: UUID, at date: Date, title: String) async throws {
         let localized: LocalizedStringResource = "\(title)"
         let alert = AlarmPresentation.Alert(title: localized, stopButton: AlarmButton(text: "Stop", textColor: .white, systemImageName: "stop.fill"))
         let attributes = AlarmAttributes(presentation: AlarmPresentation(alert: alert), metadata: ProductionAlarmMetadata(candidateIdentity: id.uuidString), tintColor: .orange)
         let configuration = AlarmManager.AlarmConfiguration.alarm(schedule: .fixed(date), attributes: attributes)
-        _ = try await manager.schedule(id: id, configuration: configuration)
+        do { _ = try await manager.schedule(id: id, configuration: configuration) }
+        catch AlarmManager.AlarmError.maximumLimitReached { throw AlarmSystemError.capacityReached }
     }
     func cancel(id: UUID) throws { try manager.cancel(id: id) }
 }

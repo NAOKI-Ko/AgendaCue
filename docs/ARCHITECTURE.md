@@ -57,3 +57,12 @@ Views consume feature/presentation interfaces and never directly own EventKit or
 - `AlarmSchedulingCoordinator` serializes operations per candidate identity and provides idempotent schedule, replace, and cancel outcomes.
 - SwiftData stores only candidate identity, AlarmKit UUID, and alarm date. System success precedes persistence mutation.
 - Fixed one-shot schedules and default sound are used. There is no countdown, Widget, listener, or calendar reconciliation; WU-05 owns recovery/orchestration.
+
+## WU-05 calendar reconciliation
+
+- `ReconciliationPlanner` is a pure deterministic diff between chronologically ordered WU-03 candidates, app-owned mappings, and actual app AlarmKit IDs.
+- `CalendarReconciliationCoordinator` is an actor that serializes whole passes. A trigger received during a pass marks the coordinator dirty and guarantees a follow-up pass while coalescing bursts.
+- The live composition refetches selected calendars/events on app activation and `EKEventStoreChanged`; notification payloads are not treated as event truth and no permission prompt is automatic.
+- The adjustable Production default window is `[now, now + 14 days)`. Only mappings whose alarm date is inside the active window are retired for absence, preventing false deletion at window boundaries.
+- Recovery reschedules a desired missing system alarm with its persisted UUID. Fired/stale mappings and app-owned AlarmKit orphans are cleaned independently; failures are isolated and reported.
+- WU-05 is active-app only. BackgroundTasks and best-effort background reliability remain WU-08 scope.

@@ -31,6 +31,9 @@
 		A00100000000000000000016 /* ScheduledAlarmStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000019 /* ScheduledAlarmStore.swift */; };
 		A00100000000000000000017 /* AlarmSchedulingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010000000000000000001A /* AlarmSchedulingService.swift */; };
 		A00100000000000000000018 /* AlarmSchedulingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010000000000000000001B /* AlarmSchedulingTests.swift */; };
+		A00100000000000000000019 /* CalendarReconciliationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010000000000000000001C /* CalendarReconciliationService.swift */; };
+		A0010000000000000000001A /* ReconciliationComposition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010000000000000000001D /* ReconciliationComposition.swift */; };
+		A0010000000000000000001B /* CalendarReconciliationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010000000000000000001E /* CalendarReconciliationTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +74,9 @@
 		B00100000000000000000019 /* ScheduledAlarmStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Persistence/ScheduledAlarmStore.swift; sourceTree = "<group>"; };
 		B0010000000000000000001A /* AlarmSchedulingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Services/AlarmSchedulingService.swift; sourceTree = "<group>"; };
 		B0010000000000000000001B /* AlarmSchedulingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSchedulingTests.swift; sourceTree = "<group>"; };
+		B0010000000000000000001C /* CalendarReconciliationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Services/CalendarReconciliationService.swift; sourceTree = "<group>"; };
+		B0010000000000000000001D /* ReconciliationComposition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/App/ReconciliationComposition.swift; sourceTree = "<group>"; };
+		B0010000000000000000001E /* CalendarReconciliationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarReconciliationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +120,8 @@
 				B00100000000000000000017 /* AlarmRuleEngine.swift */,
 				B00100000000000000000019 /* ScheduledAlarmStore.swift */,
 				B0010000000000000000001A /* AlarmSchedulingService.swift */,
+				B0010000000000000000001C /* CalendarReconciliationService.swift */,
+				B0010000000000000000001D /* ReconciliationComposition.swift */,
 				B00100000000000000000002 /* FeasibilityModels.swift */,
 				B00100000000000000000003 /* FeasibilityProtocols.swift */,
 				B00100000000000000000004 /* AlarmCandidate.swift */,
@@ -135,6 +143,7 @@
 				B00100000000000000000016 /* CalendarSourceTests.swift */,
 				B00100000000000000000018 /* AlarmRuleEngineTests.swift */,
 				B0010000000000000000001B /* AlarmSchedulingTests.swift */,
+				B0010000000000000000001E /* CalendarReconciliationTests.swift */,
 			);
 			path = CalendarAlarmFeasibilityTests;
 			sourceTree = "<group>";
@@ -264,6 +273,8 @@
 				A00100000000000000000014 /* AlarmRuleEngine.swift in Sources */,
 				A00100000000000000000016 /* ScheduledAlarmStore.swift in Sources */,
 				A00100000000000000000017 /* AlarmSchedulingService.swift in Sources */,
+				A00100000000000000000019 /* CalendarReconciliationService.swift in Sources */,
+				A0010000000000000000001A /* ReconciliationComposition.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,6 +288,7 @@
 				A00100000000000000000013 /* CalendarSourceTests.swift in Sources */,
 				A00100000000000000000015 /* AlarmRuleEngineTests.swift in Sources */,
 				A00100000000000000000018 /* AlarmSchedulingTests.swift in Sources */,
+				A0010000000000000000001B /* CalendarReconciliationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

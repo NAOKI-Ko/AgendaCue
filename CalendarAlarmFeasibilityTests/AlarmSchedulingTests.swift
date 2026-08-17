@@ -32,6 +32,7 @@ private final class FakeAlarmSystem: AlarmSystemScheduling, @unchecked Sendable 
     let state: PermissionState; var scheduleCount = 0; var cancelCount = 0; var lastDate: Date?; var lastTitle: String?; var scheduleFailure = false; var cancelFailure = false
     init(state: PermissionState) { self.state = state }
     func authorizationState() async -> PermissionState { state }
+    func scheduledAlarmIDs() async -> Set<UUID> { [] }
     func schedule(id: UUID, at date: Date, title: String) async throws { scheduleCount += 1; if scheduleFailure { throw FakeFailure.requested }; lastDate = date; lastTitle = title }
     func cancel(id: UUID) async throws { cancelCount += 1; if cancelFailure { throw FakeFailure.requested } }
     func setScheduleFailure(_ value: Bool) { scheduleFailure = value }
@@ -41,6 +42,7 @@ private final class FakeAlarmSystem: AlarmSystemScheduling, @unchecked Sendable 
 private final class FakeAlarmStore: ScheduledAlarmStoring, @unchecked Sendable {
     var value: ScheduledAlarmMapping?
     func mapping(for identity: String) async -> ScheduledAlarmMapping? { value?.candidateIdentity == identity ? value : nil }
+    func allMappings() async -> [ScheduledAlarmMapping] { value.map { [$0] } ?? [] }
     func save(_ mapping: ScheduledAlarmMapping) async { value = mapping }
     func remove(identity: String) async { if value?.candidateIdentity == identity { value = nil } }
 }

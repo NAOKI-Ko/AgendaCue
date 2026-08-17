@@ -9,6 +9,7 @@ struct ScheduledAlarmMapping: Equatable, Sendable {
 
 protocol ScheduledAlarmStoring: Sendable {
     func mapping(for identity: String) async throws -> ScheduledAlarmMapping?
+    func allMappings() async throws -> [ScheduledAlarmMapping]
     func save(_ mapping: ScheduledAlarmMapping) async throws
     func remove(identity: String) async throws
 }
@@ -21,6 +22,13 @@ actor SwiftDataScheduledAlarmStore: ScheduledAlarmStoring {
         let context = ModelContext(container)
         let descriptor = FetchDescriptor<ScheduledAlarmRecord>(predicate: #Predicate { $0.candidateIdentity == identity })
         return try context.fetch(descriptor).first.map { .init(candidateIdentity: $0.candidateIdentity, alarmIdentifier: $0.alarmIdentifier, alarmDate: $0.alarmDate) }
+    }
+
+    func allMappings() throws -> [ScheduledAlarmMapping] {
+        let context = ModelContext(container)
+        return try context.fetch(FetchDescriptor<ScheduledAlarmRecord>()).map {
+            .init(candidateIdentity: $0.candidateIdentity, alarmIdentifier: $0.alarmIdentifier, alarmDate: $0.alarmDate)
+        }.sorted { ($0.alarmDate, $0.candidateIdentity) < ($1.alarmDate, $1.candidateIdentity) }
     }
 
     func save(_ mapping: ScheduledAlarmMapping) throws {

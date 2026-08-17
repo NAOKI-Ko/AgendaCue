@@ -27,6 +27,8 @@ Apply only the sections relevant to the active WU and record actual evidence aga
 - Alarm date equals event start minus effective lead time.
 - Duplicate prevention, stale cleanup, changed schedule replacement, past dates, and partial failures are covered.
 - UI never claims an alarm is scheduled without system-backed evidence.
+- Reconciliation covers new/changed/deleted/ineligible events, missing-system recovery, fired/stale mapping cleanup, orphan cancellation, partial capacity, permission revocation, idempotency, and window-boundary ownership.
+- Foreground/resume and `EKEventStoreChanged` triggers refetch fresh events; overlapping triggers serialize and a change during a pass causes a follow-up pass.
 
 ## UX and accessibility
 
