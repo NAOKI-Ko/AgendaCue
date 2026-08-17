@@ -36,6 +36,7 @@ Apply only the sections relevant to the active WU and record actual evidence aga
 - Onboarding, Settings, empty/loading/error/recovery states, and permission changes are exercised.
 - Dynamic Type, VoiceOver labels/order, contrast, touch targets, Reduce Motion where applicable, and localization-ready text are checked.
 - Visual QA is captured for affected Production UI across relevant device sizes and appearance modes.
+- WU-07 evidence covers onboarding, populated/empty Today, Upcoming, default/custom/OFF detail, calendar selection, Settings, denied guidance, and dark mode without exposing internal identifiers or feasibility controls.
 
 ## Human/device and release
 

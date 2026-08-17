@@ -7,6 +7,10 @@ struct AppDependencies {
     let alarmPermission: any AlarmPermissionProviding
     let reconciliation: CalendarReconciliationCoordinator
     let eventOverrides: EventOverrideService
+    let calendarSource: CalendarSourceCoordinator
+    let calendarSelections: CalendarSelectionStore
+    let overrideStore: any EventOverrideStoring
+    let settingsService: AppSettingsService
 
     static func live() -> AppDependencies {
         do {
@@ -21,7 +25,9 @@ struct AppDependencies {
             let input = LiveReconciliationInput(permission: calendarPermission, calendarSource: source, context: container.mainContext, overrides: overrideStore)
             let reconciliation = CalendarReconciliationCoordinator(input: input, scheduler: scheduler, store: mappingStore)
             return AppDependencies(modelContainer: container, calendarPermission: calendarPermission, alarmPermission: alarmPermission,
-                reconciliation: reconciliation, eventOverrides: EventOverrideService(store: overrideStore, reconciliation: reconciliation))
+                reconciliation: reconciliation, eventOverrides: EventOverrideService(store: overrideStore, reconciliation: reconciliation),
+                calendarSource: source, calendarSelections: selections, overrideStore: overrideStore,
+                settingsService: AppSettingsService(container: container, reconciliation: reconciliation))
         } catch {
             preconditionFailure("Unable to create the local model container: \(error)")
         }

@@ -1,9 +1,9 @@
 # Project State
 
-- Phase: **WU-06**
-- Current Work: **Event Overrides**
+- Phase: **WU-07**
+- Current Work: **Production UX**
 - Status: **AUTOMATED GATE COMPLETE**
-- Next: **WU-07 Production UX**
+- Next: **WU-08 Reliability**
 - WU-00: **AUTOMATED GATE COMPLETE; DEVICE EVIDENCE DEFERRED**
 - WU-01: **AUTOMATED GATE COMPLETE**
 - WU-02: **AUTOMATED GATE COMPLETE**
@@ -11,20 +11,23 @@
 - WU-04: **AUTOMATED GATE COMPLETE**
 - WU-05: **AUTOMATED GATE COMPLETE**
 - WU-06: **AUTOMATED GATE COMPLETE**
-- WU-07: **NOT STARTED**
+- WU-07: **AUTOMATED GATE COMPLETE**
+- WU-08: **NOT STARTED**
 - Human Gate: **OWNER WAIVED / DEFERRED TO WU-10**
 
 ## Automated evidence
 
 Environment: Xcode 26.6 (17F113), iOS SDK 26.5, iOS 26.5 iPhone 17 Pro Simulator.
 
-- XCTest: 87 tests passed, 0 failures.
+- XCTest: 98 tests passed, 0 failures.
 - Specific iOS Simulator build: succeeded.
 - Generic iOS Simulator build: succeeded.
 - Generic iOS Device build with code signing disabled: succeeded.
 - No signed real-device or Production device behavior was executed by Codex.
 
-WU-06 adds local per-event `disabled` / `enabled(optional custom lead)` intent, SwiftData persistence keyed by framework-independent event identity, a pure effective-policy resolver, and coherent override snapshots in WU-05 reconciliation. Mutations trigger reconciliation only after persistence succeeds; no EventKit or direct AlarmKit mutation occurs in the override layer.
+WU-07 replaces the placeholder root with compact permission onboarding and native Today, Upcoming, and Settings navigation. Event overrides, calendar participation, and default lead-time mutations use the existing Production services and reconciliation path. Simulator Visual QA covers 11 light/dark and state variants under `docs/evidence/WU-07`.
+
+- Visual QA: **PASS WITH EVIDENCE** (Codex simulator inspection; not Human Gate evidence).
 
 ## Consolidated Human Review
 

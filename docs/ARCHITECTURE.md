@@ -73,3 +73,10 @@ Views consume feature/presentation interfaces and never directly own EventKit or
 - `EventOverrideResolver` is pure and selects the effective lead before delegating eligibility/date calculation to WU-03.
 - `EventOverrideStoring` isolates SwiftData and loads a coherent identity-keyed map into each reconciliation snapshot. Full EventKit objects/content are never persisted.
 - `EventOverrideService` is the WU-07-facing mutation boundary. It persists/reset intent first, then triggers the existing WU-05 coordinator; it neither imports nor calls EventKit or AlarmKit.
+
+## WU-07 Production UX
+
+- `ProductionUXViewModel` presents read-only calendar data and delegates mutations to selection, override, settings, and reconciliation services.
+- The root routes permission onboarding or a three-tab Today / Upcoming / Settings experience. Feasibility screens remain disconnected from Production navigation.
+- `AppSettingsService` persists the default lead time before triggering the existing reconciliation coordinator.
+- UI sample launch scenarios exist only for deterministic simulator Visual QA; normal launches use live Production services.

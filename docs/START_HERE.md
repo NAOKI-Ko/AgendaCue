@@ -1,6 +1,6 @@
 # Start Here
 
-Calendar Alarm is at WU-06 Event Overrides. Local per-event alarm intent now participates in Production reconciliation through testable domain and persistence boundaries.
+Calendar Alarm is at WU-07 Production UX. The Production app exposes onboarding, Today, Upcoming, event controls, calendar selection, and Settings through native SwiftUI navigation.
 
 ## Reading order
 
@@ -15,7 +15,7 @@ Calendar Alarm is at WU-06 Event Overrides. Local per-event alarm intent now par
 
 ## Current stop line
 
-WU-06 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10. The next planned unit is WU-07 on its own branch; do not begin it without separate authorization.
+WU-07 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10. The next planned unit is WU-08 on its own branch; do not begin it without separate authorization.
 
 ## Product invariants
 

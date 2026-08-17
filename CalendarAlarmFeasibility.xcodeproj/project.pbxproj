@@ -37,6 +37,10 @@
 		A0010000000000000000001C /* EventOverrideStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0010000000000000000001F /* EventOverrideStore.swift */; };
 		A0010000000000000000001D /* EventOverrideService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000020 /* EventOverrideService.swift */; };
 		A0010000000000000000001E /* EventOverrideTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000021 /* EventOverrideTests.swift */; };
+		A0010000000000000000001F /* AppSettingsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000022 /* AppSettingsService.swift */; };
+		A00100000000000000000020 /* ProductionUXModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000023 /* ProductionUXModels.swift */; };
+		A00100000000000000000021 /* ProductionUXView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000024 /* ProductionUXView.swift */; };
+		A00100000000000000000022 /* ProductionUXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000025 /* ProductionUXTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +87,10 @@
 		B0010000000000000000001F /* EventOverrideStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Persistence/EventOverrideStore.swift; sourceTree = "<group>"; };
 		B00100000000000000000020 /* EventOverrideService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Services/EventOverrideService.swift; sourceTree = "<group>"; };
 		B00100000000000000000021 /* EventOverrideTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventOverrideTests.swift; sourceTree = "<group>"; };
+		B00100000000000000000022 /* AppSettingsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Services/AppSettingsService.swift; sourceTree = "<group>"; };
+		B00100000000000000000023 /* ProductionUXModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Features/ProductionUXModels.swift; sourceTree = "<group>"; };
+		B00100000000000000000024 /* ProductionUXView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Features/ProductionUXView.swift; sourceTree = "<group>"; };
+		B00100000000000000000025 /* ProductionUXTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductionUXTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -130,6 +138,9 @@
 				B0010000000000000000001D /* ReconciliationComposition.swift */,
 				B0010000000000000000001F /* EventOverrideStore.swift */,
 				B00100000000000000000020 /* EventOverrideService.swift */,
+				B00100000000000000000022 /* AppSettingsService.swift */,
+				B00100000000000000000023 /* ProductionUXModels.swift */,
+				B00100000000000000000024 /* ProductionUXView.swift */,
 				B00100000000000000000002 /* FeasibilityModels.swift */,
 				B00100000000000000000003 /* FeasibilityProtocols.swift */,
 				B00100000000000000000004 /* AlarmCandidate.swift */,
@@ -153,6 +164,7 @@
 				B0010000000000000000001B /* AlarmSchedulingTests.swift */,
 				B0010000000000000000001E /* CalendarReconciliationTests.swift */,
 				B00100000000000000000021 /* EventOverrideTests.swift */,
+				B00100000000000000000025 /* ProductionUXTests.swift */,
 			);
 			path = CalendarAlarmFeasibilityTests;
 			sourceTree = "<group>";
@@ -286,6 +298,9 @@
 				A0010000000000000000001A /* ReconciliationComposition.swift in Sources */,
 				A0010000000000000000001C /* EventOverrideStore.swift in Sources */,
 				A0010000000000000000001D /* EventOverrideService.swift in Sources */,
+				A0010000000000000000001F /* AppSettingsService.swift in Sources */,
+				A00100000000000000000020 /* ProductionUXModels.swift in Sources */,
+				A00100000000000000000021 /* ProductionUXView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -301,6 +316,7 @@
 				A00100000000000000000018 /* AlarmSchedulingTests.swift in Sources */,
 				A0010000000000000000001B /* CalendarReconciliationTests.swift in Sources */,
 				A0010000000000000000001E /* EventOverrideTests.swift in Sources */,
+				A00100000000000000000022 /* ProductionUXTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

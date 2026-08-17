@@ -11,7 +11,7 @@ struct CalendarAlarmApp: App {
 
     var body: some Scene {
         WindowGroup {
-            FoundationRootView(reconciliation: dependencies.reconciliation)
+            FoundationRootView(dependencies: dependencies)
         }
         .modelContainer(dependencies.modelContainer)
     }
