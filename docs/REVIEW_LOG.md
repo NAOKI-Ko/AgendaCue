@@ -8,6 +8,7 @@ Reviews and evidence are commit-specific. Never reuse approval after the reviewe
 | 2026-08-18 | WU-00 | `wu-00-feasibility-platform-gate` | Final WU-00 commit reported at handoff | Codex automated gate only | Xcode 26.6 / iOS 26.5: XCTest 5/5; specific Simulator, generic Simulator, and unsigned generic Device builds succeeded; Simulator launch smoke succeeded | **PENDING H01–H07** | No human review or merge decision. WU-01 remains NOT STARTED. |
 | 2026-08-18 | WU-01 | `wu-01-product-foundation` | Final WU-01 commit reported at handoff | Codex automated gate only | XCTest 11/11; specific Simulator, generic Simulator, and unsigned generic Device builds succeeded | **OWNER WAIVED / DEFERRED TO WU-10** | No device behavior claimed. Owner consolidated intermediate Human Gates into WU-10. |
 | 2026-08-18 | WU-02 | `wu-02-calendar-source` | Final WU-02 commit reported at handoff | Codex automated gate only | XCTest 19/19; specific Simulator, generic Simulator, and unsigned generic Device builds succeeded; read-only source audit passed | **OWNER WAIVED / DEFERRED TO WU-10** | Provider/device compatibility not claimed; WU-03 NOT STARTED. |
+| 2026-08-18 | WU-03 | `wu-03-alarm-rule-engine` | Final WU-03 commit reported at handoff | Codex automated gate only | XCTest 29/29; specific Simulator, generic Simulator, and unsigned generic Device builds succeeded; purity audit passed | **OWNER WAIVED / DEFERRED TO WU-10** | No scheduling/device behavior claimed; WU-04 NOT STARTED. |
 
 ## Entry requirements
 

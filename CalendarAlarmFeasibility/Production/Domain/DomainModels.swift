@@ -54,9 +54,13 @@ struct CalendarInterval: Equatable, Sendable {
 }
 
 struct AlarmCandidate: Identifiable, Equatable, Sendable {
-    let id: UUID
-    let eventID: CalendarEvent.ID
+    let id: String
+    let calendarIdentifier: CalendarDescriptor.ID
+    let eventIdentifier: String?
+    let eventTitle: String
+    let eventStartDate: Date
     let alarmDate: Date
+    let appliedLeadTime: AlarmLeadTime
 }
 
 struct EventOverride: Identifiable, Equatable, Sendable {

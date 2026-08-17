@@ -43,3 +43,10 @@ Views consume feature/presentation interfaces and never directly own EventKit or
 - `CalendarSelectionStore` owns SwiftData selection identifiers. Initial discovery enables all; later new calendars default disabled. Missing selected calendars are ignored without deletion, so a returning calendar restores its prior enabled state.
 - Missing `eventIdentifier` is preserved as `nil`; an interval-local deterministic fallback supplies `Identifiable.id`. Long-term identifier instability remains WU-03/WU-05 scope.
 - Calendar source interfaces expose no write operations, permission prompts, provider APIs, or networking.
+
+## WU-03 alarm rule engine
+
+- `AlarmRuleEvaluating` is a pure Domain protocol; `AlarmRuleEngine` depends only on Foundation `Date` and domain values.
+- Callers pass `now` and `AlarmLeadTime` explicitly. Identical inputs produce identical results.
+- Results contain either a domain `AlarmCandidate` or a focused exclusion reason. Candidates contain no AlarmKit UUID, schedule state, or persistence lifecycle metadata.
+- Arithmetic uses absolute instants; timezone conversion and formatting remain presentation concerns.

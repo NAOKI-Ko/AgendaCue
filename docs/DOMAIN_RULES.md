@@ -14,6 +14,8 @@ These rules are deterministic product intent. Platform-specific details remain s
 - **Default rule:** absent an event-specific override, use the current user default lead time and enabled policy.
 - **Event override:** local app-owned state that may disable the event alarm or replace the default lead time. It never modifies EventKit data.
 - **Alarm candidate:** an immutable domain value containing the source-event reference, event start instant, effective lead time, calculated absolute alarm date, and duplicate identity. Candidate creation has no scheduling side effect.
+- **WU-03 exact rule:** for a timed event, `alarmDate = event.startDate - effectiveLeadTime`. A candidate exists only when `alarmDate > now`. Equality is excluded. All-day events are excluded without assigning a clock time.
+- WU-03 uses the app default lead time input only. Event-specific override resolution remains WU-06 scope.
 - **Past alarm date:** if `event.startDate - effectiveLeadTime <= now` at reconciliation, do not create or newly schedule that alarm. Any previously managed alarm for that obsolete candidate is stale and should be cleaned up. Boundary behavior must use a single injected `now`.
 
 ## Identity and reconciliation

@@ -1,26 +1,27 @@
 # Project State
 
-- Phase: **WU-02**
-- Current Work: **Calendar Source**
+- Phase: **WU-03**
+- Current Work: **Alarm Rule Engine**
 - Status: **AUTOMATED GATE COMPLETE**
-- Next: **WU-03 Alarm Rule Engine**
+- Next: **WU-04 Alarm Scheduling**
 - WU-00: **AUTOMATED GATE COMPLETE; DEVICE EVIDENCE DEFERRED**
 - WU-01: **AUTOMATED GATE COMPLETE**
 - WU-02: **AUTOMATED GATE COMPLETE**
-- WU-03: **NOT STARTED**
+- WU-03: **AUTOMATED GATE COMPLETE**
+- WU-04: **NOT STARTED**
 - Human Gate: **OWNER WAIVED / DEFERRED TO WU-10**
 
 ## Automated evidence
 
 Environment: Xcode 26.6 (17F113), iOS SDK 26.5, iOS 26.5 iPhone 17 Pro Simulator.
 
-- XCTest: 19 tests passed, 0 failures.
+- XCTest: 29 tests passed, 0 failures.
 - Specific iOS Simulator build: succeeded.
 - Generic iOS Simulator build: succeeded.
 - Generic iOS Device build with code signing disabled: succeeded.
 - No signed real-device or Production device behavior was executed by Codex.
 
-WU-02 adds a read-only EventKit calendar source, framework-independent calendar/event mapping, deterministic event ordering, and persisted enabled-calendar selection. First discovery enables all available calendars; later new calendars stay disabled, while temporarily missing selected identifiers remain stored for safe restoration.
+WU-03 adds a pure framework-independent rule engine. Timed events produce a candidate only when `event.startDate - leadTime > now`; all-day events and nonfuture alarm dates are explicitly excluded. No AlarmKit or persistence side effects exist.
 
 ## Consolidated Human Review
 

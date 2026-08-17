@@ -1,6 +1,6 @@
 # Start Here
 
-Calendar Alarm is at WU-02 Calendar Source. Read-only discovery, enabled-calendar persistence, and bounded event fetching now exist behind a Production boundary.
+Calendar Alarm is at WU-03 Alarm Rule Engine. Pure domain candidate evaluation now exists with no scheduling side effects.
 
 ## Reading order
 
@@ -15,7 +15,7 @@ Calendar Alarm is at WU-02 Calendar Source. Read-only discovery, enabled-calenda
 
 ## Current stop line
 
-WU-02 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10; provider/device behavior is not considered verified. The next planned unit is WU-03 on its own branch. Do not begin it without separate authorization.
+WU-03 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10. The next planned unit is WU-04 on its own branch; do not begin it without separate authorization.
 
 ## Product invariants
 

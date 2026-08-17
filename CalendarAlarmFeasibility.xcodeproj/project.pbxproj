@@ -26,6 +26,8 @@
 		A00100000000000000000011 /* CalendarSelectionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000014 /* CalendarSelectionStore.swift */; };
 		A00100000000000000000012 /* CalendarSourceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000015 /* CalendarSourceService.swift */; };
 		A00100000000000000000013 /* CalendarSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000016 /* CalendarSourceTests.swift */; };
+		A00100000000000000000014 /* AlarmRuleEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000017 /* AlarmRuleEngine.swift */; };
+		A00100000000000000000015 /* AlarmRuleEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000018 /* AlarmRuleEngineTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +63,8 @@
 		B00100000000000000000014 /* CalendarSelectionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Persistence/CalendarSelectionStore.swift; sourceTree = "<group>"; };
 		B00100000000000000000015 /* CalendarSourceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Services/CalendarSourceService.swift; sourceTree = "<group>"; };
 		B00100000000000000000016 /* CalendarSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSourceTests.swift; sourceTree = "<group>"; };
+		B00100000000000000000017 /* AlarmRuleEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Domain/AlarmRuleEngine.swift; sourceTree = "<group>"; };
+		B00100000000000000000018 /* AlarmRuleEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmRuleEngineTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +105,7 @@
 				B00100000000000000000012 /* PermissionServices.swift */,
 				B00100000000000000000014 /* CalendarSelectionStore.swift */,
 				B00100000000000000000015 /* CalendarSourceService.swift */,
+				B00100000000000000000017 /* AlarmRuleEngine.swift */,
 				B00100000000000000000002 /* FeasibilityModels.swift */,
 				B00100000000000000000003 /* FeasibilityProtocols.swift */,
 				B00100000000000000000004 /* AlarmCandidate.swift */,
@@ -120,6 +125,7 @@
 				B0010000000000000000000A /* ServiceBoundaryTests.swift */,
 				B00100000000000000000013 /* ProductFoundationTests.swift */,
 				B00100000000000000000016 /* CalendarSourceTests.swift */,
+				B00100000000000000000018 /* AlarmRuleEngineTests.swift */,
 			);
 			path = CalendarAlarmFeasibilityTests;
 			sourceTree = "<group>";
@@ -246,6 +252,7 @@
 				A0010000000000000000000F /* PermissionServices.swift in Sources */,
 				A00100000000000000000011 /* CalendarSelectionStore.swift in Sources */,
 				A00100000000000000000012 /* CalendarSourceService.swift in Sources */,
+				A00100000000000000000014 /* AlarmRuleEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,6 +264,7 @@
 				A0010000000000000000000A /* ServiceBoundaryTests.swift in Sources */,
 				A00100000000000000000010 /* ProductFoundationTests.swift in Sources */,
 				A00100000000000000000013 /* CalendarSourceTests.swift in Sources */,
+				A00100000000000000000015 /* AlarmRuleEngineTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
