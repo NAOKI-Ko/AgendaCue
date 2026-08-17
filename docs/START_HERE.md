@@ -1,6 +1,6 @@
 # Start Here
 
-Calendar Alarm is at the specification and repository-baseline stage. There is no feature implementation or implementation evidence.
+Calendar Alarm is at WU-00 Feasibility & Platform Gate. A minimal feasibility app and automated evidence exist; Production implementation has not started.
 
 ## Reading order
 
@@ -15,7 +15,7 @@ Calendar Alarm is at the specification and repository-baseline stage. There is n
 
 ## Current stop line
 
-Bootstrap establishes documentation and Git only. Do not begin WU-00, request calendar or alarm permissions, create EventKit or AlarmKit behavior, or create Production UI during bootstrap. The next authorized unit is WU-00 only after a human starts it.
+WU-00 automated work is complete. Stop at Human Device Gate H01–H07 until explicit human evidence is recorded. Do not begin WU-01, merge to `main`, or treat the feasibility screen/services as Production UI or architecture.
 
 ## Product invariants
 
