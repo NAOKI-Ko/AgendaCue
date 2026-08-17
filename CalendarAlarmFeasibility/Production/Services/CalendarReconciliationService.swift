@@ -70,7 +70,7 @@ enum ReconciliationPlanner {
 }
 
 enum ReconciliationBlockedReason: Equatable, Sendable { case calendarPermission(PermissionState), alarmPermission(PermissionState), calendarReadFailed }
-enum ReconciliationIssue: Equatable, Sendable { case operationFailed(String), capacityReached(String) }
+enum ReconciliationIssue: Equatable, Sendable { case operationFailed(String), capacityReached(String), cancelled }
 
 struct ReconciliationReport: Equatable, Sendable {
     var fetchedEventCount = 0; var desiredCandidateCount = 0; var keptCount = 0
@@ -102,6 +102,15 @@ actor CalendarReconciliationCoordinator {
             dirty = false
             guard let request = latestRequest else { break }
             report = await run(now: request.0, window: request.1)
+            if Task.isCancelled {
+                let followUp = dirty ? latestRequest : nil
+                dirty = false
+                running = false
+                if let followUp {
+                    Task { [weak self] in _ = await self?.trigger(now: followUp.0, window: followUp.1) }
+                }
+                return report
+            }
         } while dirty
         running = false
         return report
@@ -125,7 +134,10 @@ actor CalendarReconciliationCoordinator {
         report.desiredCandidateCount = desired.count
         do {
             let plan = ReconciliationPlanner.make(desired: desired, mappings: try await store.allMappings(), systemAlarmIDs: try await scheduler.scheduledAlarmIDs(), now: now, window: window)
-            for operation in plan.operations { await execute(operation, report: &report) }
+            for operation in plan.operations {
+                guard !Task.isCancelled else { report.issues.append(.cancelled); break }
+                await execute(operation, report: &report)
+            }
         } catch { report.issues.append(.operationFailed("source-state")) }
         return report
     }

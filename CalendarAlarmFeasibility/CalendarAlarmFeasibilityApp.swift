@@ -7,6 +7,7 @@ struct CalendarAlarmApp: App {
 
     init() {
         dependencies = AppDependencies.live()
+        dependencies.backgroundRefresh.start()
     }
 
     var body: some Scene {

@@ -1,9 +1,9 @@
 # Project State
 
-- Phase: **WU-07**
-- Current Work: **Production UX**
+- Phase: **WU-08**
+- Current Work: **Reliability**
 - Status: **AUTOMATED GATE COMPLETE**
-- Next: **WU-08 Reliability**
+- Next: **WU-09 Accessibility & Polish**
 - WU-00: **AUTOMATED GATE COMPLETE; DEVICE EVIDENCE DEFERRED**
 - WU-01: **AUTOMATED GATE COMPLETE**
 - WU-02: **AUTOMATED GATE COMPLETE**
@@ -12,22 +12,28 @@
 - WU-05: **AUTOMATED GATE COMPLETE**
 - WU-06: **AUTOMATED GATE COMPLETE**
 - WU-07: **AUTOMATED GATE COMPLETE**
-- WU-08: **NOT STARTED**
+- WU-08: **AUTOMATED GATE COMPLETE**
+- WU-09: **NOT STARTED**
 - Human Gate: **OWNER WAIVED / DEFERRED TO WU-10**
 
 ## Automated evidence
 
 Environment: Xcode 26.6 (17F113), iOS SDK 26.5, iOS 26.5 iPhone 17 Pro Simulator.
 
-- XCTest: 98 tests passed, 0 failures.
+- XCTest: 111 tests passed, 0 failures (98 retained plus 13 WU-08 reliability tests).
 - Specific iOS Simulator build: succeeded.
 - Generic iOS Simulator build: succeeded.
 - Generic iOS Device build with code signing disabled: succeeded.
 - No signed real-device or Production device behavior was executed by Codex.
 
-WU-07 replaces the placeholder root with compact permission onboarding and native Today, Upcoming, and Settings navigation. Event overrides, calendar participation, and default lead-time mutations use the existing Production services and reconciliation path. Simulator Visual QA covers 11 light/dark and state variants under `docs/evidence/WU-07`.
+WU-08 keeps foreground/resume reconciliation as the authoritative recovery path and adds a short, best-effort `BGAppRefreshTask` using `com.example.CalendarAlarmFeasibility.refresh`. Initial/active, EventKit change, override/default/calendar mutation, significant day/time/time-zone change, and background opportunities all converge through the existing WU-05 coordinator. The background request uses a conservative six-hour earliest-begin policy; iOS decides whether and when it runs.
 
-- Visual QA: **PASS WITH EVIDENCE** (Codex simulator inspection; not Human Gate evidence).
+Permission denial blocks convergence without treating inaccessible data as deletion. Restoration is recovered by the next foreground/trigger pass. Missing/fired system alarms, stale mappings, selected calendar disappearance/reappearance, capacity failures, trigger coalescing, a fresh 14-day horizon, and conservative event identity behavior remain covered by the combined regression suite.
+
+- Production UI Simulator launch smoke: **PASS**.
+- Background orchestration/configuration: **PASS in unit/static verification**; actual system-scheduled execution timing was not tested on a real device.
+- Background expiration cancels the Swift task and reports failure. An individual EventKit/AlarmKit platform call already in flight may not be atomically interrupted; reconciliation stops before subsequent independent operations and remains safe to retry.
+- WU-07 Visual QA remains recorded under `docs/evidence/WU-07`; WU-08 made no visual redesign.
 
 ## Consolidated Human Review
 

@@ -122,6 +122,16 @@ final class CalendarReconciliationTests: XCTestCase {
         XCTAssertEqual(x.input.maximumConcurrentSnapshots, 1); XCTAssertEqual(x.input.snapshotCount, 2)
     }
 
+    func testCancelledPassDoesNotLoseDirtyFollowUpTrigger() async throws {
+        let x = setup(events: [event(id: "a")]); x.input.delayNanoseconds = 100_000_000
+        let cancelled = Task { await x.reconciler.trigger(now: now, window: window()) }
+        try await Task.sleep(nanoseconds: 10_000_000)
+        _ = await x.reconciler.trigger(now: now.addingTimeInterval(1), window: window())
+        cancelled.cancel(); _ = await cancelled.value
+        try await Task.sleep(nanoseconds: 250_000_000)
+        XCTAssertEqual(x.system.scheduleCount, 1)
+    }
+
     func testOverrideOffCausesReconciliationCancel() async {
         let old = mapping(id: "a", date: alarmDate()); let off = EventOverride(eventIdentity: "a", state: .disabled)
         let x = setup(events: [event(id: "a")], mappings: [old], systemIDs: [old.alarmIdentifier], overrides: ["a": off])

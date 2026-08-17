@@ -58,8 +58,11 @@ final class ProductionUXViewModel: ObservableObject {
 
 struct ProductionRootView: View {
     @StateObject private var model: ProductionUXViewModel
-    init(dependencies: AppDependencies) { _model = StateObject(wrappedValue: ProductionUXViewModel(dependencies: dependencies)) }
-    var body: some View { Group { if model.route == .onboarding { OnboardingView(model: model) } else if let scenario = model.sampleScenario { sample(scenario) } else { MainTabsView(model: model) } }.task { await model.refresh() } }
+    let refreshGeneration: Int
+    init(dependencies: AppDependencies, refreshGeneration: Int = 0) { self.refreshGeneration = refreshGeneration; _model = StateObject(wrappedValue: ProductionUXViewModel(dependencies: dependencies)) }
+    var body: some View { Group { if model.route == .onboarding { OnboardingView(model: model) } else if let scenario = model.sampleScenario { sample(scenario) } else { MainTabsView(model: model) } }.task { await model.refresh() }
+        .onChange(of: refreshGeneration) { _, _ in Task { await model.refresh() } }
+    }
     @ViewBuilder private func sample(_ scenario: String) -> some View { switch scenario { case "upcoming": EventListView(title: "Upcoming", events: model.upcomingEvents, empty: "No upcoming events", model: model, grouped: true); case "settings": SettingsView(model: model); case "calendars": NavigationStack { CalendarSelectionView(model: model) }; case "detail-default", "detail-custom", "detail-off": NavigationStack { if let event = model.events.first { EventDetailView(event: event, model: model) } }; default: EventListView(title: "Today", events: model.todayEvents, empty: "No events today", model: model) } }
 }
 

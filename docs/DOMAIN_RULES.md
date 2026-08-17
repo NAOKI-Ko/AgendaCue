@@ -34,7 +34,7 @@ These rules are deterministic product intent. Platform-specific details remain s
 - **AlarmKit orphan:** an app-visible AlarmKit alarm with no persisted mapping is cancelled deterministically. If AlarmKit capacity is reached, earlier candidates remain successful, later failures remain unpersisted, and the pass reports a typed partial result without assuming a numeric limit.
 - Calendar read denial/failure blocks the entire pass and preserves alarms/mappings. It must never be interpreted as an empty trustworthy calendar snapshot.
 - Overrides absent from a reconciliation window are preserved. Window absence is not proof that the underlying event was deleted.
-- **Event identifier instability:** EventKit identifiers may not be assumed globally or permanently stable across store changes, account migrations, or recurring-event mutations. Persistence must combine available identifiers with occurrence/time context, tolerate remapping, and use reconciliation to retire stale records. WU-03/WU-05 must validate the precise strategy rather than promise impossible identity.
+- **Event identifier instability:** EventKit identifiers may not be assumed globally or permanently stable across store changes, account migrations, or recurring-event mutations. When EventKit supplies an identifier, the domain identity survives title/time edits. When it is nil, the deterministic fallback includes exact event facts and may change with an edit. The app deliberately does not fuzzy-match title plus approximate time; losing a stale override is safer than attaching it to an unrelated event or occurrence.
 
 ## Time semantics
 
@@ -42,9 +42,19 @@ These rules are deterministic product intent. Platform-specific details remain s
 - Display uses the user's current calendar/timezone conventions, while identity and comparison use absolute instants.
 - Timezone or daylight-saving changes must not reinterpret an already fetched instant as a floating wall-clock value. Refetch/reconcile after relevant system or store changes where observable.
 - Day boundaries are presentation/query concerns; query windows must include sufficient overlap so timezone transitions do not omit eligible occurrences, then deduplicate deterministically.
+- Day, significant-clock/DST, and system-time-zone changes trigger fresh EventKit fetch and reconciliation. They never add/subtract timezone offsets from persisted absolute dates and never reconstruct scheduling truth from formatted strings.
+- Every Production pass rebuilds the 14-day half-open horizon from a fresh `now`; no periodic minute timer is used.
 
 ## Authorization failures
 
-- **Calendar permission denied/revoked:** do not fetch, infer, or schedule new calendar-derived alarms. Preserve only the minimum local state needed for safe recovery, clean up app-managed alarms when ownership can be established safely, show recovery guidance, and never claim data is current.
+- **Calendar permission denied/revoked:** block the pass before fetching or diffing. Preserve alarms, mappings, overrides, and calendar selections; inaccessible truth must never be interpreted as deletion. Show recovery guidance and never claim data is current.
 - **Alarm authorization denied/revoked:** do not claim alarms are active. Calendar reading may continue only for clear local UX, but scheduling stops; reconcile local status with system truth, provide recovery guidance, and avoid repeated prompts.
 - Authorization recovery must be explicit, idempotent, and testable. Neither permission grants authority to write calendar data.
+- Lifecycle, calendar-change, significant-time, and background paths never request permissions. After the owner restores access in system settings, the next foreground/reconciliation pass refetches truth and retries convergence.
+
+## Reliability and background semantics
+
+- A missing selected calendar identifier is ignored without deleting its stored selection. The same identifier restores prior behavior if it reappears; a different identifier follows normal new-calendar defaults and inherits no historical settings.
+- A missing/fired system alarm plus a desired future candidate is recovered with the stable app-owned UUID. A missing system alarm with an expired or undesired mapping removes only stale app-owned persistence. Recognized system orphans are cancelled through the normal scheduler boundary.
+- Capacity and platform failures are typed partial results. Successful earlier work remains valid, failed schedules create no fake mapping, and later idempotent passes retry.
+- Background app refresh is a best-effort freshness opportunity only. Its requested time and execution are not guaranteed, and it is never required for correctness after the next foreground/resume reconciliation.

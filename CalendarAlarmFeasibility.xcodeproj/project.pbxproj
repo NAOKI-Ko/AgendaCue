@@ -41,6 +41,8 @@
 		A00100000000000000000020 /* ProductionUXModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000023 /* ProductionUXModels.swift */; };
 		A00100000000000000000021 /* ProductionUXView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000024 /* ProductionUXView.swift */; };
 		A00100000000000000000022 /* ProductionUXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000025 /* ProductionUXTests.swift */; };
+		A00100000000000000000023 /* ReliabilityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000026 /* ReliabilityService.swift */; };
+		A00100000000000000000024 /* ReliabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000027 /* ReliabilityTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +93,8 @@
 		B00100000000000000000023 /* ProductionUXModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Features/ProductionUXModels.swift; sourceTree = "<group>"; };
 		B00100000000000000000024 /* ProductionUXView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Features/ProductionUXView.swift; sourceTree = "<group>"; };
 		B00100000000000000000025 /* ProductionUXTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductionUXTests.swift; sourceTree = "<group>"; };
+		B00100000000000000000026 /* ReliabilityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production/Services/ReliabilityService.swift; sourceTree = "<group>"; };
+		B00100000000000000000027 /* ReliabilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReliabilityTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +145,7 @@
 				B00100000000000000000022 /* AppSettingsService.swift */,
 				B00100000000000000000023 /* ProductionUXModels.swift */,
 				B00100000000000000000024 /* ProductionUXView.swift */,
+				B00100000000000000000026 /* ReliabilityService.swift */,
 				B00100000000000000000002 /* FeasibilityModels.swift */,
 				B00100000000000000000003 /* FeasibilityProtocols.swift */,
 				B00100000000000000000004 /* AlarmCandidate.swift */,
@@ -165,6 +170,7 @@
 				B0010000000000000000001E /* CalendarReconciliationTests.swift */,
 				B00100000000000000000021 /* EventOverrideTests.swift */,
 				B00100000000000000000025 /* ProductionUXTests.swift */,
+				B00100000000000000000027 /* ReliabilityTests.swift */,
 			);
 			path = CalendarAlarmFeasibilityTests;
 			sourceTree = "<group>";
@@ -301,6 +307,7 @@
 				A0010000000000000000001F /* AppSettingsService.swift in Sources */,
 				A00100000000000000000020 /* ProductionUXModels.swift in Sources */,
 				A00100000000000000000021 /* ProductionUXView.swift in Sources */,
+				A00100000000000000000023 /* ReliabilityService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -317,6 +324,7 @@
 				A0010000000000000000001B /* CalendarReconciliationTests.swift in Sources */,
 				A0010000000000000000001E /* EventOverrideTests.swift in Sources */,
 				A00100000000000000000022 /* ProductionUXTests.swift in Sources */,
+				A00100000000000000000024 /* ReliabilityTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

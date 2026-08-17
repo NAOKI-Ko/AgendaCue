@@ -65,7 +65,7 @@ Views consume feature/presentation interfaces and never directly own EventKit or
 - The live composition refetches selected calendars/events on app activation and `EKEventStoreChanged`; notification payloads are not treated as event truth and no permission prompt is automatic.
 - The adjustable Production default window is `[now, now + 14 days)`. Only mappings whose alarm date is inside the active window are retired for absence, preventing false deletion at window boundaries.
 - Recovery reschedules a desired missing system alarm with its persisted UUID. Fired/stale mappings and app-owned AlarmKit orphans are cleaned independently; failures are isolated and reported.
-- WU-05 is active-app only. BackgroundTasks and best-effort background reliability remain WU-08 scope.
+- WU-05 owns the one reconciliation implementation; WU-08 supplies additional triggers without creating another scheduling path.
 
 ## WU-06 event overrides
 
@@ -80,3 +80,14 @@ Views consume feature/presentation interfaces and never directly own EventKit or
 - The root routes permission onboarding or a three-tab Today / Upcoming / Settings experience. Feasibility screens remain disconnected from Production navigation.
 - `AppSettingsService` persists the default lead time before triggering the existing reconciliation coordinator.
 - UI sample launch scenarios exist only for deterministic simulator Visual QA; normal launches use live Production services.
+
+## WU-08 reliability
+
+- `FoundationRootView` is the unified active-app trigger adapter. Initial/active lifecycle, the single `EKEventStoreChanged` observer, calendar-day, significant-clock, and system-time-zone signals invoke the existing WU-05 coordinator, then refresh UI-facing state.
+- Override, default-setting, and calendar-selection mutations continue to invoke the same coordinator through their existing service boundaries. Actor coalescing allows one pass at a time and one dirty follow-up pass for trigger bursts.
+- Foreground/resume is the authoritative correctness path. Every pass derives a fresh `[now, now + 14 days)` window and refetches EventKit truth; correctness after the next foreground pass never depends on background execution.
+- `BackgroundRefreshCoordinator` and `BackgroundRefreshScheduling` isolate a single short `BGAppRefreshTask`. `SystemBackgroundRefreshScheduler` registers once at app launch, replaces the one logical pending request, and submits through the installed iOS 26 SDK's `BGTaskScheduler.submit(_:)` API.
+- The task identifier is `com.example.CalendarAlarmFeasibility.refresh`; `Info.plist` permits that identifier and enables only the `fetch` background mode. The requested earliest begin is six hours after scheduling, not a promised execution time.
+- A background opportunity schedules its successor and invokes the same reconciliation actor. It never prompts permissions or shows UI. Denied permissions and partial/issues report non-success while preserving app-owned intent.
+- Expiration cancels the Swift task and completion is guarded against duplicate reporting. A platform call already in flight cannot be assumed atomically cancellable; cancellation is checked between independent reconciliation operations and the next pass safely retries convergence.
+- Background registration/submission failure is retained as debug-local operational state and does not disable foreground reconciliation.

@@ -1,6 +1,6 @@
 # Start Here
 
-Calendar Alarm is at WU-07 Production UX. The Production app exposes onboarding, Today, Upcoming, event controls, calendar selection, and Settings through native SwiftUI navigation.
+Calendar Alarm is at WU-08 Reliability. Production lifecycle, calendar-change, significant-time, permission-recovery, and best-effort background opportunities converge through the existing reconciliation coordinator.
 
 ## Reading order
 
@@ -15,7 +15,7 @@ Calendar Alarm is at WU-07 Production UX. The Production app exposes onboarding,
 
 ## Current stop line
 
-WU-07 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10. The next planned unit is WU-08 on its own branch; do not begin it without separate authorization.
+WU-08 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10. The next planned unit is WU-09 Accessibility & Polish; it is not started and requires separate authorization.
 
 ## Product invariants
 
@@ -23,4 +23,5 @@ WU-07 automated work is complete. Intermediate Human Gates are owner-waived and 
 - Local-only, free, no ads, no IAP, no login, no backend, no analytics, no AI.
 - EventKit reads existing device calendar data; app policy forbids all calendar writes.
 - AlarmKit schedules alarms; there is no watchOS target in V1.
+- Foreground/resume is the authoritative correctness path. Background app refresh is supplemental, best-effort, and has no timing guarantee.
 - Git is the formal Project Source of Truth and portable AI memory.

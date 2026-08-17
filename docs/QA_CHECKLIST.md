@@ -29,7 +29,17 @@ Apply only the sections relevant to the active WU and record actual evidence aga
 - UI never claims an alarm is scheduled without system-backed evidence.
 - Reconciliation covers new/changed/deleted/ineligible events, missing-system recovery, fired/stale mapping cleanup, orphan cancellation, partial capacity, permission revocation, idempotency, and window-boundary ownership.
 - Foreground/resume and `EKEventStoreChanged` triggers refetch fresh events; overlapping triggers serialize and a change during a pass causes a follow-up pass.
+- Calendar-day, significant-clock/DST, and system-time-zone signals use the same reconciliation path and refresh Today/Upcoming state without manual timezone arithmetic or polling timers.
 - Override precedence, reset/inherit, supported custom leads, base eligibility, persistence failure, permission blocks, reconciliation replacement/cancellation, identity isolation, and out-of-window preservation are regression-tested.
+- Permission revocation never converts inaccessible EventKit truth into deletion; restoration, missing/reappearing calendars, fired/missing alarms, long-gap windows, capacity retry, orphan cleanup, and nil-identifier safety are regression-tested.
+
+## Background reliability
+
+- The Production app registers exactly one short app-refresh handler with the configured permitted identifier and only the `fetch` background mode.
+- Repeated request scheduling replaces the one logical pending request; the conservative earliest-begin date is not represented as a guarantee.
+- Background execution invokes the existing reconciliation coordinator, schedules its successor, issues no permission prompt/UI, and truthfully reports blocked/partial/cancelled work.
+- Expiration cancellation and duplicate completion protection are tested. Foreground remains operational after registration/submission failure.
+- Unit/debug orchestration evidence is distinguished from real-device system-scheduled execution timing, which belongs to WU-10.
 
 ## UX and accessibility
 
