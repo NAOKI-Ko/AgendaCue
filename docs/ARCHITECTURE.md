@@ -50,3 +50,10 @@ Views consume feature/presentation interfaces and never directly own EventKit or
 - Callers pass `now` and `AlarmLeadTime` explicitly. Identical inputs produce identical results.
 - Results contain either a domain `AlarmCandidate` or a focused exclusion reason. Candidates contain no AlarmKit UUID, schedule state, or persistence lifecycle metadata.
 - Arithmetic uses absolute instants; timezone conversion and formatting remain presentation concerns.
+
+## WU-04 alarm scheduling
+
+- `AlarmSystemScheduling` isolates AlarmKit; only its adapter imports AlarmKit.
+- `AlarmSchedulingCoordinator` serializes operations per candidate identity and provides idempotent schedule, replace, and cancel outcomes.
+- SwiftData stores only candidate identity, AlarmKit UUID, and alarm date. System success precedes persistence mutation.
+- Fixed one-shot schedules and default sound are used. There is no countdown, Widget, listener, or calendar reconciliation; WU-05 owns recovery/orchestration.

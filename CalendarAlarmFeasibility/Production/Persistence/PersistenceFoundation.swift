@@ -61,13 +61,27 @@ final class EventOverrideRecord {
     }
 }
 
+@Model
+final class ScheduledAlarmRecord {
+    @Attribute(.unique) var candidateIdentity: String
+    var alarmIdentifier: UUID
+    var alarmDate: Date
+
+    init(candidateIdentity: String, alarmIdentifier: UUID, alarmDate: Date) {
+        self.candidateIdentity = candidateIdentity
+        self.alarmIdentifier = alarmIdentifier
+        self.alarmDate = alarmDate
+    }
+}
+
 enum PersistenceContainer {
     static func make(inMemory: Bool = false) throws -> ModelContainer {
         let schema = Schema([
             AppSettingsRecord.self,
             SelectedCalendarRecord.self,
             CalendarSelectionStateRecord.self,
-            EventOverrideRecord.self
+            EventOverrideRecord.self,
+            ScheduledAlarmRecord.self
         ])
         let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: inMemory)
         return try ModelContainer(for: schema, configurations: [configuration])

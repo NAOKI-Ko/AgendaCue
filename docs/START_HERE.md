@@ -1,6 +1,6 @@
 # Start Here
 
-Calendar Alarm is at WU-03 Alarm Rule Engine. Pure domain candidate evaluation now exists with no scheduling side effects.
+Calendar Alarm is at WU-04 Alarm Scheduling. Production fixed one-shot AlarmKit lifecycle behavior now exists behind a testable boundary.
 
 ## Reading order
 
@@ -15,7 +15,7 @@ Calendar Alarm is at WU-03 Alarm Rule Engine. Pure domain candidate evaluation n
 
 ## Current stop line
 
-WU-03 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10. The next planned unit is WU-04 on its own branch; do not begin it without separate authorization.
+WU-04 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10. The next planned unit is WU-05 on its own branch; do not begin it without separate authorization.
 
 ## Product invariants
 

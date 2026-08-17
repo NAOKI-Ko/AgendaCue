@@ -20,6 +20,9 @@ These rules are deterministic product intent. Platform-specific details remain s
 
 ## Identity and reconciliation
 
+- **Scheduling identity:** `AlarmCandidate.id` maps to one persisted AlarmKit UUID. Reprocessing an unchanged candidate is a no-op; replacement reuses the UUID.
+- New mappings are persisted only after system scheduling succeeds. Cancellation removes mappings only after system cancellation succeeds. Replacement uses cancel then reschedule; a failed reschedule retains old metadata and reports recovery required for WU-05.
+
 - **Duplicate identity:** the stable local identity for one managed alarm candidate. It must distinguish occurrences of recurring events and prevent more than one active app-managed alarm for the same logical event occurrence and effective rule. The exact persisted key is designed and tested in later WUs.
 - **Deleted event:** when a formerly managed occurrence is absent/deleted after a trustworthy reconciliation, cancel its app-managed alarm and remove or tombstone local scheduling state as required for idempotency.
 - **Changed event:** recompute eligibility and candidate data. If identity-relevant or schedule-relevant values changed, cancel/replace the prior managed alarm atomically as far as platform APIs allow; unchanged results are no-ops.

@@ -1,27 +1,28 @@
 # Project State
 
-- Phase: **WU-03**
-- Current Work: **Alarm Rule Engine**
+- Phase: **WU-04**
+- Current Work: **Alarm Scheduling**
 - Status: **AUTOMATED GATE COMPLETE**
-- Next: **WU-04 Alarm Scheduling**
+- Next: **WU-05 Calendar Reconciliation**
 - WU-00: **AUTOMATED GATE COMPLETE; DEVICE EVIDENCE DEFERRED**
 - WU-01: **AUTOMATED GATE COMPLETE**
 - WU-02: **AUTOMATED GATE COMPLETE**
 - WU-03: **AUTOMATED GATE COMPLETE**
-- WU-04: **NOT STARTED**
+- WU-04: **AUTOMATED GATE COMPLETE**
+- WU-05: **NOT STARTED**
 - Human Gate: **OWNER WAIVED / DEFERRED TO WU-10**
 
 ## Automated evidence
 
 Environment: Xcode 26.6 (17F113), iOS SDK 26.5, iOS 26.5 iPhone 17 Pro Simulator.
 
-- XCTest: 29 tests passed, 0 failures.
+- XCTest: 42 tests passed, 0 failures.
 - Specific iOS Simulator build: succeeded.
 - Generic iOS Simulator build: succeeded.
 - Generic iOS Device build with code signing disabled: succeeded.
 - No signed real-device or Production device behavior was executed by Codex.
 
-WU-03 adds a pure framework-independent rule engine. Timed events produce a candidate only when `event.startDate - leadTime > now`; all-day events and nonfuture alarm dates are explicitly excluded. No AlarmKit or persistence side effects exist.
+WU-04 adds a Production AlarmKit adapter and serialized scheduling coordinator with stable persisted UUID mappings, idempotent create/replace/cancel semantics, explicit authorization failures, and minimal lifecycle metadata.
 
 ## Consolidated Human Review
 
