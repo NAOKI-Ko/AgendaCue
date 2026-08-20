@@ -73,7 +73,7 @@ actor AlarmSchedulingCoordinator {
         activeIdentities.insert(identity)
     }
 
-    private func presentationTitle(_ title: String) -> String { title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? "Calendar Event" : title }
+    private func presentationTitle(_ title: String) -> String { title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? "予定" : title }
 }
 
 private struct ProductionAlarmMetadata: AlarmMetadata { let candidateIdentity: String }

@@ -106,6 +106,14 @@ WU-09-04 correction pass is complete at the automated gate: Production navigatio
 - **Expected evidence:** Screenshot matrix, accessibility audit, build/test logs, explicit human findings/resolution, and exact SHA.
 - **Stop condition:** Stop with unresolved critical accessibility defects, misleading copy, or visual regressions in primary journeys.
 
+## WU-09-05 Lightweight Onboarding + Alarm Presentation Copy
+
+- **Goal:** Explain the product promise and request Calendar then Alarm authorization without trapping denied users or replaying first launch after revocation.
+- **Scope:** Three-step first-launch presentation, persisted completion independent of permission state, not-determined-only permission requests, normal-app recovery, exact event-title AlarmKit presentation, and `予定` blank-title fallback.
+- **Out of Scope:** Domain/scheduling/reconciliation changes, permission preflight tricks, new navigation or settings architecture, calendar writes, watchOS, analytics, backend, and release work.
+- **Automated Gate:** Completion/request-sequencing/title tests, full regression suite, specific and generic Simulator builds, unsigned generic Device build, and 12-screen visual matrix.
+- **Human Gate:** Owner waived/deferred to WU-10; real permission prompts, denial/restoration, AlarmKit system presentation/firing, and VoiceOver are not claimed.
+
 ## WU-10 Release Gate
 
 - **Goal:** Establish evidence that the exact release candidate is App Store ready and obtain final human approval.

@@ -4,11 +4,37 @@ import XCTest
 @testable import CalendarAlarmFeasibility
 
 final class ProductionUXTests: XCTestCase {
-    func testCalendarNotDeterminedRoutesToOnboarding() { XCTAssertEqual(ProductionPresentationPolicy.route(calendar: .notDetermined, alarm: .authorized), .onboarding) }
-    func testAlarmNotDeterminedRoutesToOnboarding() { XCTAssertEqual(ProductionPresentationPolicy.route(calendar: .authorized, alarm: .notDetermined), .onboarding) }
-    func testAuthorizedRoutesToMainApp() { XCTAssertEqual(ProductionPresentationPolicy.route(calendar: .authorized, alarm: .authorized), .main) }
-    func testCalendarDeniedRoutesToGuidance() { XCTAssertEqual(ProductionPresentationPolicy.route(calendar: .denied, alarm: .authorized), .onboarding) }
-    func testAlarmDeniedRoutesToGuidance() { XCTAssertEqual(ProductionPresentationPolicy.route(calendar: .authorized, alarm: .denied), .onboarding) }
+    func testFirstLaunchRoutesToOnboarding() { XCTAssertEqual(ProductionPresentationPolicy.route(onboardingCompleted: false), .onboarding) }
+    func testCompletedOnboardingRoutesToMainApp() { XCTAssertEqual(ProductionPresentationPolicy.route(onboardingCompleted: true), .main) }
+    func testPermissionRevocationDoesNotResetCompletedOnboardingRoute() { XCTAssertEqual(ProductionPresentationPolicy.route(onboardingCompleted: true), .main) }
+
+    func testOnboardingCompletionPersistsAcrossStoreInstances() {
+        let suite = "OnboardingCompletionTests.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suite)!
+        defer { defaults.removePersistentDomain(forName: suite) }
+        let first = UserDefaultsOnboardingCompletionStore(defaults: defaults)
+        XCTAssertFalse(first.isCompleted)
+        first.markCompleted()
+        XCTAssertTrue(UserDefaultsOnboardingCompletionStore(defaults: defaults).isCompleted)
+    }
+
+    func testNotDeterminedPermissionRequestsExactlyOnce() async {
+        var requests = 0
+        let result = await OnboardingPermissionSequence.resolve(state: .notDetermined) { requests += 1; return .authorized }
+        XCTAssertEqual(result, .authorized); XCTAssertEqual(requests, 1)
+    }
+
+    func testAlreadyAuthorizedPermissionDoesNotPrompt() async {
+        var requests = 0
+        let result = await OnboardingPermissionSequence.resolve(state: .authorized) { requests += 1; return .denied }
+        XCTAssertEqual(result, .authorized); XCTAssertEqual(requests, 0)
+    }
+
+    func testDeniedPermissionDoesNotPromptAgainAndCanExitFlow() async {
+        var requests = 0
+        let result = await OnboardingPermissionSequence.resolve(state: .denied) { requests += 1; return .authorized }
+        XCTAssertEqual(result, .denied); XCTAssertEqual(requests, 0)
+    }
 
     func testProductionTabsUseJapaneseLabels() {
         XCTAssertEqual([ProductionCopy.alarm, ProductionCopy.settings], ["アラーム", "設定"])

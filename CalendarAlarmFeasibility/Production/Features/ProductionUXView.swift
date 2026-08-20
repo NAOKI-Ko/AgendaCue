@@ -12,6 +12,8 @@ final class ProductionUXViewModel: ObservableObject {
     @Published var settings = AppSettings()
     @Published var loadState: UserFacingLoadState = .loading
     @Published var sampleScenario: String?
+    @Published var onboardingCompleted: Bool
+    @Published var onboardingStep: OnboardingStep = .welcome
 
     let calendarPermissionProvider: any CalendarPermissionProviding
     let alarmPermissionProvider: any AlarmPermissionProviding
@@ -21,6 +23,7 @@ final class ProductionUXViewModel: ObservableObject {
     let overrideService: EventOverrideService
     private let settingsService: AppSettingsService
     private let reconciliation: CalendarReconciliationCoordinator
+    private let onboardingCompletion: any OnboardingCompletionStoring
 
     init(dependencies: AppDependencies) {
         calendarPermissionProvider = dependencies.calendarPermission
@@ -33,10 +36,12 @@ final class ProductionUXViewModel: ObservableObject {
         overrideService = dependencies.eventOverrides
         settingsService = dependencies.settingsService
         reconciliation = dependencies.reconciliation
+        onboardingCompletion = dependencies.onboardingCompletion
+        onboardingCompleted = dependencies.onboardingCompletion.isCompleted
         applySampleIfNeeded()
     }
 
-    var route: ProductionRoute { ProductionPresentationPolicy.route(calendar: calendarPermission, alarm: alarmPermission) }
+    var route: ProductionRoute { ProductionPresentationPolicy.route(onboardingCompleted: onboardingCompleted) }
     var todayEvents: [CalendarEvent] { ProductionPresentationPolicy.sorted(events.filter { Calendar.current.isDateInToday($0.startDate) }) }
     var timelineEvents: [CalendarEvent] { ProductionPresentationPolicy.timelineEvents(events, now: Date()) }
 
@@ -73,6 +78,20 @@ final class ProductionUXViewModel: ObservableObject {
         await refresh()
     }
 
+    func beginOnboarding() { onboardingStep = .calendarRationale }
+
+    func continueCalendarOnboarding() async {
+        calendarPermission = await OnboardingPermissionSequence.resolve(state: calendarPermission) { try await self.calendarPermissionProvider.requestAccess() }
+        onboardingStep = .alarmRationale
+    }
+
+    func continueAlarmOnboarding() async {
+        alarmPermission = await OnboardingPermissionSequence.resolve(state: alarmPermission) { try await self.alarmPermissionProvider.requestAccess() }
+        onboardingCompletion.markCompleted()
+        onboardingCompleted = true
+        await refresh()
+    }
+
     func setCalendar(_ enabled: Bool, id: String) async {
         do {
             try selections.setEnabled(enabled, calendarIdentifier: id)
@@ -106,13 +125,19 @@ final class ProductionUXViewModel: ObservableObject {
     private func applySampleIfNeeded() {
         guard let scenario = SampleScenarioPolicy.scenario(arguments: ProcessInfo.processInfo.arguments) else { return }
         sampleScenario = scenario
+        if ["onboarding", "onboarding-calendar", "onboarding-alarm", "calendar-denied", "alarm-denied"].contains(scenario) {
+            onboardingCompleted = false
+            onboardingStep = scenario == "onboarding-calendar" || scenario == "calendar-denied" ? .calendarRationale : scenario == "onboarding-alarm" || scenario == "alarm-denied" ? .alarmRationale : .welcome
+        } else {
+            onboardingCompleted = true
+        }
         let now = Date()
         let personal = CalendarDescriptor(id: "sample", title: "プライベート", source: .init(id: "icloud", title: "iCloud", typeDescription: "CalDAV"))
         let work = CalendarDescriptor(id: "work", title: "仕事", source: .init(id: "google", title: "Google", typeDescription: "CalDAV"))
         calendars = [personal, work]
         enabledCalendarIDs = ["sample", "work"]
-        calendarPermission = scenario == "onboarding" ? .notDetermined : scenario == "denied" ? .denied : .authorized
-        alarmPermission = scenario == "alarm-denied" ? .denied : .authorized
+        calendarPermission = scenario == "onboarding" || scenario == "onboarding-calendar" ? .notDetermined : scenario == "denied" || scenario == "calendar-denied" ? .denied : .authorized
+        alarmPermission = scenario == "onboarding-alarm" ? .notDetermined : scenario == "alarm-denied" ? .denied : .authorized
 
         let long = scenario == "today-long" || scenario == "calendars-long"
         if long {
@@ -157,6 +182,7 @@ struct ProductionRootView: View {
         Group {
             if model.route == .onboarding { OnboardingView(model: model) }
             else if let scenario = model.sampleScenario { sample(scenario) }
+            else if model.calendarPermission != .authorized || model.alarmPermission != .authorized { ProductionPermissionRecoveryView(model: model) }
             else { MainTabsView(model: model, clock: presentationClock) }
         }
         .task { await model.refresh() }
@@ -194,59 +220,75 @@ struct OnboardingView: View {
     @ObservedObject var model: ProductionUXViewModel
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 28) {
-                    VStack(alignment: .leading, spacing: 14) {
-                        Image(systemName: "calendar.badge.clock")
-                            .font(.system(size: 48, weight: .medium))
-                            .foregroundStyle(.orange)
-                            .accessibilityHidden(true)
-                        Text("予定を、アラームに")
-                            .font(.title.bold())
-                            .fixedSize(horizontal: false, vertical: true)
-                        Text("iPhoneのカレンダーにある予定を読み取り、予定前にアラームを設定します。")
-                            .font(.title3)
-                            .foregroundStyle(.secondary)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-
-                    VStack(alignment: .leading, spacing: 18) {
-                        OnboardingFeature(symbol: "calendar", title: "予定はそのまま", detail: "カレンダーの予定を変更することはありません。")
-                        OnboardingFeature(symbol: "alarm", title: "本物のアラームでお知らせ", detail: "通知ではなく、時刻を指定したアラームを設定します。")
-                        OnboardingFeature(symbol: "iphone", title: "このiPhoneの中で完結", detail: "アカウントやサーバーは必要ありません。")
-                    }
-
-                    VStack(spacing: 0) {
-                        PermissionRow(title: ProductionCopy.calendarAccess, state: model.calendarPermission, actionTitle: "カレンダーへのアクセスを許可", identifier: ProductionAccessibilityID.calendarPermissionAction) {
-                            Task { await model.requestCalendar() }
-                        }
-                        Divider().padding(.leading, 52)
-                        PermissionRow(title: ProductionCopy.alarmAccess, state: model.alarmPermission, actionTitle: "アラームへのアクセスを許可", identifier: ProductionAccessibilityID.alarmPermissionAction) {
-                            Task { await model.requestAlarm() }
-                        }
-                    }
-                    .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 18))
-
-                    if ProductionPresentationPolicy.shouldOfferSettings(calendar: model.calendarPermission, alarm: model.alarmPermission) {
-                        VStack(alignment: .leading, spacing: 12) {
-                            Text(ProductionCopy.permissionRecovery)
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
-                            OpenSettingsButton()
-                        }
-                    }
+        ScrollView {
+            VStack(alignment: .leading, spacing: 24) {
+                Spacer(minLength: 42)
+                Image(systemName: icon)
+                    .font(.system(size: 46, weight: .medium))
+                    .foregroundStyle(.tint)
+                    .accessibilityHidden(true)
+                Text(title).font(.largeTitle.bold()).fixedSize(horizontal: false, vertical: true)
+                Text(bodyText).font(.title3).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
+                if model.onboardingStep == .welcome {
+                    Text("カレンダーの内容は、この機能を提供するために端末内で利用します。")
+                        .font(.body).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
                 }
-                .frame(maxWidth: 620)
-                .padding(.horizontal, 24)
-                .padding(.vertical, 32)
-                .frame(maxWidth: .infinity)
+                Spacer(minLength: 28)
+                Button(actionTitle) { advance() }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                    .frame(maxWidth: .infinity, minHeight: 44)
+                    .accessibilityIdentifier(actionIdentifier)
+                if model.onboardingStep != .welcome && currentPermission != .notDetermined {
+                    Text(ProductionPresentationPolicy.permissionStatusText(currentPermission))
+                        .font(.subheadline).foregroundStyle(.secondary)
+                    if ProductionPresentationPolicy.shouldOfferSettings(calendar: model.calendarPermission, alarm: model.alarmPermission) { OpenSettingsButton() }
+                }
             }
-            .background(Color(uiColor: .systemGroupedBackground))
-            .navigationTitle("はじめに")
-            .navigationBarTitleDisplayMode(.inline)
+            .frame(maxWidth: 560, minHeight: 620, alignment: .topLeading)
+            .padding(.horizontal, 28)
+            .padding(.vertical, 24)
+            .frame(maxWidth: .infinity)
+        }
+        .background(Color(uiColor: .systemBackground))
+    }
+
+    private var title: String {
+        switch model.onboardingStep { case .welcome: "予定を、見逃さないアラームに。"; case .calendarRationale: "カレンダーへのアクセス"; case .alarmRationale: "アラームの許可" }
+    }
+    private var bodyText: String {
+        switch model.onboardingStep {
+        case .welcome: "iPhoneのカレンダー予定を読み取り、設定した時間前にアラームを鳴らします。"
+        case .calendarRationale: "予定の開始時刻を読み取り、アラームを設定するために使用します。"
+        case .alarmRationale: "予定の前に、通知ではなくアラームを鳴らすために使用します。"
         }
     }
+    private var icon: String { model.onboardingStep == .welcome ? "calendar.badge.clock" : model.onboardingStep == .calendarRationale ? "calendar" : "alarm" }
+    private var actionTitle: String { model.onboardingStep == .welcome ? "はじめる" : model.onboardingStep == .calendarRationale ? "カレンダーを許可" : "アラームを許可" }
+    private var actionIdentifier: String { model.onboardingStep == .welcome ? ProductionAccessibilityID.onboardingStartAction : model.onboardingStep == .calendarRationale ? ProductionAccessibilityID.calendarPermissionAction : ProductionAccessibilityID.alarmPermissionAction }
+    private var currentPermission: PermissionState { model.onboardingStep == .calendarRationale ? model.calendarPermission : model.alarmPermission }
+    private func advance() {
+        switch model.onboardingStep {
+        case .welcome: model.beginOnboarding()
+        case .calendarRationale: Task { await model.continueCalendarOnboarding() }
+        case .alarmRationale: Task { await model.continueAlarmOnboarding() }
+        }
+    }
+}
+
+private struct ProductionPermissionRecoveryView: View {
+    @ObservedObject var model: ProductionUXViewModel
+    var body: some View {
+        NavigationStack {
+            ContentUnavailableView {
+                Label(title, systemImage: "lock.trianglebadge.exclamationmark")
+            } description: {
+                Text("設定でアクセスを許可したあと、このアプリに戻ってください。")
+            } actions: { OpenSettingsButton() }
+            .navigationTitle(ProductionCopy.alarm)
+        }
+    }
+    private var title: String { model.calendarPermission != .authorized ? "カレンダーへのアクセスが必要です" : "アラームの許可が必要です" }
 }
 
 private struct OnboardingFeature: View {

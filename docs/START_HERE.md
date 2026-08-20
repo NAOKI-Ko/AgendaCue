@@ -1,6 +1,6 @@
 # Start Here
 
-Calendar Alarm is at WU-09-03 Today Visual Source of Truth Correction Pass. Production behavior through WU-09-02 is retained while the owner-approved final mockup now defines Today hierarchy, spacing, typography, timeline markers, and presentation-only current time.
+Calendar Alarm is at WU-09-05 Lightweight Onboarding + Alarm Presentation Copy. The first-launch flow now explains and requests Calendar access before Alarm access, records completion independently of authorization outcomes, and keeps later permission recovery in the normal app. AlarmKit presentation uses the source event title verbatim, with `予定` only for blank titles.
 
 ## Reading order
 
@@ -15,7 +15,7 @@ Calendar Alarm is at WU-09-03 Today Visual Source of Truth Correction Pass. Prod
 
 ## Current stop line
 
-WU-09-03 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10. The next planned unit is WU-10 Release Gate; it is not started and requires separate authorization.
+WU-09-05 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10. The next planned unit is WU-10 Release Gate; it is not started and requires separate authorization.
 
 ## Product invariants
 

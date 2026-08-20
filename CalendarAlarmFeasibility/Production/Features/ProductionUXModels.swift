@@ -2,6 +2,35 @@ import Foundation
 
 enum ProductionRoute: Equatable { case onboarding, main }
 enum UserFacingLoadState: Equatable { case loading, content, empty, permissionBlocked, failed }
+enum OnboardingStep: Equatable { case welcome, calendarRationale, alarmRationale }
+
+enum OnboardingPermissionSequence {
+    static func resolve(
+        state: PermissionState,
+        request: () async throws -> PermissionState
+    ) async -> PermissionState {
+        guard state == .notDetermined else { return state }
+        do { return try await request() } catch { return .denied }
+    }
+}
+
+protocol OnboardingCompletionStoring {
+    var isCompleted: Bool { get }
+    func markCompleted()
+}
+
+final class UserDefaultsOnboardingCompletionStore: OnboardingCompletionStoring {
+    private let defaults: UserDefaults
+    private let key: String
+
+    init(defaults: UserDefaults = .standard, key: String = "production.onboarding.completed") {
+        self.defaults = defaults
+        self.key = key
+    }
+
+    var isCompleted: Bool { defaults.bool(forKey: key) }
+    func markCompleted() { defaults.set(true, forKey: key) }
+}
 
 enum ProductionAccessibilityID {
     static let alarmTimelineList = "alarm-timeline.list"
@@ -10,6 +39,7 @@ enum ProductionAccessibilityID {
     static let alarmTimelineEventPrefix = "alarm-timeline.event."
     static let calendarPermissionAction = "onboarding.calendar.allow"
     static let alarmPermissionAction = "onboarding.alarm.allow"
+    static let onboardingStartAction = "onboarding.start"
     static let openSettingsAction = "permissions.open-settings"
     static let todayList = "today.list"
     static let todayCurrentMarker = "today.current-marker"
@@ -89,7 +119,7 @@ final class ProductionPresentationClock: ObservableObject {
 
 enum SampleScenarioPolicy {
     static let supported: Set<String> = [
-        "onboarding", "main", "today", "today-long", "today-off", "timeline", "timeline-past", "timeline-future", "timeline-no-future",
+        "onboarding", "onboarding-calendar", "onboarding-alarm", "calendar-denied", "main", "today", "today-long", "today-off", "timeline", "timeline-past", "timeline-future", "timeline-no-future",
         "upcoming", "upcoming-empty", "detail-default", "detail-custom",
         "detail-off", "detail-past", "calendars", "calendars-long",
         "no-calendars", "settings", "denied", "alarm-denied", "empty", "error"
@@ -153,8 +183,8 @@ enum ProductionPresentationPolicy {
     static let pastDisplayDays = 14
     static let futureDisplayDays = 14
 
-    static func route(calendar: PermissionState, alarm: PermissionState) -> ProductionRoute {
-        calendar == .authorized && alarm == .authorized ? .main : .onboarding
+    static func route(onboardingCompleted: Bool) -> ProductionRoute {
+        onboardingCompleted ? .main : .onboarding
     }
 
     static func shouldOfferSettings(calendar: PermissionState, alarm: PermissionState) -> Bool {

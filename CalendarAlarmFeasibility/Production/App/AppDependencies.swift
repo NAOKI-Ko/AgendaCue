@@ -12,6 +12,7 @@ struct AppDependencies {
     let overrideStore: any EventOverrideStoring
     let settingsService: AppSettingsService
     let backgroundRefresh: BackgroundRefreshCoordinator
+    let onboardingCompletion: any OnboardingCompletionStoring
 
     static func live() -> AppDependencies {
         do {
@@ -29,7 +30,8 @@ struct AppDependencies {
             return AppDependencies(modelContainer: container, calendarPermission: calendarPermission, alarmPermission: alarmPermission,
                 reconciliation: reconciliation, eventOverrides: EventOverrideService(store: overrideStore, reconciliation: reconciliation),
                 calendarSource: source, calendarSelections: selections, overrideStore: overrideStore,
-                settingsService: AppSettingsService(container: container, reconciliation: reconciliation), backgroundRefresh: background)
+                settingsService: AppSettingsService(container: container, reconciliation: reconciliation), backgroundRefresh: background,
+                onboardingCompletion: UserDefaultsOnboardingCompletionStore())
         } catch {
             preconditionFailure("Unable to create the local model container: \(error)")
         }
