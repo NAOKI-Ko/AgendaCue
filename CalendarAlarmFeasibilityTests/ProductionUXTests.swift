@@ -11,7 +11,56 @@ final class ProductionUXTests: XCTestCase {
     func testAlarmDeniedRoutesToGuidance() { XCTAssertEqual(ProductionPresentationPolicy.route(calendar: .authorized, alarm: .denied), .onboarding) }
 
     func testProductionTabsUseJapaneseLabels() {
-        XCTAssertEqual([ProductionCopy.today, ProductionCopy.timeline, ProductionCopy.settings], ["今日", "予定", "設定"])
+        XCTAssertEqual([ProductionCopy.alarm, ProductionCopy.settings], ["アラーム", "設定"])
+    }
+
+    @MainActor
+    func testPresentationClockRefreshesFromInjectedTimeSource() {
+        var instant = Date(timeIntervalSince1970: 1_000)
+        let clock = ProductionPresentationClock(nowProvider: { instant })
+        XCTAssertEqual(clock.now, instant)
+        instant = Date(timeIntervalSince1970: 1_061)
+        clock.refresh()
+        XCTAssertEqual(clock.now, instant)
+    }
+
+    @MainActor
+    func testPresentationClockActivationIsCoalescedAndDeactivationStopsIt() {
+        let clock = ProductionPresentationClock(interval: 3_600)
+        clock.activate(); clock.activate()
+        XCTAssertTrue(clock.isRunning)
+        clock.deactivate()
+        XCTAssertFalse(clock.isRunning)
+    }
+
+    @MainActor
+    func testPresentationClockTickHasNoPlatformSideEffects() {
+        var reads = 0
+        let clock = ProductionPresentationClock(nowProvider: { reads += 1; return Date(timeIntervalSince1970: TimeInterval(reads)) })
+        clock.refresh()
+        XCTAssertEqual(reads, 2)
+        // The clock exposes only lifecycle/refresh operations and owns no service dependency;
+        // advancing it therefore cannot fetch, reconcile, persist, or schedule an alarm.
+        XCTAssertEqual(clock.now, Date(timeIntervalSince1970: 2))
+    }
+
+    func testUnifiedTimelineUsesStartDateAsPastFutureBoundary() {
+        let now = Date(timeIntervalSince1970: 1_000)
+        let started = CalendarEvent(id: "started", eventIdentifier: nil, title: "開始済み", startDate: .init(timeIntervalSince1970: 999), endDate: .init(timeIntervalSince1970: 2_000), isAllDay: false, calendarID: "c")
+        XCTAssertEqual(ProductionPresentationPolicy.alarmTimelinePhase(started, now: now), .completed)
+        XCTAssertEqual(ProductionPresentationPolicy.alarmTimelinePhase(event("equal", 1_000), now: now), .future)
+    }
+
+    func testUnifiedTimelineAlarmCopyIsExactAndPastStateIsNotDuplicated() {
+        let now = Date(timeIntervalSince1970: 10_000)
+        let future = event("future", 20_000)
+        XCTAssertEqual(ProductionPresentationPolicy.alarmTimelineText(event: future, override: nil, settings: .init(), now: now), Date(timeIntervalSince1970: 19_700).formatted(date: .omitted, time: .shortened))
+        XCTAssertEqual(ProductionPresentationPolicy.alarmTimelineText(event: event("past", 1_000), override: nil, settings: .init(), now: now), "終了済み")
+    }
+
+    func testUnifiedTimelineIdentifiersAndNavigationLabelsAreSemantic() {
+        XCTAssertEqual(ProductionAccessibilityID.alarmTimelineList, "alarm-timeline.list")
+        XCTAssertEqual(ProductionAccessibilityID.alarmTimelineReturnToCurrent, "alarm-timeline.return-current")
     }
 
     func testAppOwnedPrimaryCopyIsJapanese() {

@@ -142,39 +142,50 @@ final class ProductionUXViewModel: ObservableObject {
 }
 
 struct ProductionRootView: View {
+    @Environment(\.scenePhase) private var scenePhase
     @StateObject private var model: ProductionUXViewModel
+    @StateObject private var presentationClock: ProductionPresentationClock
     let refreshGeneration: Int
 
     init(dependencies: AppDependencies, refreshGeneration: Int = 0) {
         self.refreshGeneration = refreshGeneration
         _model = StateObject(wrappedValue: ProductionUXViewModel(dependencies: dependencies))
+        _presentationClock = StateObject(wrappedValue: ProductionPresentationClock())
     }
 
     var body: some View {
         Group {
             if model.route == .onboarding { OnboardingView(model: model) }
             else if let scenario = model.sampleScenario { sample(scenario) }
-            else { MainTabsView(model: model) }
+            else { MainTabsView(model: model, clock: presentationClock) }
         }
         .task { await model.refresh() }
-        .onChange(of: refreshGeneration) { _, _ in Task { await model.refresh() } }
+        .onAppear { if scenePhase == .active { presentationClock.activate() } }
+        .onDisappear { presentationClock.deactivate() }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active { presentationClock.activate() } else { presentationClock.deactivate() }
+        }
+        .onChange(of: refreshGeneration) { _, _ in
+            presentationClock.refresh()
+            Task { await model.refresh() }
+        }
     }
 
     @ViewBuilder
     private func sample(_ scenario: String) -> some View {
         switch scenario {
-        case "main": MainTabsView(model: model)
+        case "main": MainTabsView(model: model, clock: presentationClock)
         case "timeline", "timeline-no-future", "upcoming", "upcoming-empty":
-            TimelineView(model: model)
-        case "timeline-past": TimelineView(model: model, sampleInitialAnchor: .event("two-days-ago"))
-        case "timeline-future": TimelineView(model: model, sampleInitialAnchor: .event("planning"))
+            AlarmTimelineView(model: model, clock: presentationClock)
+        case "timeline-past": AlarmTimelineView(model: model, clock: presentationClock, sampleInitialAnchor: .event("two-days-ago"))
+        case "timeline-future": AlarmTimelineView(model: model, clock: presentationClock, sampleInitialAnchor: .event("planning"))
         case "settings": SettingsView(model: model)
         case "calendars", "calendars-long", "no-calendars": NavigationStack { CalendarSelectionView(model: model) }
         case "detail-default", "detail-custom", "detail-off":
             NavigationStack { if let event = model.events.first(where: { $0.id == "standup" }) { EventDetailView(event: event, model: model) } }
         case "detail-past":
             NavigationStack { if let event = model.events.first(where: { $0.id == "completed-today" }) { EventDetailView(event: event, model: model) } }
-        default: TodayView(model: model)
+        default: AlarmTimelineView(model: model, clock: presentationClock)
         }
     }
 }
@@ -302,15 +313,117 @@ private struct OpenSettingsButton: View {
 
 struct MainTabsView: View {
     @ObservedObject var model: ProductionUXViewModel
+    @ObservedObject var clock: ProductionPresentationClock
 
     var body: some View {
         TabView {
-            TodayView(model: model)
-                .tabItem { Label(ProductionCopy.today, systemImage: "sun.max") }
-            TimelineView(model: model)
-                .tabItem { Label(ProductionCopy.timeline, systemImage: "calendar") }
+            AlarmTimelineView(model: model, clock: clock)
+                .tabItem { Label(ProductionCopy.alarm, systemImage: "alarm") }
             SettingsView(model: model)
                 .tabItem { Label(ProductionCopy.settings, systemImage: "gearshape") }
+        }
+    }
+}
+
+struct AlarmTimelineView: View {
+    @ObservedObject var model: ProductionUXViewModel
+    @ObservedObject var clock: ProductionPresentationClock
+    var sampleInitialAnchor: TimelineAnchor?
+    @State private var hasPositioned = false
+
+    init(model: ProductionUXViewModel, clock: ProductionPresentationClock, sampleInitialAnchor: TimelineAnchor? = nil) {
+        self.model = model
+        self.clock = clock
+        self.sampleInitialAnchor = sampleInitialAnchor
+    }
+
+    var body: some View {
+        NavigationStack {
+            Group {
+                switch model.loadState {
+                case .loading: ProgressView("予定を読み込んでいます")
+                case .failed: LoadFailureView(model: model)
+                default: timeline
+                }
+            }
+            .navigationTitle(ProductionCopy.alarm)
+        }
+    }
+
+    private var timeline: some View {
+        ScrollViewReader { proxy in
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
+                    ForEach(ProductionPresentationPolicy.timelineSections(model.timelineEvents, now: clock.now)) { section in
+                        Section {
+                            sectionRows(section)
+                        } header: {
+                            TimelineDateHeader(day: section.day, now: clock.now)
+                        }
+                    }
+                    if model.timelineEvents.isEmpty {
+                        ContentUnavailableView(
+                            ProductionCopy.emptyTimelineTitle,
+                            systemImage: "calendar",
+                            description: Text("過去14日から今後14日までの予定がここに表示されます。")
+                        )
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 42)
+                    }
+                }
+                .padding(.bottom, 24)
+            }
+            .accessibilityIdentifier(ProductionAccessibilityID.alarmTimelineList)
+            .refreshable { await model.refresh() }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(ProductionCopy.returnToCurrent) { scrollToCurrent(proxy) }
+                        .accessibilityLabel("現在の時刻へ戻る")
+                        .accessibilityIdentifier(ProductionAccessibilityID.alarmTimelineReturnToCurrent)
+                }
+            }
+            .onAppear {
+                guard !hasPositioned else { return }
+                hasPositioned = true
+                DispatchQueue.main.async {
+                    let anchor = sampleInitialAnchor ?? ProductionPresentationPolicy.initialTimelineAnchor(events: model.timelineEvents, now: clock.now)
+                    proxy.scrollTo(anchor.id, anchor: .center)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func sectionRows(_ section: TimelineDaySection) -> some View {
+        let isToday = Calendar.current.isDate(section.day, inSameDayAs: clock.now)
+        let before = isToday ? section.events.filter { $0.startDate < clock.now } : section.events
+        let after = isToday ? section.events.filter { $0.startDate >= clock.now } : []
+        let rowCount = section.events.count + (isToday ? 1 : 0)
+        ForEach(Array(before.enumerated()), id: \.element.id) { index, event in
+            timelineLink(event, connectsAbove: index > 0, connectsBelow: index < rowCount - 1)
+        }
+        if isToday {
+            TodayCurrentTimeRow(now: clock.now, connectsAbove: !before.isEmpty, connectsBelow: !after.isEmpty)
+                .id(TimelineAnchor.current.id)
+        }
+        ForEach(Array(after.enumerated()), id: \.element.id) { index, event in
+            timelineLink(event, connectsAbove: !before.isEmpty || index > 0 || isToday, connectsBelow: index < after.count - 1)
+        }
+    }
+
+    private func timelineLink(_ event: CalendarEvent, connectsAbove: Bool, connectsBelow: Bool) -> some View {
+        NavigationLink { EventDetailView(event: event, model: model) } label: {
+            TodayTimelineEventRow(event: event, model: model, now: clock.now, connectsAbove: connectsAbove, connectsBelow: connectsBelow)
+        }
+        .buttonStyle(.plain)
+        .id(TimelineAnchor.event(event.id).id)
+        .accessibilityIdentifier(ProductionAccessibilityID.alarmTimelineEventPrefix + event.id)
+    }
+
+    private func scrollToCurrent(_ proxy: ScrollViewProxy) {
+        clock.refresh()
+        DispatchQueue.main.async {
+            proxy.scrollTo(TimelineAnchor.current.id, anchor: .center)
         }
     }
 }
@@ -458,18 +571,18 @@ private struct TodayTimelineEventRow: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    private var phase: TimelineEventPhase { ProductionPresentationPolicy.eventPhase(event, now: now) }
+    private var phase: TimelineEventPhase { ProductionPresentationPolicy.alarmTimelinePhase(event, now: now) }
     private var isPast: Bool { phase == .completed }
-    private var stateText: String? { ProductionPresentationPolicy.phaseText(phase) }
+    private var stateText: String? { nil }
     private var isOff: Bool { model.overrides[event.id]?.state == .disabled }
     private var alarmIcon: String { isOff ? "bell.slash" : "bell" }
     private var alarmColor: Color { isPast || isOff ? .secondary : .accentColor }
     private var alarmText: String {
-        ProductionPresentationPolicy.todayAlarmText(event: event, override: model.overrides[event.id], settings: model.settings, now: now)
+        ProductionPresentationPolicy.alarmTimelineText(event: event, override: model.overrides[event.id], settings: model.settings, now: now)
     }
     private var calendarName: String { model.calendars.first(where: { $0.id == event.calendarID })?.title ?? "カレンダー" }
     private var accessibilityLabel: String {
-        ProductionPresentationPolicy.eventAccessibilityLabel(event: event, calendarTitle: calendarName, override: model.overrides[event.id], settings: model.settings, now: now)
+        ProductionPresentationPolicy.alarmTimelineAccessibilityLabel(event: event, calendarTitle: calendarName, override: model.overrides[event.id], settings: model.settings, now: now)
     }
 }
 
@@ -648,7 +761,10 @@ private struct TimelineDateHeader: View {
                 .foregroundStyle(.secondary)
         }
         .textCase(nil)
-        .padding(.top, 8)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 10)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(.regularMaterial)
         .accessibilityElement(children: .combine)
     }
 }

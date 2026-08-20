@@ -4,6 +4,10 @@ enum ProductionRoute: Equatable { case onboarding, main }
 enum UserFacingLoadState: Equatable { case loading, content, empty, permissionBlocked, failed }
 
 enum ProductionAccessibilityID {
+    static let alarmTimelineList = "alarm-timeline.list"
+    static let alarmTimelineCurrent = "alarm-timeline.current"
+    static let alarmTimelineReturnToCurrent = "alarm-timeline.return-current"
+    static let alarmTimelineEventPrefix = "alarm-timeline.event."
     static let calendarPermissionAction = "onboarding.calendar.allow"
     static let alarmPermissionAction = "onboarding.alarm.allow"
     static let openSettingsAction = "permissions.open-settings"
@@ -46,6 +50,41 @@ enum ProductionCopy {
         defaultAlarmTime, alarm, retry, openSettings, returnToCurrent,
         emptyTodayTitle, emptyTimelineTitle, loadErrorTitle, permissionRecovery
     ]
+}
+
+/// A presentation-only clock. It owns no calendar, reconciliation, persistence,
+/// or alarm-scheduling dependency, so a minute tick can only update rendered time.
+@MainActor
+final class ProductionPresentationClock: ObservableObject {
+    @Published private(set) var now: Date
+    private let nowProvider: () -> Date
+    private let interval: TimeInterval
+    private var timer: Timer?
+
+    init(nowProvider: @escaping () -> Date = Date.init, interval: TimeInterval = 60) {
+        self.nowProvider = nowProvider
+        self.interval = interval
+        now = nowProvider()
+    }
+
+    var isRunning: Bool { timer != nil }
+
+    func activate() {
+        refresh()
+        guard timer == nil else { return }
+        timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
+            Task { @MainActor in self?.refresh() }
+        }
+    }
+
+    func deactivate() {
+        timer?.invalidate()
+        timer = nil
+    }
+
+    func refresh() { now = nowProvider() }
+
+    deinit { timer?.invalidate() }
 }
 
 enum SampleScenarioPolicy {
@@ -163,6 +202,11 @@ enum ProductionPresentationPolicy {
         return .future
     }
 
+    /// Unified timeline classification intentionally crosses at startDate.
+    static func alarmTimelinePhase(_ event: CalendarEvent, now: Date) -> TimelineEventPhase {
+        event.startDate < now ? .completed : .future
+    }
+
     static func phaseText(_ phase: TimelineEventPhase) -> String? {
         switch phase {
         case .completed: "終了済み"
@@ -200,6 +244,28 @@ enum ProductionPresentationPolicy {
             return "アラーム時刻を経過"
         }
         return candidate.alarmDate.formatted(date: .omitted, time: .shortened)
+    }
+
+    static func alarmTimelineText(event: CalendarEvent, override: EventOverride?, settings: AppSettings, now: Date) -> String {
+        let policy = EventOverrideResolver().resolve(override: override, settings: settings)
+        guard case .enabled(let lead) = policy else { return "アラームなし" }
+        if event.isAllDay { return "終日予定にはアラームなし" }
+        if event.startDate < now { return "終了済み" }
+        guard case .candidate(let candidate) = AlarmRuleEngine().evaluate(event: event, leadTime: lead, now: now) else {
+            return "アラーム時刻を経過"
+        }
+        return candidate.alarmDate.formatted(date: .omitted, time: .shortened)
+    }
+
+    static func alarmTimelineAccessibilityLabel(
+        event: CalendarEvent,
+        calendarTitle: String,
+        override: EventOverride?,
+        settings: AppSettings,
+        now: Date
+    ) -> String {
+        let phase = alarmTimelinePhase(event, now: now) == .completed ? "過去" : "未来"
+        return "\(event.title)、開始 \(startTimeText(for: event))、\(phase)、カレンダー \(calendarTitle)、アラーム \(alarmTimelineText(event: event, override: override, settings: settings, now: now))"
     }
 
     static func currentTimeAccessibilityLabel(_ now: Date) -> String {
