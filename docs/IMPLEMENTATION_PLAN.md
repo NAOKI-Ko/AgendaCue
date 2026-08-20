@@ -4,7 +4,7 @@ Sequence is mandatory: Spec → Work Unit → Scope Gate → Implementation → 
 
 By explicit owner policy recorded for WU-01, intermediate Human Gates are waived and deferred to consolidated WU-10 review. A waiver permits readiness for the next separately authorized WU but is never a PASS and never evidence that device behavior occurred. Automated Gates remain mandatory.
 
-WU-09-04 correction pass is complete at the automated gate: Production navigation is consolidated to `アラーム / 設定`; the alarm destination is one read-only past-14/future-14 date-grouped timeline; and a root-owned active-only presentation clock keeps the current divider and start-date classification fresh without triggering fetch, persistence, reconciliation, or AlarmKit scheduling. WU-10 remains not started.
+WU-10 Phase A automated release audit is complete. Status is HUMAN GATE READY. The required H01–H46 Human Gate, Production identity/signing inputs, final assets/metadata, archive, upload, submission, merge, and any Phase B work remain pending.
 
 ## WU-00 Feasibility & Platform Gate
 

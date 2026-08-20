@@ -84,7 +84,7 @@ actor AlarmKitSystemScheduler: AlarmSystemScheduling {
     func scheduledAlarmIDs() throws -> Set<UUID> { Set(try manager.alarms.map(\.id)) }
     func schedule(id: UUID, at date: Date, title: String) async throws {
         let localized: LocalizedStringResource = "\(title)"
-        let alert = AlarmPresentation.Alert(title: localized, stopButton: AlarmButton(text: "Stop", textColor: .white, systemImageName: "stop.fill"))
+        let alert = AlarmPresentation.Alert(title: localized, stopButton: AlarmButton(text: "停止", textColor: .white, systemImageName: "stop.fill"))
         let attributes = AlarmAttributes(presentation: AlarmPresentation(alert: alert), metadata: ProductionAlarmMetadata(candidateIdentity: id.uuidString), tintColor: .orange)
         let configuration = AlarmManager.AlarmConfiguration.alarm(schedule: .fixed(date), attributes: attributes)
         do { _ = try await manager.schedule(id: id, configuration: configuration) }

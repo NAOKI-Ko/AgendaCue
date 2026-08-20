@@ -1,6 +1,6 @@
 # Start Here
 
-Calendar Alarm is at WU-09-05 Lightweight Onboarding + Alarm Presentation Copy. The first-launch flow now explains and requests Calendar access before Alarm access, records completion independently of authorization outcomes, and keeps later permission recovery in the normal app. AlarmKit presentation uses the source event title verbatim, with `予定` only for blank titles.
+Calendar Alarm is at WU-10 Release Gate Phase A. Automated release audit is complete and the required Human Gate is prepared. The state is HUMAN GATE READY, not release complete.
 
 ## Reading order
 
@@ -15,7 +15,7 @@ Calendar Alarm is at WU-09-05 Lightweight Onboarding + Alarm Presentation Copy. 
 
 ## Current stop line
 
-WU-09-05 automated work is complete. Intermediate Human Gates are owner-waived and deferred to WU-10. The next planned unit is WU-10 Release Gate; it is not started and requires separate authorization.
+WU-10 Phase A automated work is complete. Stop at the mandatory Human Gate. Do not submit, upload, merge, or begin Phase B until H01–H46 and final owner decision are explicitly recorded for the exact candidate SHA.
 
 ## Product invariants
 

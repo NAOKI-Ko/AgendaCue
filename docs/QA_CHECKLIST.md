@@ -62,6 +62,7 @@ Apply only the sections relevant to the active WU and record actual evidence aga
 
 ## Human/device and release
 
+- WU-10 Phase A evidence includes full tests, three Debug/two Release builds, Release launch smoke, zero-warning audit, Release leakage scan, privacy manifest validation, and identity/BGTask/icon/archive blockers. Automated PASS means HUMAN GATE READY only.
 - Required device scenarios are executed by a human and evidence is attached.
 - Human Device Gate remains PENDING until explicit human confirmation.
 - Privacy descriptions/disclosures match behavior; App Store metadata, icons, screenshots, signing, archive, and release checklist are complete in WU-10.

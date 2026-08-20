@@ -11,7 +11,7 @@ actor EventOverrideService {
     private let reconciliation: any ReconciliationTriggering
     private let now: @Sendable () -> Date
 
-    init(store: any EventOverrideStoring, reconciliation: any ReconciliationTriggering, now: @escaping @Sendable () -> Date = Date.init) {
+    init(store: any EventOverrideStoring, reconciliation: any ReconciliationTriggering, now: @escaping @Sendable () -> Date = { Date() }) {
         self.store = store; self.reconciliation = reconciliation; self.now = now
     }
 
