@@ -14,6 +14,8 @@
 
 > Owner acceptance of the App Store Support URL review risk and the physical Human Gate handoff are recorded in `PHASE_A_7B_SUPPORT_URL_DECISION.md`.
 
+> The post-A.7B onboarding permission refresh fix, Calendar-first onboarding simplification, regression results, and updated Human Gate policy are recorded in `PHASE_B_1_ONBOARDING_FIX.md`.
+
 Audit date: 2026-08-20. Parent: `2f32f35926e13b35fc78698b16c1dccd757c0504`. Environment: Xcode 26.6 (17F113), iOS SDK/Simulator 26.5, iPhone 17 Pro Simulator.
 
 ## Automated result

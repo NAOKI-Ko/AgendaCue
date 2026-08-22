@@ -13,7 +13,7 @@ final class ProductionUXViewModel: ObservableObject {
     @Published var loadState: UserFacingLoadState = .loading
     @Published var sampleScenario: String?
     @Published var onboardingCompleted: Bool
-    @Published var onboardingStep: OnboardingStep = .welcome
+    @Published var onboardingStep: OnboardingStep = OnboardingFlow.initialStep
 
     let calendarPermissionProvider: any CalendarPermissionProviding
     let alarmPermissionProvider: any AlarmPermissionProviding
@@ -47,8 +47,12 @@ final class ProductionUXViewModel: ObservableObject {
 
     func refresh() async {
         guard sampleScenario == nil else { return }
-        calendarPermission = calendarPermissionProvider.state
-        alarmPermission = alarmPermissionProvider.state
+        let permissions = PermissionRefreshSnapshot.current(
+            calendar: { calendarPermissionProvider.state },
+            alarm: { alarmPermissionProvider.state }
+        )
+        calendarPermission = permissions.calendar
+        alarmPermission = permissions.alarm
         guard calendarPermission == .authorized else { loadState = .permissionBlocked; return }
         loadState = .loading
         do {
@@ -78,15 +82,22 @@ final class ProductionUXViewModel: ObservableObject {
         await refresh()
     }
 
-    func beginOnboarding() { onboardingStep = .calendarRationale }
-
     func continueCalendarOnboarding() async {
-        calendarPermission = await OnboardingPermissionSequence.resolve(state: calendarPermission) { try await self.calendarPermissionProvider.requestAccess() }
-        onboardingStep = .alarmRationale
+        calendarPermission = await OnboardingPermissionSequence.resolve(
+            state: calendarPermission,
+            request: { try await self.calendarPermissionProvider.requestAccess() },
+            authoritativeState: { self.calendarPermissionProvider.state }
+        )
+        await refresh()
+        onboardingStep = OnboardingFlow.stepAfterCalendar
     }
 
     func continueAlarmOnboarding() async {
-        alarmPermission = await OnboardingPermissionSequence.resolve(state: alarmPermission) { try await self.alarmPermissionProvider.requestAccess() }
+        alarmPermission = await OnboardingPermissionSequence.resolve(
+            state: alarmPermission,
+            request: { try await self.alarmPermissionProvider.requestAccess() },
+            authoritativeState: { self.alarmPermissionProvider.state }
+        )
         onboardingCompletion.markCompleted()
         onboardingCompleted = true
         await refresh()
@@ -127,7 +138,7 @@ final class ProductionUXViewModel: ObservableObject {
         sampleScenario = scenario
         if ["onboarding", "onboarding-calendar", "onboarding-alarm", "calendar-denied", "alarm-denied"].contains(scenario) {
             onboardingCompleted = false
-            onboardingStep = scenario == "onboarding-calendar" || scenario == "calendar-denied" ? .calendarRationale : scenario == "onboarding-alarm" || scenario == "alarm-denied" ? .alarmRationale : .welcome
+            onboardingStep = scenario == "onboarding-alarm" || scenario == "alarm-denied" ? .alarmRationale : .calendarRationale
         } else {
             onboardingCompleted = true
         }
@@ -229,17 +240,13 @@ struct OnboardingView: View {
                     .accessibilityHidden(true)
                 Text(title).font(.largeTitle.bold()).fixedSize(horizontal: false, vertical: true)
                 Text(bodyText).font(.title3).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
-                if model.onboardingStep == .welcome {
-                    Text("カレンダーの内容は、この機能を提供するために端末内で利用します。")
-                        .font(.body).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
-                }
                 Spacer(minLength: 28)
                 Button(actionTitle) { advance() }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
                     .frame(maxWidth: .infinity, minHeight: 44)
                     .accessibilityIdentifier(actionIdentifier)
-                if model.onboardingStep != .welcome && currentPermission != .notDetermined {
+                if currentPermission != .notDetermined {
                     Text(ProductionPresentationPolicy.permissionStatusText(currentPermission))
                         .font(.subheadline).foregroundStyle(.secondary)
                     if ProductionPresentationPolicy.shouldOfferSettings(calendar: model.calendarPermission, alarm: model.alarmPermission) { OpenSettingsButton() }
@@ -254,22 +261,20 @@ struct OnboardingView: View {
     }
 
     private var title: String {
-        switch model.onboardingStep { case .welcome: "予定を、見逃さないアラームに。"; case .calendarRationale: "カレンダーへのアクセス"; case .alarmRationale: "アラームの許可" }
+        switch model.onboardingStep { case .calendarRationale: "カレンダーへのアクセス"; case .alarmRationale: "アラームの許可" }
     }
     private var bodyText: String {
         switch model.onboardingStep {
-        case .welcome: "iPhoneのカレンダー予定を読み取り、設定した時間前にアラームを鳴らします。"
         case .calendarRationale: "予定の開始時刻を読み取り、アラームを設定するために使用します。"
         case .alarmRationale: "予定の前に、通知ではなくアラームを鳴らすために使用します。"
         }
     }
-    private var icon: String { model.onboardingStep == .welcome ? "calendar.badge.clock" : model.onboardingStep == .calendarRationale ? "calendar" : "alarm" }
-    private var actionTitle: String { model.onboardingStep == .welcome ? "はじめる" : model.onboardingStep == .calendarRationale ? "カレンダーを許可" : "アラームを許可" }
-    private var actionIdentifier: String { model.onboardingStep == .welcome ? ProductionAccessibilityID.onboardingStartAction : model.onboardingStep == .calendarRationale ? ProductionAccessibilityID.calendarPermissionAction : ProductionAccessibilityID.alarmPermissionAction }
+    private var icon: String { model.onboardingStep == .calendarRationale ? "calendar" : "alarm" }
+    private var actionTitle: String { model.onboardingStep == .calendarRationale ? "カレンダーを許可" : "アラームを許可" }
+    private var actionIdentifier: String { model.onboardingStep == .calendarRationale ? ProductionAccessibilityID.calendarPermissionAction : ProductionAccessibilityID.alarmPermissionAction }
     private var currentPermission: PermissionState { model.onboardingStep == .calendarRationale ? model.calendarPermission : model.alarmPermission }
     private func advance() {
         switch model.onboardingStep {
-        case .welcome: model.beginOnboarding()
         case .calendarRationale: Task { await model.continueCalendarOnboarding() }
         case .alarmRationale: Task { await model.continueAlarmOnboarding() }
         }

@@ -1,6 +1,6 @@
 # Start Here
 
-AgendaCue is at WU-10 Release Gate Phase A.1 Production Naming Integration. The owner-approved V1 brand and customer-facing display name are integrated. Automated naming verification is complete, but Production identity and the required Human Gate remain pending; this is not release complete.
+AgendaCue is at WU-10 Release Gate Phase B.1. The Calendar permission post-request refresh bug is fixed and first-run onboarding is simplified to Calendar rationale followed by Alarm rationale. H01–H46 are deferred by explicit owner policy to post-review / pre-release validation; no Human Gate item is marked passed.
 
 ## Reading order
 
@@ -15,7 +15,7 @@ AgendaCue is at WU-10 Release Gate Phase A.1 Production Naming Integration. The 
 
 ## Current stop line
 
-WU-10 Phase A automated work is complete. Stop at the mandatory Human Gate. Do not submit, upload, merge, or begin Phase B until H01–H46 and final owner decision are explicitly recorded for the exact candidate SHA.
+WU-10 Phase B.1 stops after the onboarding fix automated and Simulator gates. Do not push, merge, upload, submit, or publicly release. App Review submission may proceed later under separate owner authorization; manual release is preferred so H01–H46 and final owner validation can occur after approval and before public release.
 
 ## Product invariants
 

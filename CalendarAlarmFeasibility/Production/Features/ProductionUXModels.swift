@@ -2,15 +2,35 @@ import Foundation
 
 enum ProductionRoute: Equatable { case onboarding, main }
 enum UserFacingLoadState: Equatable { case loading, content, empty, permissionBlocked, failed }
-enum OnboardingStep: Equatable { case welcome, calendarRationale, alarmRationale }
+enum OnboardingStep: Equatable { case calendarRationale, alarmRationale }
 
+enum OnboardingFlow {
+    static let initialStep = OnboardingStep.calendarRationale
+    static let stepAfterCalendar = OnboardingStep.alarmRationale
+}
+
+struct PermissionRefreshSnapshot: Equatable {
+    let calendar: PermissionState
+    let alarm: PermissionState
+
+    static func current(
+        calendar: () -> PermissionState,
+        alarm: () -> PermissionState
+    ) -> PermissionRefreshSnapshot {
+        PermissionRefreshSnapshot(calendar: calendar(), alarm: alarm())
+    }
+}
+
+@MainActor
 enum OnboardingPermissionSequence {
     static func resolve(
         state: PermissionState,
-        request: () async throws -> PermissionState
+        request: () async throws -> PermissionState,
+        authoritativeState: () -> PermissionState
     ) async -> PermissionState {
         guard state == .notDetermined else { return state }
-        do { return try await request() } catch { return .denied }
+        do { _ = try await request() } catch { }
+        return authoritativeState()
     }
 }
 
@@ -39,7 +59,6 @@ enum ProductionAccessibilityID {
     static let alarmTimelineEventPrefix = "alarm-timeline.event."
     static let calendarPermissionAction = "onboarding.calendar.allow"
     static let alarmPermissionAction = "onboarding.alarm.allow"
-    static let onboardingStartAction = "onboarding.start"
     static let openSettingsAction = "permissions.open-settings"
     static let todayList = "today.list"
     static let todayCurrentMarker = "today.current-marker"

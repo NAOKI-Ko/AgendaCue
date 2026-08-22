@@ -1,13 +1,13 @@
 # WU-10 Required Human Gate Checklist
 
-Human execution is mandatory. Candidate identity is AgendaCue / `com.naoki-ko.agendacue`. Record `PASS`, `FAIL`, or justified `N/A`; attach evidence references and notes. Do not reuse evidence after the candidate SHA changes.
+Owner execution is required after App Review approval and before public release. Candidate identity is AgendaCue / `com.naoki-ko.agendacue`. Record `PASS`, `FAIL`, or justified `N/A`; attach evidence references and notes. Do not reuse evidence after the candidate SHA changes.
 
-H01–H46 status: **PENDING — OWNER EXECUTION**. Codex has not executed or prefilled any physical-device result.
+H01–H46 status: **DEFERRED BY OWNER TO POST-REVIEW / PRE-RELEASE VALIDATION — NOT PASS**. Codex has not executed or prefilled any physical-device result. This gate does not block App Review submission under explicit owner policy.
 
 | ID | Scenario | Setup | Steps | Expected | Result | Evidence | Notes |
 |---|---|---|---|---|---|---|---|
-| H01 | Fresh install | Delete app/data on real iPhone | Install signed RC and launch | Installed/displayed app name is `AgendaCue`; Welcome appears with no stale state | PENDING | — | — |
-| H02 | Welcome onboarding | H01 | Review welcome and tap はじめる | Promise/privacy readable; advances once | PENDING | — | — |
+| H01 | Fresh install | Delete app/data on real iPhone | Install signed RC and launch | Installed/displayed app name is `AgendaCue`; Calendar rationale appears first with no stale state or preceding Welcome page | PENDING | — | Deferred to post-review / pre-release owner validation |
+| H02 | Calendar-first onboarding | H01 | Review Calendar rationale | Approved rationale is readable and Calendar is the first onboarding stage | PENDING | — | Deferred to post-review / pre-release owner validation |
 | H03 | Calendar rationale | Calendar permission not determined | Read screen before action | Japanese rationale precedes system prompt | PENDING | — | — |
 | H04 | Calendar permission allow | H03 | Request and allow full calendar access | App records authorized and advances | PENDING | — | — |
 | H05 | Alarm rationale | Alarm permission not determined | Read screen before action | Japanese rationale precedes system prompt | PENDING | — | — |

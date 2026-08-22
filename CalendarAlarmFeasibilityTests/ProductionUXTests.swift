@@ -4,9 +4,23 @@ import XCTest
 @testable import CalendarAlarmFeasibility
 
 final class ProductionUXTests: XCTestCase {
+    func testFirstOnboardingStepIsCalendarRationale() {
+        XCTAssertEqual(OnboardingFlow.initialStep, .calendarRationale)
+        XCTAssertEqual(OnboardingFlow.stepAfterCalendar, .alarmRationale)
+    }
+
     func testFirstLaunchRoutesToOnboarding() { XCTAssertEqual(ProductionPresentationPolicy.route(onboardingCompleted: false), .onboarding) }
     func testCompletedOnboardingRoutesToMainApp() { XCTAssertEqual(ProductionPresentationPolicy.route(onboardingCompleted: true), .main) }
     func testPermissionRevocationDoesNotResetCompletedOnboardingRoute() { XCTAssertEqual(ProductionPresentationPolicy.route(onboardingCompleted: true), .main) }
+
+    func testForegroundRefreshRereadsCurrentAuthorizationStates() {
+        var calendar = PermissionState.authorized
+        var alarm = PermissionState.authorized
+        XCTAssertEqual(PermissionRefreshSnapshot.current(calendar: { calendar }, alarm: { alarm }), .init(calendar: .authorized, alarm: .authorized))
+        calendar = .denied
+        alarm = .restricted
+        XCTAssertEqual(PermissionRefreshSnapshot.current(calendar: { calendar }, alarm: { alarm }), .init(calendar: .denied, alarm: .restricted))
+    }
 
     func testOnboardingCompletionPersistsAcrossStoreInstances() {
         let suite = "OnboardingCompletionTests.\(UUID().uuidString)"
@@ -20,19 +34,51 @@ final class ProductionUXTests: XCTestCase {
 
     func testNotDeterminedPermissionRequestsExactlyOnce() async {
         var requests = 0
-        let result = await OnboardingPermissionSequence.resolve(state: .notDetermined) { requests += 1; return .authorized }
+        var authoritativeState = PermissionState.notDetermined
+        let result = await OnboardingPermissionSequence.resolve(
+            state: .notDetermined,
+            request: { requests += 1; authoritativeState = .authorized; return .denied },
+            authoritativeState: { authoritativeState }
+        )
         XCTAssertEqual(result, .authorized); XCTAssertEqual(requests, 1)
+    }
+
+    func testPermissionResultUsesAuthoritativeStatusAfterRequest() async {
+        let result = await OnboardingPermissionSequence.resolve(
+            state: .notDetermined,
+            request: { .denied },
+            authoritativeState: { .authorized }
+        )
+        XCTAssertEqual(result, .authorized)
+    }
+
+    func testPermissionDenialIsReadImmediatelyAfterRequest() async {
+        let result = await OnboardingPermissionSequence.resolve(
+            state: .notDetermined,
+            request: { .authorized },
+            authoritativeState: { .denied }
+        )
+        XCTAssertEqual(result, .denied)
+        XCTAssertEqual(OnboardingFlow.stepAfterCalendar, .alarmRationale)
     }
 
     func testAlreadyAuthorizedPermissionDoesNotPrompt() async {
         var requests = 0
-        let result = await OnboardingPermissionSequence.resolve(state: .authorized) { requests += 1; return .denied }
+        let result = await OnboardingPermissionSequence.resolve(
+            state: .authorized,
+            request: { requests += 1; return .denied },
+            authoritativeState: { .denied }
+        )
         XCTAssertEqual(result, .authorized); XCTAssertEqual(requests, 0)
     }
 
     func testDeniedPermissionDoesNotPromptAgainAndCanExitFlow() async {
         var requests = 0
-        let result = await OnboardingPermissionSequence.resolve(state: .denied) { requests += 1; return .authorized }
+        let result = await OnboardingPermissionSequence.resolve(
+            state: .denied,
+            request: { requests += 1; return .authorized },
+            authoritativeState: { .authorized }
+        )
         XCTAssertEqual(result, .denied); XCTAssertEqual(requests, 0)
     }
 

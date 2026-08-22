@@ -1,6 +1,6 @@
 # WU-10 Human Gate Result
 
-- Status: **PENDING**
+- Status: **DEFERRED BY OWNER — POST-REVIEW / PRE-RELEASE VALIDATION**
 - App identity: **AgendaCue / `com.naoki-ko.agendacue`**
 - Candidate SHA: `[fill after final candidate is built]`
 - Tester: `[required]`
@@ -15,7 +15,7 @@
 
 ## Results
 
-Record H01–H46 using `HUMAN_GATE_CHECKLIST.md`. No item is pre-approved.
+Record H01–H46 using `HUMAN_GATE_CHECKLIST.md` after App Review approval and before public release. No item is pre-approved or marked passed. Under explicit owner policy, this deferred gate is not an App Review submission blocker.
 
 | Range | Result | Evidence / notes |
 |---|---|---|
@@ -26,7 +26,7 @@ Record H01–H46 using `HUMAN_GATE_CHECKLIST.md`. No item is pre-approved.
 | H35–H41 accessibility/physical usability | PENDING | — |
 | H42–H46 owner visual/product acceptance | PENDING | — |
 
-## Final Owner Decision
+## Final Public-Release Owner Decision
 
 **PENDING**
 

@@ -1,6 +1,6 @@
 # AgendaCue App Store Release Checklist
 
-Status is evidence-based as of WU-10 Phase A.7B. `READY` is not an App Store approval or Human Gate PASS.
+Status is evidence-based as of WU-10 Phase B.1. `READY` is not an App Store approval or Human Gate PASS.
 
 | Item | Status | Evidence / next action |
 |---|---|---|
@@ -23,10 +23,11 @@ Status is evidence-based as of WU-10 Phase A.7B. `READY` is not an App Store app
 | Final Japanese screenshot package | PASS | 6 raw captures finalized in `screenshots/final-ja/`; order and factual copy finalized |
 | Distribution signing | VALIDATED | Cloud Managed Apple Distribution; team `67BCCSD863`; exact Store profile; `get-task-allow = false` |
 | App Store export validation | PASS | Local App Store Connect export produced an inspected IPA; no upload |
-| H01–H46 | PENDING — OWNER EXECUTION | No item passed by Simulator evidence |
-| Final owner GO / NO-GO | PENDING | Requires current candidate and Human Gate evidence |
+| H01–H46 | DEFERRED — POST-REVIEW / PRE-RELEASE OWNER VALIDATION | No item passed by Simulator evidence; not an App Review submission blocker under explicit owner policy |
+| Final owner public-release GO / NO-GO | PENDING | Required before manual public release |
 | App Store upload | NOT STARTED | Explicit owner-authorized later operation only |
 | App Review submission | NOT STARTED | Explicit owner-authorized later operation only |
+| Release method | MANUAL RELEASE PREFERRED | Allows owner validation after approval and before public release |
 
 ## Category rationale
 
