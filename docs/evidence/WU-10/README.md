@@ -22,6 +22,8 @@
 
 > The fresh six-image Japanese App Store screenshot package, image hashes, technical validation, privacy audit, and owner-approval stop are recorded in `PHASE_B_4_FINAL_SCREENSHOTS.md`.
 
+> The corrective six-image recapture through the real Production navigation hierarchy, unique hashes, DEBUG-only harness delta, and superseded B.4 package are recorded in `PHASE_B_4R_SCREENSHOT_RECAPTURE.md`.
+
 Audit date: 2026-08-20. Parent: `2f32f35926e13b35fc78698b16c1dccd757c0504`. Environment: Xcode 26.6 (17F113), iOS SDK/Simulator 26.5, iPhone 17 Pro Simulator.
 
 ## Automated result

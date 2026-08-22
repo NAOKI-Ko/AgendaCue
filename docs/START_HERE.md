@@ -1,6 +1,6 @@
 # Start Here
 
-AgendaCue is at WU-10 Release Gate Phase B.4. The final six-image Japanese App Store screenshot package has been freshly captured from the accepted B.3 UI candidate and is pending owner visual approval. H01–H46 are deferred by explicit owner policy to post-review / pre-release validation; no Human Gate item is marked passed.
+AgendaCue is at WU-10 Release Gate Phase B.4R. The corrected six-image Japanese App Store screenshot package was recaptured through the real Production TabView and NavigationStack hierarchy and is pending owner visual approval. H01–H46 are deferred by explicit owner policy to post-review / pre-release validation; no Human Gate item is marked passed.
 
 ## Reading order
 
@@ -15,7 +15,7 @@ AgendaCue is at WU-10 Release Gate Phase B.4. The final six-image Japanese App S
 
 ## Current stop line
 
-WU-10 Phase B.4 stops with final screenshots captured and owner visual approval pending. The B.2 IPA remains stale and must not be uploaded; regenerate Distribution only after screenshot approval/UI freeze. Do not push, merge, tag, upload, submit, or publicly release.
+WU-10 Phase B.4R stops with corrected final screenshots recaptured and owner visual approval pending. The B.2 IPA remains stale and must not be uploaded; regenerate Distribution only after screenshot approval/UI freeze. Do not push, merge, tag, upload, submit, or publicly release.
 
 ## Product invariants
 

@@ -170,6 +170,7 @@ final class ProductionUXViewModel: ObservableObject {
         events = samples
         if scenario == "empty" || scenario == "upcoming-empty" { events = [] }
         if scenario == "timeline-no-future" { events = samples.filter { $0.startDate < now } }
+        if scenario == "timeline-future" { events = samples.filter { ["dentist", "tomorrow", "planning"].contains($0.id) } }
         if scenario == "no-calendars" { calendars = []; enabledCalendarIDs = [] }
         if scenario == "detail-off" || scenario == "today-off" { overrides["standup"] = .init(eventIdentity: "standup", state: .disabled) }
         if scenario == "detail-custom" { overrides["standup"] = .init(eventIdentity: "standup", state: .enabled(leadTimeOverride: .fifteenMinutes)) }
@@ -211,13 +212,13 @@ struct ProductionRootView: View {
     @ViewBuilder
     private func sample(_ scenario: String) -> some View {
         switch scenario {
-        case "main": MainTabsView(model: model, clock: presentationClock)
+        case "main", "detail-custom": MainTabsView(model: model, clock: presentationClock)
         case "timeline", "timeline-no-future", "upcoming", "upcoming-empty":
             AlarmTimelineView(model: model, clock: presentationClock)
-        case "timeline-future": AlarmTimelineView(model: model, clock: presentationClock, sampleInitialAnchor: .event("planning"))
+        case "timeline-future": MainTabsView(model: model, clock: presentationClock, sampleInitialAlarmAnchor: .event("tomorrow"))
         case "settings": SettingsView(model: model)
         case "calendars", "calendars-long", "no-calendars": NavigationStack { CalendarSelectionView(model: model) }
-        case "detail-default", "detail-custom", "detail-off":
+        case "detail-default", "detail-off":
             NavigationStack { if let event = model.events.first(where: { $0.id == "standup" }) { EventDetailView(event: event, model: model) } }
         case "detail-past":
             NavigationStack { if let event = model.events.first(where: { $0.id == "completed-today" }) { EventDetailView(event: event, model: model) } }
@@ -360,10 +361,17 @@ private struct OpenSettingsButton: View {
 struct MainTabsView: View {
     @ObservedObject var model: ProductionUXViewModel
     @ObservedObject var clock: ProductionPresentationClock
+    var sampleInitialAlarmAnchor: TimelineAnchor?
+
+    init(model: ProductionUXViewModel, clock: ProductionPresentationClock, sampleInitialAlarmAnchor: TimelineAnchor? = nil) {
+        self.model = model
+        self.clock = clock
+        self.sampleInitialAlarmAnchor = sampleInitialAlarmAnchor
+    }
 
     var body: some View {
         TabView {
-            AlarmTimelineView(model: model, clock: clock)
+            AlarmTimelineView(model: model, clock: clock, sampleInitialAnchor: sampleInitialAlarmAnchor)
                 .tabItem { Label(ProductionCopy.alarm, systemImage: "alarm") }
             SettingsView(model: model)
                 .tabItem { Label(ProductionCopy.settings, systemImage: "gearshape") }
