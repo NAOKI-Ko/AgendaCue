@@ -11,3 +11,16 @@ The Phase A.5 source set was captured on an iPhone 17 Pro Max Simulator, iOS 26.
 7. **オンボーディング（任意）** — use only if owner finds the privacy/read-only promise valuable. Caption: `カレンダーは読み取り専用で利用`.
 
 Use `AgendaCue` consistently anywhere the installed app name is visible. Avoid debug/feasibility controls, internal IDs, permission error screens as hero images, private calendar content, fake system dialogs, fake AlarmKit presentation, guaranteed-delivery language, and direct-provider claims. The raw Phase A.5 files contain no baked marketing text. Final ordering/copy and App Store Connect acceptance remain owner decisions.
+
+## Phase A.7A final package
+
+Six raw captures were finalized without recompression or marketing overlays:
+
+1. `01_alarm_timeline.jpg` → `final-ja/01.jpg`
+2. `03_event_detail_default.jpg` → `final-ja/02.jpg`
+3. `04_event_detail_custom.jpg` → `final-ja/03.jpg`
+4. `02_alarm_timeline_dates.jpg` → `final-ja/04.jpg`
+5. `05_calendar_selection.jpg` → `final-ja/05.jpg`
+6. `06_settings.jpg` → `final-ja/06.jpg`
+
+All are 1320×2868 portrait JPEG, RGB/no-alpha, and byte-identical to the visually inspected sources. `07_onboarding.jpg` remains an accepted source but is not selected because the six operational screens already provide a stronger complete product story.

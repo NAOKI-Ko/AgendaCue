@@ -13,8 +13,9 @@
 - Keywords: `calendar,agenda,alarm,schedule,reminder,event`
 - Version: `1.0`
 - Copyright: `© 2026 Naoki Kondo`
-- Support URL: `[OWNER INPUT REQUIRED — PUBLIC HOSTING URL]`
-- Privacy Policy URL/status: `[OWNER INPUT REQUIRED — PUBLIC HOSTING URL]`
+- Informational Support page: `https://naoki-ko.github.io/agendacue-site/support/` (PUBLIC / VERIFIED; not App Store Support URL compliant)
+- App Store Support URL compliance: `BLOCKED` under the owner no-public-contact policy
+- Privacy Policy URL: `https://naoki-ko.github.io/agendacue-site/privacy/` (PUBLIC / VERIFIED)
 
 ## Description
 

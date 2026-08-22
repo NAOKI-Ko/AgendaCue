@@ -2,11 +2,8 @@
 
 `index.html` is the Japanese public support-page source for AgendaCue V1. It is static, responsive, and has no external dependency or tracking resource.
 
-Before publishing:
+Published from the independent public repository `NAOKI-Ko/agendacue-site` and live-validated at:
 
-1. Replace `[OWNER INPUT REQUIRED — CONTACT METHOD]` with an owner-approved contact method.
-2. Host over HTTPS at a stable public URL.
-3. Verify troubleshooting copy on mobile.
-4. Enter the resulting URL in App Store Connect and the release checklist.
+`https://naoki-ko.github.io/agendacue-site/support/`
 
-Status: **OWNER INPUT REQUIRED — PUBLIC HOSTING URL**. No email address has been invented.
+Status: **PASS — PUBLIC / VERIFIED informational page**. It exposes no personal contact information. Under the owner no-public-contact policy, this page is not treated as satisfying App Store Support URL compliance; that requirement remains **BLOCKED**.

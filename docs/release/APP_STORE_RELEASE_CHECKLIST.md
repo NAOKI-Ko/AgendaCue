@@ -1,6 +1,6 @@
 # AgendaCue App Store Release Checklist
 
-Status is evidence-based as of WU-10 Phase A.6. `READY` is not an App Store approval or Human Gate PASS.
+Status is evidence-based as of WU-10 Phase A.7A. `READY` is not an App Store approval or Human Gate PASS.
 
 | Item | Status | Evidence / next action |
 |---|---|---|
@@ -15,11 +15,12 @@ Status is evidence-based as of WU-10 Phase A.6. `READY` is not an App Store appr
 | App privacy answers | READY FOR OWNER CONFIRMATION | Recommended: No data collected |
 | PrivacyInfo.xcprivacy | READY | Present in signed archive |
 | Privacy Policy page source | READY | `site/privacy/index.html` |
-| Privacy Policy URL | BLOCKED — OWNER INPUT | Publish stable HTTPS URL |
+| Privacy Policy URL | PASS — PUBLIC / VERIFIED | `https://naoki-ko.github.io/agendacue-site/privacy/` |
 | Support page source | READY | `site/support/index.html` |
-| Support URL | BLOCKED — OWNER INPUT | Publish stable HTTPS URL |
-| Japanese screenshot sources | READY FOR OWNER REVIEW | 7 JPEGs, 1320×2868, RGB/no-alpha |
-| Screenshot marketing compositions/order | PENDING — OWNER | Raw sources contain no baked headline |
+| Informational Support page | PASS — PUBLIC / VERIFIED | `https://naoki-ko.github.io/agendacue-site/support/` |
+| App Store Support URL compliance | BLOCKED | Owner does not approve publishing personal contact information; informational page is not treated as compliant |
+| Japanese screenshot sources | PASS | 7 visually inspected JPEG sources, 1320×2868, RGB/no-alpha |
+| Final Japanese screenshot package | PASS | 6 raw captures finalized in `screenshots/final-ja/`; order and factual copy finalized |
 | Distribution signing | VALIDATED | Cloud Managed Apple Distribution; team `67BCCSD863`; exact Store profile; `get-task-allow = false` |
 | App Store export validation | PASS | Local App Store Connect export produced an inspected IPA; no upload |
 | H01–H46 | PENDING — OWNER EXECUTION | No item passed by Simulator evidence |

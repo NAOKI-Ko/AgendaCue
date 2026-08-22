@@ -1,6 +1,6 @@
 # App Store Metadata — Japanese
 
-WU-10 Phase A.5で内容確定。App Store Connectへの入力・公開はowner approval後に行うこと。
+WU-10 Phase A.7Aで日本語内容と公開Privacy Policy URLを確定。App Store Connectへの入力・公開はowner approval後に行うこと。
 
 文字数はAppleの[App information reference](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information)にあるApp Name/Subtitle各30文字上限に対して確認済みです。
 
@@ -15,8 +15,9 @@ WU-10 Phase A.5で内容確定。App Store Connectへの入力・公開はowner 
 - Keywords: `カレンダー,予定,アラーム,リマインダー,スケジュール,時間管理`
 - Version: `1.0`
 - Copyright: `© 2026 Naoki Kondo`
-- Support URL: `[OWNER INPUT REQUIRED — PUBLIC HOSTING URL]`
-- Privacy Policy URL/status: `[OWNER INPUT REQUIRED — PUBLIC HOSTING URL]`
+- Informational Support page: `https://naoki-ko.github.io/agendacue-site/support/`（PUBLIC / VERIFIED）
+- App Store Support URL compliance: `BLOCKED`（ownerは個人連絡先の公開を承認していないため、App Store-readyとは扱わない）
+- Privacy Policy URL: `https://naoki-ko.github.io/agendacue-site/privacy/`（PUBLIC / VERIFIED）
 - App privacy recommendation: `No data collected`
 
 ## Description
