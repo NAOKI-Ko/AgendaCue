@@ -1,6 +1,6 @@
-# App Store Metadata Draft — Japanese
+# App Store Metadata — Japanese
 
-Draft only; owner approval is required before App Store Connect entry.
+WU-10 Phase A.5で内容確定。App Store Connectへの入力・公開はowner approval後に行うこと。
 
 文字数はAppleの[App information reference](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information)にあるApp Name/Subtitle各30文字上限に対して確認済みです。
 
@@ -9,14 +9,15 @@ Draft only; owner approval is required before App Store Connect entry.
 - App Name: `AgendaCue`（9/30文字）
 - Bundle ID: `com.naoki-ko.agendacue`
 - Subtitle: `予定をアラームで確実にお知らせ`（15/30文字）
-- Promotional text: `iPhoneのカレンダー予定を読み取り、設定した時間前にアラームでお知らせします。`
-- Primary category: Productivity
-- Secondary category candidate: Utilities
-- Keywords: `カレンダー,予定,アラーム,リマインダー,スケジュール,EventKit,通知`
+- Promotional text: `iPhoneのカレンダー予定を読み取り、設定した時間前に本物のアラームを鳴らします。大切な予定の準備を、シンプルに。`
+- Primary category recommendation: Utilities
+- Secondary category recommendation: Productivity
+- Keywords: `カレンダー,予定,アラーム,リマインダー,スケジュール,時間管理`
 - Version: `1.0`
-- Copyright: `© 2026 [OWNER NAME]`
-- Support URL: `[OWNER INPUT REQUIRED]`
-- Privacy Policy URL/status: `[OWNER INPUT REQUIRED]`
+- Copyright: `© 2026 Naoki Kondo`
+- Support URL: `[OWNER INPUT REQUIRED — PUBLIC HOSTING URL]`
+- Privacy Policy URL/status: `[OWNER INPUT REQUIRED — PUBLIC HOSTING URL]`
+- App privacy recommendation: `No data collected`
 
 ## Description
 
@@ -30,6 +31,10 @@ AgendaCueは、iPhoneのカレンダー予定を読み取り、設定した時�
 
 対応対象は、iPhoneのカレンダーに登録され、EventKitから取得できる予定です。Googleなどの予定もiOSのカレンダーへ設定済みであれば対象になり得ますが、各サービスへ直接接続する機能ではありません。
 
+## What's New — Version 1.0
+
+AgendaCueの最初のリリースです。iPhoneのカレンダー予定を読み取り、選んだ時間前にAlarmKitのアラームを設定できます。使うカレンダーの選択、予定ごとのアラームON/OFFと対応する時間の変更に対応しています。
+
 ## Age-rating considerations
 
 Audited code contains no user-generated public content, messaging, web browsing, gambling, violence, sexual content, controlled substances, or unrestricted external links. Complete the current App Store Connect questionnaire truthfully; no rating is asserted by this draft.
@@ -41,8 +46,8 @@ Audited code contains no user-generated public content, messaging, web browsing,
 1. 初回起動後、カレンダーへのアクセスを許可してください。予定の開始時刻を読み取るために必要です。アプリは予定を追加・変更・削除しません。
 2. 続いてアラームへのアクセスを許可してください。AlarmKitのワンショットアラームを設定するために必要です。
 3. iOSのカレンダーアプリで、現在より十分先の時刻に通常の時間指定予定を作成します。
-4. 本アプリの設定で対象カレンダーが選択されていることを確認します。
-5. アラーム画面から予定を開き、アラームONと時間を確認します。標準は予定開始5分前です。
+4. 本アプリの「設定」→「表示するカレンダー」で対象カレンダーが選択されていることを確認します。
+5. 「アラーム」画面から予定を開き、「この予定でアラームを使う」をONにして時間を確認します。標準は予定開始5分前です。
 6. 作成されるAlarmKitアラームのカスタムタイトルには、空でない予定タイトルがそのまま表示されます。空タイトルは`予定`です。
 
-終日予定は対象外です。バックグラウンド実行時刻はiOSが管理するため保証しません。確認時はアプリをforegroundへ戻して同期させてください。
+終日予定は対象外です。権限を拒否・取り消した場合は、アプリ内の案内からiOSの「設定」を開いて復旧できます。バックグラウンド実行時刻はiOSが管理するため保証しません。予定を変更したあとはアプリをforegroundへ戻して同期させてください。

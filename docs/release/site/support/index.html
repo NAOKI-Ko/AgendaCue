@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AgendaCue サポート</title>
+  <style>
+    :root { color-scheme: light dark; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; }
+    body { margin: 0; line-height: 1.7; background: Canvas; color: CanvasText; }
+    main { max-width: 720px; margin: auto; padding: 40px 22px 64px; }
+    h1 { line-height: 1.25; } h2 { margin-top: 2rem; } li { margin: .65rem 0; }
+  </style>
+</head>
+<body><main>
+  <h1>AgendaCue サポート</h1>
+  <p>AgendaCueは、iPhoneのカレンダー予定を読み取り、選んだ時間前にAlarmKitのアラームを設定します。</p>
+  <h2>対応環境</h2>
+  <p>iOS 26以降のiPhone。iPhoneのカレンダーに登録され、EventKitから取得できる時間指定予定が対象です。</p>
+  <h2>よくある確認事項</h2>
+  <ul>
+    <li><strong>カレンダーが表示されない:</strong> iOSの「設定」でAgendaCueのカレンダーアクセスを許可し、AgendaCueの「設定」→「表示するカレンダー」を確認してください。</li>
+    <li><strong>アラームを設定できない:</strong> iOSの「設定」でAgendaCueのアラームアクセスを許可してください。終日予定と、アラーム時刻がすでに過ぎた予定は対象外です。</li>
+    <li><strong>予定を変更した:</strong> AgendaCueをforegroundへ戻し、最新のカレンダー状態を反映してください。</li>
+    <li><strong>権限を拒否・取り消した:</strong> アプリ内の案内からiOSの「設定」を開いて復旧できます。</li>
+  </ul>
+  <h2>V1の制限</h2>
+  <p>カレンダーは読み取り専用です。外部カレンダーサービスへ直接接続する機能、アカウント、バックエンド、独自通知、スヌーズ、任意分数の設定、watchOSアプリはありません。バックグラウンド更新の実行時刻はiOSが管理します。</p>
+  <h2>お問い合わせ</h2>
+  <p>[OWNER INPUT REQUIRED — CONTACT METHOD]</p>
+</main></body>
+</html>

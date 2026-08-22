@@ -1,6 +1,6 @@
 # AgendaCue Japanese App Store Screenshot Plan
 
-Use an iPhone 17 Pro Simulator, iOS 26.5, Japanese locale, Light appearance, default text size unless a second device family is required by App Store Connect. Capture clean Production-comparable sample screens, then crop/export only with Apple's accepted dimensions. Do not fabricate system permission or AlarmKit UI.
+The Phase A.5 source set was captured on an iPhone 17 Pro Max Simulator, iOS 26.5, Japanese UI, Light appearance, default text size. Files are 1320×2868 portrait JPEG, RGB/no-alpha, matching Apple's [6.9-inch screenshot specification](https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications/). The target is iPhone-only (`TARGETED_DEVICE_FAMILY = 1`), so no iPad source set is required by the current target configuration. Do not fabricate system permission or AlarmKit UI.
 
 1. **現在と次の予定** — `アラーム` timeline centered on the current divider and first future alarm. Caption candidate: `次の予定とアラーム時刻をひと目で`.
 2. **複数日の予定** — past/today/future date sections. Caption: `過去14日から今後14日まで、日付ごとに確認`.
@@ -10,4 +10,4 @@ Use an iPhone 17 Pro Simulator, iOS 26.5, Japanese locale, Light appearance, def
 6. **設定** — default lead, permissions, local/read-only explanation. Caption: `シンプルな設定と分かりやすい権限状態`.
 7. **オンボーディング（任意）** — use only if owner finds the privacy/read-only promise valuable. Caption: `カレンダーは読み取り専用で利用`.
 
-Use `AgendaCue` consistently anywhere the installed app name is visible. Avoid debug/feasibility controls, internal IDs, permission error screens as hero images, private calendar content, fake system dialogs, fake AlarmKit presentation, guaranteed-delivery language, and direct-provider claims. Final screenshots require owner acceptance and should be recaptured after the Production bundle identity and final icon are approved.
+Use `AgendaCue` consistently anywhere the installed app name is visible. Avoid debug/feasibility controls, internal IDs, permission error screens as hero images, private calendar content, fake system dialogs, fake AlarmKit presentation, guaranteed-delivery language, and direct-provider claims. The raw Phase A.5 files contain no baked marketing text. Final ordering/copy and App Store Connect acceptance remain owner decisions.

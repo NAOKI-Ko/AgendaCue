@@ -1,6 +1,6 @@
 # App Store Metadata Draft — English
 
-Draft only; owner approval is required before App Store Connect entry.
+**DRAFT ONLY — DO NOT PUBLISH YET.** The Production UI is Japanese-only; English in-app localization is not included in V1.
 
 ## Core metadata
 
@@ -8,13 +8,13 @@ Draft only; owner approval is required before App Store Connect entry.
 - Bundle ID: `com.naoki-ko.agendacue`
 - Subtitle: `Calendar alerts you won’t miss` (30/30 characters)
 - Promotional text: `Turn events in your iPhone calendar into alarms at the lead time you choose.`
-- Primary category: Productivity
-- Secondary category candidate: Utilities
+- Primary category recommendation: Utilities
+- Secondary category recommendation: Productivity
 - Keywords: `calendar,agenda,alarm,schedule,reminder,event`
 - Version: `1.0`
-- Copyright: `© 2026 [OWNER NAME]`
-- Support URL: `[OWNER INPUT REQUIRED]`
-- Privacy Policy URL/status: `[OWNER INPUT REQUIRED]`
+- Copyright: `© 2026 Naoki Kondo`
+- Support URL: `[OWNER INPUT REQUIRED — PUBLIC HOSTING URL]`
+- Privacy Policy URL/status: `[OWNER INPUT REQUIRED — PUBLIC HOSTING URL]`
 
 ## Description
 
