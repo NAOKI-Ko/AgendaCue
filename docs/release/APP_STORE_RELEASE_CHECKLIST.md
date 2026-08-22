@@ -1,6 +1,6 @@
 # AgendaCue App Store Release Checklist
 
-Status is evidence-based as of WU-10 Phase A.7A. `READY` is not an App Store approval or Human Gate PASS.
+Status is evidence-based as of WU-10 Phase A.7B. `READY` is not an App Store approval or Human Gate PASS.
 
 | Item | Status | Evidence / next action |
 |---|---|---|
@@ -18,7 +18,7 @@ Status is evidence-based as of WU-10 Phase A.7A. `READY` is not an App Store app
 | Privacy Policy URL | PASS — PUBLIC / VERIFIED | `https://naoki-ko.github.io/agendacue-site/privacy/` |
 | Support page source | READY | `site/support/index.html` |
 | Informational Support page | PASS — PUBLIC / VERIFIED | `https://naoki-ko.github.io/agendacue-site/support/` |
-| App Store Support URL compliance | BLOCKED | Owner does not approve publishing personal contact information; informational page is not treated as compliant |
+| App Store Support URL compliance | OWNER-ACCEPTED WITH REVIEW RISK | Use `https://naoki-ko.github.io/agendacue-site/privacy/`, the same URL as Privacy Policy. No public personal contact information. Owner accepts the known App Review risk; handle any rejection only from actual reviewer feedback. Not a full-compliance PASS or internal blocker. |
 | Japanese screenshot sources | PASS | 7 visually inspected JPEG sources, 1320×2868, RGB/no-alpha |
 | Final Japanese screenshot package | PASS | 6 raw captures finalized in `screenshots/final-ja/`; order and factual copy finalized |
 | Distribution signing | VALIDATED | Cloud Managed Apple Distribution; team `67BCCSD863`; exact Store profile; `get-task-allow = false` |

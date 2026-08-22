@@ -1,8 +1,8 @@
 # Project State
 
-- Phase: **WU-10 Release Gate — Phase A.7A**
-- Current Work: **Public Site + Privacy URL + Final Screenshot Package**
-- Status: **PUBLIC PRIVACY + SCREENSHOT PACKAGE FINALIZED / SUPPORT URL COMPLIANCE BLOCKED / HUMAN GATE PENDING**
+- Phase: **WU-10 Release Gate — Phase A.7B**
+- Current Work: **Support URL Owner Risk Acceptance + Human Gate Handoff**
+- Status: **SUPPORT URL OWNER-ACCEPTED WITH REVIEW RISK / HUMAN GATE PENDING**
 - Automated Gate: **PASS**
 - Human Gate: **PENDING — REQUIRED / CANNOT BE WAIVED**
 - Submission: **NOT STARTED**
@@ -42,6 +42,7 @@ Environment: Xcode 26.6 (17F113), iOS SDK 26.5, iOS 26.5 Simulators.
 - Phase A.6 archive/export: `/private/tmp/AgendaCue-WU10-A6.xcarchive` and `/private/tmp/AgendaCue-WU10-A6-Export/CalendarAlarmFeasibility.ipa`. Nothing was uploaded or distributed.
 - Phase A.7A public site: `https://naoki-ko.github.io/agendacue-site/`; Privacy Policy and informational Support pages are public over HTTPS and live-validated. No personal contact information is exposed.
 - Phase A.7A screenshot package: six visually inspected raw captures finalized under `docs/release/screenshots/final-ja/` in App Store order; every file remains 1320×2868 JPEG, RGB/no-alpha, byte-identical to its validated source.
+- Phase A.7B owner decision: use `https://naoki-ko.github.io/agendacue-site/privacy/` for both the Privacy Policy URL and App Store Support URL. No public personal contact information is approved. Support URL status is **OWNER-ACCEPTED WITH REVIEW RISK**; it is not a full-compliance PASS or an internal release blocker. Any rejection will be handled only from actual App Review feedback.
 - Japanese residual audit: app-owned primary UI, permission guidance, state copy, accessibility labels, and purpose strings are Japanese. Product/system names and source-provided calendar/event/source content remain unchanged.
 - Scope audit: scheduling dates/identities/lifecycle, reconciliation, background semantics, domain rules, calendar write prohibition, timeline, settings, persistence schema, and event-detail business behavior are unchanged. Phase A changes are release configuration hygiene, privacy manifest, Japanese stop copy, a narrow Sendable fix, and documentation/evidence.
 
@@ -53,12 +54,14 @@ Accessibility Inspector, real VoiceOver, real-device permissions/EventKit/AlarmK
 
 ## Remaining owner inputs
 
-- Resolution of App Store Support URL compliance under the owner policy prohibiting public email, telephone number, legal address, or other personal contact information.
+- Physical execution and evidence for H01–H46, followed by final owner GO / NO-GO.
 - Explicit authorization for any later App Store Connect upload or App Review submission.
 
 ## Release blockers
 
-- App Store Support URL compliance, H01–H46, and owner GO/NO-GO remain pending.
+- H01–H46 owner physical Human Gate and final owner GO / NO-GO remain pending.
+- App Store Connect upload and App Review submission require separate explicit owner authorization.
+- The App Store Support URL remains a **KNOWN REVIEW RISK — OPEN / ACCEPTED**, not an internal blocker. It uses the Privacy Policy URL without public email, phone number, physical/legal address, personal contact details, contact form, or external ticket system.
 - Japanese metadata/category/copyright source is prepared; App Store Connect entry itself is not started. English localization must not be published until English in-app UI exists.
 - Physical iPhone was listed as unavailable, so no device installation or behavior was claimed.
 - Distribution signing and local export validation passed; App Store Connect upload and App Review submission remain NOT STARTED and require explicit owner authorization.

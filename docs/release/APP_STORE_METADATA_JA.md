@@ -1,6 +1,6 @@
 # App Store Metadata — Japanese
 
-WU-10 Phase A.7Aで日本語内容と公開Privacy Policy URLを確定。App Store Connectへの入力・公開はowner approval後に行うこと。
+WU-10 Phase A.7Bで日本語内容、公開Privacy Policy URL、およびownerがreview riskを受容したApp Store Support URLを確定。App Store Connectへの入力・公開はowner approval後に行うこと。
 
 文字数はAppleの[App information reference](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information)にあるApp Name/Subtitle各30文字上限に対して確認済みです。
 
@@ -16,7 +16,8 @@ WU-10 Phase A.7Aで日本語内容と公開Privacy Policy URLを確定。App Sto
 - Version: `1.0`
 - Copyright: `© 2026 Naoki Kondo`
 - Informational Support page: `https://naoki-ko.github.io/agendacue-site/support/`（PUBLIC / VERIFIED）
-- App Store Support URL compliance: `BLOCKED`（ownerは個人連絡先の公開を承認していないため、App Store-readyとは扱わない）
+- App Store Support URL: `https://naoki-ko.github.io/agendacue-site/privacy/`
+- App Store Support URL compliance: `OWNER-ACCEPTED WITH REVIEW RISK`（Privacy Policyと同じURLを使用。個人連絡先は公開せず、ownerがApp Review riskを認識して受容。reviewerからrejectされた場合のみ、実際のfeedbackに基づいて対応する。`FULL COMPLIANCE PASS`ではない）
 - Privacy Policy URL: `https://naoki-ko.github.io/agendacue-site/privacy/`（PUBLIC / VERIFIED）
 - App privacy recommendation: `No data collected`
 

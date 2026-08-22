@@ -2,6 +2,8 @@
 
 Human execution is mandatory. Candidate identity is AgendaCue / `com.naoki-ko.agendacue`. Record `PASS`, `FAIL`, or justified `N/A`; attach evidence references and notes. Do not reuse evidence after the candidate SHA changes.
 
+H01–H46 status: **PENDING — OWNER EXECUTION**. Codex has not executed or prefilled any physical-device result.
+
 | ID | Scenario | Setup | Steps | Expected | Result | Evidence | Notes |
 |---|---|---|---|---|---|---|---|
 | H01 | Fresh install | Delete app/data on real iPhone | Install signed RC and launch | Installed/displayed app name is `AgendaCue`; Welcome appears with no stale state | PENDING | — | — |
