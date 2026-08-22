@@ -20,6 +20,8 @@
 
 > The today-first Alarm timeline, opaque sticky-header region, regression/build results, Simulator QA, screenshot readiness, and stale B.2 IPA status are recorded in `PHASE_B_3_TIMELINE_POLISH.md`.
 
+> The fresh six-image Japanese App Store screenshot package, image hashes, technical validation, privacy audit, and owner-approval stop are recorded in `PHASE_B_4_FINAL_SCREENSHOTS.md`.
+
 Audit date: 2026-08-20. Parent: `2f32f35926e13b35fc78698b16c1dccd757c0504`. Environment: Xcode 26.6 (17F113), iOS SDK/Simulator 26.5, iPhone 17 Pro Simulator.
 
 ## Automated result
