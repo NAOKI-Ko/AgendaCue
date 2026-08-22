@@ -43,5 +43,5 @@ Remaining release blockers are the owner-run physical Human Gate H01–H46, fina
 
 ## HARD STOP
 
-**SUPPORT URL OWNER RISK ACCEPTED**  
+**SUPPORT URL OWNER RISK ACCEPTED**
 **HUMAN GATE PENDING**
