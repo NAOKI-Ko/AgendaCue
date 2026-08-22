@@ -1,9 +1,9 @@
 # AgendaCue Japanese App Store Screenshot Plan
 
-The Phase A.5 source set was captured on an iPhone 17 Pro Max Simulator, iOS 26.5, Japanese UI, Light appearance, default text size. Files are 1320×2868 portrait JPEG, RGB/no-alpha, matching Apple's [6.9-inch screenshot specification](https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications/). The target is iPhone-only (`TARGETED_DEVICE_FAMILY = 1`), so no iPad source set is required by the current target configuration. Do not fabricate system permission or AlarmKit UI.
+The Phase A.5 source set was captured on an iPhone 17 Pro Max Simulator, iOS 26.5, Japanese UI, Light appearance, default text size. Files are 1320×2868 portrait JPEG, RGB/no-alpha, matching Apple's [6.9-inch screenshot specification](https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications/). The target is iPhone-only (`TARGETED_DEVICE_FAMILY = 1`), so no iPad source set is required by the current target configuration. Timeline images from that set are superseded by the Phase B.3 today-first UI and must be recaptured after the B.3 UI freeze. Do not fabricate system permission or AlarmKit UI.
 
 1. **現在と次の予定** — `アラーム` timeline centered on the current divider and first future alarm. Caption candidate: `次の予定とアラーム時刻をひと目で`.
-2. **複数日の予定** — past/today/future date sections. Caption: `過去14日から今後14日まで、日付ごとに確認`.
+2. **複数日の予定** — today/future date sections. Caption: `今日から今後14日まで、日付ごとに確認`.
 3. **予定の詳細・標準** — alarm ON and inherited five-minute lead. Caption: `予定ごとにアラームを確認`.
 4. **予定の詳細・変更** — supported custom lead time. Caption: `必要な予定だけ、時間を変更`.
 5. **カレンダー選択** — iCloud/Google-like source names may be shown only as controlled sample data. Caption: `使うカレンダーを選択`.
@@ -12,7 +12,7 @@ The Phase A.5 source set was captured on an iPhone 17 Pro Max Simulator, iOS 26.
 
 Use `AgendaCue` consistently anywhere the installed app name is visible. Avoid debug/feasibility controls, internal IDs, permission error screens as hero images, private calendar content, fake system dialogs, fake AlarmKit presentation, guaranteed-delivery language, and direct-provider claims. The raw Phase A.5 files contain no baked marketing text. Final ordering/copy and App Store Connect acceptance remain owner decisions.
 
-## Phase A.7A final package
+## Phase A.7A package — partially superseded by B.3
 
 Six raw captures were finalized without recompression or marketing overlays:
 
@@ -23,4 +23,4 @@ Six raw captures were finalized without recompression or marketing overlays:
 5. `05_calendar_selection.jpg` → `final-ja/05.jpg`
 6. `06_settings.jpg` → `final-ja/06.jpg`
 
-All are 1320×2868 portrait JPEG, RGB/no-alpha, and byte-identical to the visually inspected sources. `07_onboarding.jpg` remains an accepted source but is not selected because the six operational screens already provide a stronger complete product story.
+All are 1320×2868 portrait JPEG, RGB/no-alpha, and byte-identical to the visually inspected sources. The timeline-visible images (`final-ja/01.jpg` and `final-ja/04.jpg`) are no longer final after B.3 and must be replaced during the next capture phase. `07_onboarding.jpg` is also stale because B.1 removed the Welcome stage. The unaffected operational-screen sources remain reference material until the complete final package is recaptured and approved.

@@ -138,7 +138,7 @@ final class ProductionPresentationClock: ObservableObject {
 
 enum SampleScenarioPolicy {
     static let supported: Set<String> = [
-        "onboarding", "onboarding-calendar", "onboarding-alarm", "calendar-denied", "main", "today", "today-long", "today-off", "timeline", "timeline-past", "timeline-future", "timeline-no-future",
+        "onboarding", "onboarding-calendar", "onboarding-alarm", "calendar-denied", "main", "today", "today-long", "today-off", "timeline", "timeline-future", "timeline-no-future",
         "upcoming", "upcoming-empty", "detail-default", "detail-custom",
         "detail-off", "detail-past", "calendars", "calendars-long",
         "no-calendars", "settings", "denied", "alarm-denied", "empty", "error"
@@ -199,7 +199,7 @@ enum TodayPresentationItem: Identifiable, Equatable {
 }
 
 enum ProductionPresentationPolicy {
-    static let pastDisplayDays = 14
+    static let calendarFetchPastDays = 14
     static let futureDisplayDays = 14
 
     static func route(onboardingCompleted: Bool) -> ProductionRoute {
@@ -216,7 +216,13 @@ enum ProductionPresentationPolicy {
 
     static func timelineWindow(now: Date, calendar: Calendar = .current) -> TimelinePresentationWindow {
         let today = calendar.startOfDay(for: now)
-        let start = calendar.date(byAdding: .day, value: -pastDisplayDays, to: today) ?? today
+        let end = calendar.date(byAdding: .day, value: futureDisplayDays, to: now) ?? now
+        return .init(start: today, end: end)
+    }
+
+    static func calendarFetchWindow(now: Date, calendar: Calendar = .current) -> TimelinePresentationWindow {
+        let today = calendar.startOfDay(for: now)
+        let start = calendar.date(byAdding: .day, value: -calendarFetchPastDays, to: today) ?? today
         let end = calendar.date(byAdding: .day, value: futureDisplayDays, to: now) ?? now
         return .init(start: start, end: end)
     }

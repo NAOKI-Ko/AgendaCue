@@ -1,13 +1,13 @@
 # Project State
 
-- Phase: **WU-10 Release Gate — Phase B.2**
-- Current Work: **Fresh Distribution Package + Final Pre-Upload Audit**
-- Status: **FRESH DISTRIBUTION PACKAGE VALIDATED / UPLOAD AUTHORIZATION PENDING**
+- Phase: **WU-10 Release Gate — Phase B.3**
+- Current Work: **Final Timeline UI Polish Before App Store Screenshot Capture**
+- Status: **TIMELINE POLISH VALIDATED / READY FOR APP STORE SCREENSHOT CAPTURE**
 - Automated Gate: **PASS**
 - Human Gate: **DEFERRED BY OWNER TO POST-REVIEW / PRE-RELEASE VALIDATION — NOT PASS**
 - Submission: **NOT STARTED**
 - Main Merge: **NOT STARTED**
-- Phase B: **B.2 COMPLETE**
+- Phase B: **B.3 COMPLETE**
 - Production Brand: **AgendaCue — OWNER APPROVED / INTEGRATED**
 - Customer Display Name: **AgendaCue**
 - Production Bundle ID: **`com.naoki-ko.agendacue` — OWNER APPROVED / INTEGRATED**
@@ -23,7 +23,7 @@
 
 Environment: Xcode 26.6 (17F113), iOS SDK 26.5, iOS 26.5 Simulators.
 
-- Current Phase B.1 XCTest: 164 tests passed, 0 failures.
+- Current Phase B.3 XCTest: 167 tests passed, 0 failures.
 - Specific iPhone 17 Pro Simulator build: succeeded.
 - Generic iOS Simulator build: succeeded.
 - Generic iOS Device Debug and Release builds with code signing disabled: succeeded.
@@ -45,6 +45,7 @@ Environment: Xcode 26.6 (17F113), iOS SDK 26.5, iOS 26.5 Simulators.
 - Phase A.7B owner decision: use `https://naoki-ko.github.io/agendacue-site/privacy/` for both the Privacy Policy URL and App Store Support URL. No public personal contact information is approved. Support URL status is **OWNER-ACCEPTED WITH REVIEW RISK**; it is not a full-compliance PASS or an internal release blocker. Any rejection will be handled only from actual App Review feedback.
 - Phase B.1 verification: Calendar-first onboarding; authoritative post-request Calendar/Alarm state refresh; immediate Calendar data reload; 164/164 tests; required Debug/Release builds; Production Release launch and Simulator visual QA.
 - Phase B.2 verification: fresh archive `/private/tmp/AgendaCue-WU10-B2.xcarchive` and fresh App Store export `/private/tmp/AgendaCue-WU10-B2-Export/CalendarAlarmFeasibility.ipa` passed for Production candidate `4027062ce519ab15f0274417d7d65d54133097ae`; IPA SHA-256 `cc2d166677e48545f2b21a9e266a5d502b785b340ec53543e8c9ad60020aafb5`; Distribution signing, exact Store profile, entitlements, strict codesign, privacy/resources, and leakage audits passed.
+- Phase B.3 verification: visible Alarm timeline begins at local `Calendar.startOfDay(for: now)` while the independent 14-day historical EventKit fetch overlap remains unchanged; sticky date headers and navigation background are opaque system surfaces. XCTest 167/167, required Debug/Release builds, and light/dark pinned-header Simulator QA passed.
 - Japanese residual audit: app-owned primary UI, permission guidance, state copy, accessibility labels, and purpose strings are Japanese. Product/system names and source-provided calendar/event/source content remain unchanged.
 - Scope audit: scheduling dates/identities/lifecycle, reconciliation, background semantics, domain rules, calendar write prohibition, timeline, settings, persistence schema, and event-detail business behavior are unchanged. Phase A changes are release configuration hygiene, privacy manifest, Japanese stop copy, a narrow Sendable fix, and documentation/evidence.
 
@@ -58,6 +59,7 @@ Accessibility Inspector, real VoiceOver, real-device permissions/EventKit/AlarmK
 
 - Post-review / pre-release physical execution and evidence for H01–H46, followed by final owner public-release GO / NO-GO.
 - Explicit authorization for any later App Store Connect upload or App Review submission.
+- Final App Store screenshot capture and a fresh post-UI-freeze Distribution archive/IPA.
 
 ## Release blockers
 
@@ -66,7 +68,7 @@ Accessibility Inspector, real VoiceOver, real-device permissions/EventKit/AlarmK
 - The App Store Support URL remains a **KNOWN REVIEW RISK — OPEN / ACCEPTED**, not an internal blocker. It uses the Privacy Policy URL without public email, phone number, physical/legal address, personal contact details, contact form, or external ticket system.
 - Japanese metadata/category/copyright source is prepared; App Store Connect entry itself is not started. English localization must not be published until English in-app UI exists.
 - Physical iPhone was listed as unavailable, so no device installation or behavior was claimed.
-- Distribution signing and local export validation passed; App Store Connect upload and App Review submission remain NOT STARTED and require explicit owner authorization.
+- The B.2 Distribution IPA is stale after B.3 Production UI changes. A fresh post-screenshot/UI-freeze package is required before any upload.
 - Actual system-scheduled background execution timing was not tested on a real device; foreground/resume remains authoritative.
 
 ## Deferred Owner Validation

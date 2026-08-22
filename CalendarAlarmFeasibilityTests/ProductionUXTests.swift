@@ -227,34 +227,37 @@ final class ProductionUXTests: XCTestCase {
         XCTAssertFalse(ProductionPresentationPolicy.daySubtitle(.init(timeIntervalSince1970: 10_000)).isEmpty)
     }
 
-    func testTimelineWindowIncludesPastAndFutureFourteenDays() {
+    func testTimelineWindowStartsAtLocalStartOfToday() {
         let now = Date(timeIntervalSince1970: 2_000_000)
         let window = ProductionPresentationPolicy.timelineWindow(now: now, calendar: utcCalendar)
-        XCTAssertTrue(window.start < now); XCTAssertEqual(window.end.timeIntervalSince(now), 14 * 86_400, accuracy: 0.001)
-        XCTAssertTrue(window.contains(now.addingTimeInterval(-13 * 86_400)))
+        XCTAssertEqual(window.start, utcCalendar.startOfDay(for: now))
+        XCTAssertEqual(window.end.timeIntervalSince(now), 14 * 86_400, accuracy: 0.001)
         XCTAssertTrue(window.contains(now.addingTimeInterval(13 * 86_400)))
     }
 
     func testTimelineExcludesEventsOutsideDisplayWindow() {
         let now = Date(timeIntervalSince1970: 2_000_000)
         let values = [event("old", now.timeIntervalSince1970 - 15 * 86_400), event("inside", now.timeIntervalSince1970 - 2 * 86_400), event("future", now.timeIntervalSince1970 + 2 * 86_400), event("far", now.timeIntervalSince1970 + 15 * 86_400)]
-        XCTAssertEqual(ProductionPresentationPolicy.timelineEvents(values, now: now, calendar: utcCalendar).map(\.id), ["inside", "future"])
+        XCTAssertEqual(ProductionPresentationPolicy.timelineEvents(values, now: now, calendar: utcCalendar).map(\.id), ["future"])
     }
 
     func testTimelineIsChronologicalAndDateSectionsAreDeterministic() {
         let now = Date(timeIntervalSince1970: 2_000_000)
-        let values = [event("future", now.timeIntervalSince1970 + 90_000), event("past", now.timeIntervalSince1970 - 90_000), event("soon", now.timeIntervalSince1970 + 3_600)]
+        let today = utcCalendar.startOfDay(for: now)
+        let values = [event("future", now.timeIntervalSince1970 + 90_000), event("earlier-today", today.timeIntervalSince1970 + 60), event("soon", now.timeIntervalSince1970 + 3_600)]
         let first = ProductionPresentationPolicy.timelineSections(values, now: now, calendar: utcCalendar)
         let second = ProductionPresentationPolicy.timelineSections(values.reversed(), now: now, calendar: utcCalendar)
         XCTAssertEqual(first, second)
-        XCTAssertEqual(first.flatMap(\.events).map(\.id), ["past", "soon", "future"])
+        XCTAssertEqual(first.flatMap(\.events).map(\.id), ["earlier-today", "soon", "future"])
     }
 
     func testTimelinePresentationWindowDoesNotAlterReconciliationHorizon() {
         let now = Date(timeIntervalSince1970: 2_000_000)
         let display = ProductionPresentationPolicy.timelineWindow(now: now, calendar: utcCalendar)
+        let fetch = ProductionPresentationPolicy.calendarFetchWindow(now: now, calendar: utcCalendar)
         let reconciliation = ReconciliationWindow.productionDefault(now: now)
-        XCTAssertTrue(display.start < now)
+        XCTAssertEqual(display.start, utcCalendar.startOfDay(for: now))
+        XCTAssertTrue(fetch.start < display.start)
         XCTAssertEqual(reconciliation.startDate, now)
         XCTAssertEqual(reconciliation.endDate, now.addingTimeInterval(14 * 86_400))
     }
@@ -303,10 +306,39 @@ final class ProductionUXTests: XCTestCase {
         XCTAssertNil(ProductionPresentationPolicy.phaseText(ProductionPresentationPolicy.eventPhase(event("future", 2_000), now: now)))
     }
 
-    func testPastEventsAreIncludedInTimelinePresentation() {
+    func testYesterdayAndOlderEventsAreExcludedFromTimelinePresentation() {
         let now = Date(timeIntervalSince1970: 2_000_000)
-        let past = event("past", now.timeIntervalSince1970 - 2 * 86_400)
-        XCTAssertEqual(ProductionPresentationPolicy.timelineEvents([past], now: now, calendar: utcCalendar).map(\.id), ["past"])
+        let today = utcCalendar.startOfDay(for: now)
+        let yesterday = event("yesterday", today.timeIntervalSince1970 - 1)
+        let older = event("older", today.timeIntervalSince1970 - 5 * 86_400)
+        XCTAssertTrue(ProductionPresentationPolicy.timelineEvents([yesterday, older], now: now, calendar: utcCalendar).isEmpty)
+    }
+
+    func testEarlierAndLaterTodayEventsRemainVisible() {
+        let now = Date(timeIntervalSince1970: 2_000_000)
+        let today = utcCalendar.startOfDay(for: now)
+        let earlier = event("earlier", today.timeIntervalSince1970 + 60)
+        let later = event("later", now.timeIntervalSince1970 + 60)
+        XCTAssertEqual(ProductionPresentationPolicy.timelineEvents([later, earlier], now: now, calendar: utcCalendar).map(\.id), ["earlier", "later"])
+    }
+
+    func testTimelineMidnightBoundaryUsesCalendarDaySemantics() {
+        let now = Date(timeIntervalSince1970: 2_000_000)
+        let today = utcCalendar.startOfDay(for: now)
+        let beforeMidnight = event("before", today.timeIntervalSince1970 - 0.001)
+        let atMidnight = event("midnight", today.timeIntervalSince1970)
+        XCTAssertEqual(ProductionPresentationPolicy.timelineEvents([beforeMidnight, atMidnight], now: now, calendar: utcCalendar).map(\.id), ["midnight"])
+    }
+
+    func testTimelineGroupingContainsNoPreTodaySection() {
+        let now = Date(timeIntervalSince1970: 2_000_000)
+        let today = utcCalendar.startOfDay(for: now)
+        let yesterday = event("yesterday", today.timeIntervalSince1970 - 3_600)
+        let earlierToday = event("today", today.timeIntervalSince1970 + 3_600)
+        let tomorrow = event("tomorrow", today.timeIntervalSince1970 + 90_000)
+        let sections = ProductionPresentationPolicy.timelineSections([yesterday, tomorrow, earlierToday], now: now, calendar: utcCalendar)
+        XCTAssertEqual(sections.map(\.day), [today, utcCalendar.startOfDay(for: tomorrow.startDate)])
+        XCTAssertTrue(sections.allSatisfy { $0.day >= today })
     }
 
     func testFutureEventsAreIncludedInTimelinePresentation() {

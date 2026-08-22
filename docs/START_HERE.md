@@ -1,6 +1,6 @@
 # Start Here
 
-AgendaCue is at WU-10 Release Gate Phase B.2. The accepted B.1 Production candidate has a fresh, locally validated App Store Distribution archive and IPA. H01–H46 are deferred by explicit owner policy to post-review / pre-release validation; no Human Gate item is marked passed.
+AgendaCue is at WU-10 Release Gate Phase B.3. The Alarm timeline now presents today through future dates and its sticky date-header region is opaque and visually stable. H01–H46 are deferred by explicit owner policy to post-review / pre-release validation; no Human Gate item is marked passed.
 
 ## Reading order
 
@@ -15,7 +15,7 @@ AgendaCue is at WU-10 Release Gate Phase B.2. The accepted B.1 Production candid
 
 ## Current stop line
 
-WU-10 Phase B.2 stops with the fresh package validated and upload/submission authorization pending. Do not push, merge, tag, upload, submit, or publicly release. Manual release is preferred so H01–H46 and final owner validation can occur after approval and before public release.
+WU-10 Phase B.3 stops ready for final App Store screenshot capture. The B.2 IPA is stale after this Production UI change and must not be uploaded. Do not push, merge, tag, upload, submit, or publicly release.
 
 ## Product invariants
 

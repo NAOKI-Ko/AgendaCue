@@ -1,6 +1,6 @@
 # AgendaCue App Store Release Checklist
 
-Status is evidence-based as of WU-10 Phase B.2. `READY` is not an App Store approval or Human Gate PASS.
+Status is evidence-based as of WU-10 Phase B.3. `READY` is not an App Store approval or Human Gate PASS.
 
 | Item | Status | Evidence / next action |
 |---|---|---|
@@ -20,9 +20,9 @@ Status is evidence-based as of WU-10 Phase B.2. `READY` is not an App Store appr
 | Informational Support page | PASS — PUBLIC / VERIFIED | `https://naoki-ko.github.io/agendacue-site/support/` |
 | App Store Support URL compliance | OWNER-ACCEPTED WITH REVIEW RISK | Use `https://naoki-ko.github.io/agendacue-site/privacy/`, the same URL as Privacy Policy. No public personal contact information. Owner accepts the known App Review risk; handle any rejection only from actual reviewer feedback. Not a full-compliance PASS or internal blocker. |
 | Japanese screenshot sources | PASS | 7 visually inspected JPEG sources, 1320×2868, RGB/no-alpha |
-| Final Japanese screenshot package | PASS | 6 raw captures finalized in `screenshots/final-ja/`; order and factual copy finalized |
-| Distribution signing | VALIDATED — FRESH B.2 | Cloud Managed Apple Distribution; team `67BCCSD863`; exact Store profile; `get-task-allow = false` |
-| App Store export validation | PASS — FRESH B.2 | Candidate `4027062…`; IPA SHA-256 `cc2d166677e48545f2b21a9e266a5d502b785b340ec53543e8c9ad60020aafb5`; no upload |
+| Final Japanese screenshot package | SUPERSEDED WHERE TIMELINE IS VISIBLE | Capture a fresh final set after B.3 UI freeze; do not use the old timeline images as final |
+| Distribution signing | PREVIOUSLY VALIDATED / B.2 ARTIFACT STALE | Cloud signing configuration remains unchanged; regenerate after screenshot capture/UI freeze |
+| App Store export validation | STALE AFTER B.3 | B.2 IPA SHA-256 `cc2d1666…` predates the B.3 Production UI change and must not be uploaded |
 | H01–H46 | DEFERRED — POST-REVIEW / PRE-RELEASE OWNER VALIDATION | No item passed by Simulator evidence; not an App Review submission blocker under explicit owner policy |
 | Final owner public-release GO / NO-GO | PENDING | Required before manual public release |
 | App Store upload | NOT STARTED | Explicit owner-authorized later operation only |

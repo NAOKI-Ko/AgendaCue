@@ -60,8 +60,8 @@ final class ProductionUXViewModel: ObservableObject {
             calendars = discovery.calendars
             enabledCalendarIDs = discovery.enabledIdentifiers
             let now = Date()
-            let displayWindow = ProductionPresentationPolicy.timelineWindow(now: now)
-            events = try await source.fetch(in: .init(start: displayWindow.start, end: displayWindow.end))
+            let fetchWindow = ProductionPresentationPolicy.calendarFetchWindow(now: now)
+            events = try await source.fetch(in: .init(start: fetchWindow.start, end: fetchWindow.end))
             overrides = try await overrideStore.allOverrides()
             settings = try await settingsService.load()
             loadState = events.isEmpty ? .empty : .content
@@ -214,7 +214,6 @@ struct ProductionRootView: View {
         case "main": MainTabsView(model: model, clock: presentationClock)
         case "timeline", "timeline-no-future", "upcoming", "upcoming-empty":
             AlarmTimelineView(model: model, clock: presentationClock)
-        case "timeline-past": AlarmTimelineView(model: model, clock: presentationClock, sampleInitialAnchor: .event("two-days-ago"))
         case "timeline-future": AlarmTimelineView(model: model, clock: presentationClock, sampleInitialAnchor: .event("planning"))
         case "settings": SettingsView(model: model)
         case "calendars", "calendars-long", "no-calendars": NavigationStack { CalendarSelectionView(model: model) }
@@ -394,6 +393,8 @@ struct AlarmTimelineView: View {
                 }
             }
             .navigationTitle(ProductionCopy.alarm)
+            .toolbarBackground(Color(uiColor: .systemBackground), for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
         }
     }
 
@@ -412,7 +413,7 @@ struct AlarmTimelineView: View {
                         ContentUnavailableView(
                             ProductionCopy.emptyTimelineTitle,
                             systemImage: "calendar",
-                            description: Text("過去14日から今後14日までの予定がここに表示されます。")
+                            description: Text("今日から今後14日までの予定がここに表示されます。")
                         )
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 42)
@@ -420,6 +421,7 @@ struct AlarmTimelineView: View {
                 }
                 .padding(.bottom, 24)
             }
+            .background(Color(uiColor: .systemBackground))
             .accessibilityIdentifier(ProductionAccessibilityID.alarmTimelineList)
             .refreshable { await model.refresh() }
             .toolbar {
@@ -778,7 +780,7 @@ struct TimelineView: View {
     }
 
     private var empty: some View {
-        ContentUnavailableView(ProductionCopy.emptyTimelineTitle, systemImage: "calendar.badge.exclamationmark", description: Text("過去14日から今後14日までの予定がここに表示されます。"))
+        ContentUnavailableView(ProductionCopy.emptyTimelineTitle, systemImage: "calendar.badge.exclamationmark", description: Text("今日から今後14日までの予定がここに表示されます。"))
     }
 
     private func timelineLink(_ event: CalendarEvent) -> some View {
@@ -811,7 +813,7 @@ private struct TimelineDateHeader: View {
         .padding(.horizontal, 20)
         .padding(.vertical, 10)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.regularMaterial)
+        .background(Color(uiColor: .systemBackground))
         .accessibilityElement(children: .combine)
     }
 }
