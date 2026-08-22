@@ -33,7 +33,7 @@
 	</dict>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
-		<string>com.example.CalendarAlarmFeasibility.refresh</string>
+		<string>com.naoki-ko.agendacue.refresh</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

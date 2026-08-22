@@ -1,6 +1,6 @@
 # WU-10 Required Human Gate Checklist
 
-Human execution is mandatory. Record `PASS`, `FAIL`, or justified `N/A`; attach evidence references and notes. Do not reuse evidence after the candidate SHA changes.
+Human execution is mandatory. Candidate identity is AgendaCue / `com.naoki-ko.agendacue`. Record `PASS`, `FAIL`, or justified `N/A`; attach evidence references and notes. Do not reuse evidence after the candidate SHA changes.
 
 | ID | Scenario | Setup | Steps | Expected | Result | Evidence | Notes |
 |---|---|---|---|---|---|---|---|

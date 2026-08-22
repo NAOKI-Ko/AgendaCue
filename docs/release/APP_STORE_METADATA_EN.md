@@ -5,6 +5,7 @@ Draft only; owner approval is required before App Store Connect entry.
 ## Core metadata
 
 - App Name: `AgendaCue` (9/30 characters)
+- Bundle ID: `com.naoki-ko.agendacue`
 - Subtitle: `Calendar alerts you won’t miss` (30/30 characters)
 - Promotional text: `Turn events in your iPhone calendar into alarms at the lead time you choose.`
 - Primary category: Productivity

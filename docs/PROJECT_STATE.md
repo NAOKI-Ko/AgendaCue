@@ -1,8 +1,8 @@
 # Project State
 
-- Phase: **WU-10 Release Gate — Phase A.1**
-- Current Work: **AgendaCue Production Naming Integration**
-- Status: **HUMAN GATE READY**
+- Phase: **WU-10 Release Gate — Phase A.2**
+- Current Work: **Production Identity Integration + Signing / Archive Readiness**
+- Status: **AUTOMATED IDENTITY GATE PASS / ARCHIVE BLOCKED BY LOCAL SIGNING**
 - Automated Gate: **PASS**
 - Human Gate: **PENDING — REQUIRED / CANNOT BE WAIVED**
 - Submission: **NOT STARTED**
@@ -10,6 +10,8 @@
 - Phase B: **NOT STARTED**
 - Production Brand: **AgendaCue — OWNER APPROVED / INTEGRATED**
 - Customer Display Name: **AgendaCue**
+- Production Bundle ID: **`com.naoki-ko.agendacue` — OWNER APPROVED / INTEGRATED**
+- Production BGTask ID: **`com.naoki-ko.agendacue.refresh` — OWNER APPROVED / INTEGRATED**
 
 ## Automated evidence
 
@@ -25,6 +27,8 @@ Environment: Xcode 26.6 (17F113), iOS SDK 26.5, iOS 26.5 Simulators.
 - WU-10 release evidence is indexed in `docs/evidence/WU-10/README.md`.
 - Phase A.1 naming evidence is indexed in `docs/evidence/WU-10/PHASE_A_1_NAMING.md`.
 - Phase A.1 verification: 160/160 tests; required specific Debug and generic Release Simulator/unsigned Device builds; Release launch; built and installed `CFBundleDisplayName = AgendaCue`.
+- Phase A.2 verification: 160/160 tests; all three Debug and both unsigned Release builds; Release launch under `com.naoki-ko.agendacue`; built plist identity and BGTask checks passed.
+- Normal signed generic Release build: **BLOCKED** — no valid local signing identities and no provisioning profile for `com.naoki-ko.agendacue`; archive was therefore not attempted.
 - Japanese residual audit: app-owned primary UI, permission guidance, state copy, accessibility labels, and purpose strings are Japanese. Product/system names and source-provided calendar/event/source content remain unchanged.
 - Scope audit: scheduling dates/identities/lifecycle, reconciliation, background semantics, domain rules, calendar write prohibition, timeline, settings, persistence schema, and event-detail business behavior are unchanged. Phase A changes are release configuration hygiene, privacy manifest, Japanese stop copy, a narrow Sendable fix, and documentation/evidence.
 
@@ -36,18 +40,16 @@ Accessibility Inspector, real VoiceOver, real-device permissions/EventKit/AlarmK
 
 ## Remaining owner inputs
 
-- Production Bundle ID and matching BGTask identifier namespace.
 - Final App Icon approval.
-- Production signing/App ID/profile/account confirmation.
+- Install a valid Apple Development/Distribution certificate and compatible provisioning profile; verify/register the Production App ID through the owner account.
 - Support URL and Privacy Policy URL/status.
 - Final metadata, copyright holder, category, screenshots, and App Store Connect decisions.
 
 ## Release blockers
 
-- Background task identifier: `com.example.CalendarAlarmFeasibility.refresh`.
-- Current bundle identifier: `com.example.CalendarAlarmFeasibility`.
-- Both identifiers remain unchanged and require owner-approved Production replacement before archive.
-- Expected BGTask form after owner input: `<production-bundle-id>.refresh`; no namespace has been invented.
+- Local keychain contains zero valid code-signing identities.
+- No matching provisioning profile for `com.naoki-ko.agendacue` was resolved by a normal Release device build.
+- Production identity integration itself is complete; signed archive remains blocked only by signing/App ID/profile availability and final icon approval.
 - Actual system-scheduled background execution timing was not tested on a real device; foreground/resume remains authoritative.
 
 ## Required Human Review

@@ -7,6 +7,7 @@ Draft only; owner approval is required before App Store Connect entry.
 ## Core metadata
 
 - App Name: `AgendaCue`（9/30文字）
+- Bundle ID: `com.naoki-ko.agendacue`
 - Subtitle: `予定をアラームで確実にお知らせ`（15/30文字）
 - Promotional text: `iPhoneのカレンダー予定を読み取り、設定した時間前にアラームでお知らせします。`
 - Primary category: Productivity

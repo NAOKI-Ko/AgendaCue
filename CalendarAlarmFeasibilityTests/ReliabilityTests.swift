@@ -7,6 +7,7 @@ final class ReliabilityTests: XCTestCase {
     func testBackgroundRegistrationOccursOnceWithCorrectIdentifier() {
         let x = setup(); XCTAssertTrue(x.coordinator.start()); XCTAssertTrue(x.coordinator.start())
         XCTAssertEqual(x.scheduler.registerCount, 1); XCTAssertEqual(x.scheduler.identifier, ReliabilityPolicy.backgroundTaskIdentifier)
+        XCTAssertEqual(ReliabilityPolicy.backgroundTaskIdentifier, "com.naoki-ko.agendacue.refresh")
     }
 
     func testBackgroundRegistrationSchedulesOneLogicalRequest() {

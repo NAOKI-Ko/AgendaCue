@@ -358,7 +358,7 @@
 				INFOPLIST_FILE = CalendarAlarmFeasibility/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.CalendarAlarmFeasibility;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.naoki-ko.agendacue";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -380,7 +380,7 @@
 				INFOPLIST_FILE = CalendarAlarmFeasibility/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.CalendarAlarmFeasibility;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.naoki-ko.agendacue";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -398,7 +398,7 @@
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.CalendarAlarmFeasibilityTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.naoki-ko.agendacue.tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -416,7 +416,7 @@
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.CalendarAlarmFeasibilityTests;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.naoki-ko.agendacue.tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

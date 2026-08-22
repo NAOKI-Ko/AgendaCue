@@ -3,7 +3,7 @@ import Foundation
 import UIKit
 
 enum ReliabilityPolicy {
-    static let backgroundTaskIdentifier = "com.example.CalendarAlarmFeasibility.refresh"
+    static let backgroundTaskIdentifier = "com.naoki-ko.agendacue.refresh"
     static let backgroundRefreshInterval: TimeInterval = 6 * 60 * 60
     static let timeChangeNotifications: [Notification.Name] = [
         NSNotification.Name.NSCalendarDayChanged,

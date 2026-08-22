@@ -1,6 +1,7 @@
 # WU-10 Human Gate Result
 
 - Status: **PENDING**
+- App identity: **AgendaCue / `com.naoki-ko.agendacue`**
 - Candidate SHA: `[fill after final candidate is built]`
 - Tester: `[required]`
 - Date/time/timezone: `[required]`
