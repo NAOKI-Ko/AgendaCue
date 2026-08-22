@@ -1,8 +1,8 @@
 # Project State
 
-- Phase: **WU-10 Release Gate — Phase A.3**
-- Current Work: **Signed Build + Local Archive Validation**
-- Status: **ARCHIVE VALIDATED / HUMAN GATE PENDING**
+- Phase: **WU-10 Release Gate — Phase A.4**
+- Current Work: **Final AppIcon Integration + Technical Validation**
+- Status: **FINAL APPICON APPROVED + INTEGRATED / HUMAN GATE PENDING**
 - Automated Gate: **PASS**
 - Human Gate: **PENDING — REQUIRED / CANNOT BE WAIVED**
 - Submission: **NOT STARTED**
@@ -12,6 +12,8 @@
 - Customer Display Name: **AgendaCue**
 - Production Bundle ID: **`com.naoki-ko.agendacue` — OWNER APPROVED / INTEGRATED**
 - Production BGTask ID: **`com.naoki-ko.agendacue.refresh` — OWNER APPROVED / INTEGRATED**
+- Final AppIcon: **APPROVED + INTEGRATED**
+- AppIcon Technical Validation: **PASS**
 
 ## Automated evidence
 
@@ -30,6 +32,7 @@ Environment: Xcode 26.6 (17F113), iOS SDK 26.5, iOS 26.5 Simulators.
 - Phase A.2 verification: 160/160 tests; all three Debug and both unsigned Release builds; Release launch under `com.naoki-ko.agendacue`; built plist identity and BGTask checks passed.
 - Phase A.3 verification: valid Apple Development identity restored; signed generic Release build and local Release archive passed; archive identity/plist/privacy/icon/leakage inspection passed.
 - Local archive: `/private/tmp/AgendaCue-WU10-A3.xcarchive`, signed by `Apple Development: Naoki Kondo (8G67FB9S72)` with team `67BCCSD863` and `iOS Team Provisioning Profile: *`.
+- Phase A.4 verification: owner-approved 1024×1024 RGB/no-alpha PNG integrated as the sole Production `AppIcon`; 160/160 tests, required Debug/Release builds, Release launch/bundle inspection, and Simulator Home Screen rendering passed.
 - Japanese residual audit: app-owned primary UI, permission guidance, state copy, accessibility labels, and purpose strings are Japanese. Product/system names and source-provided calendar/event/source content remain unchanged.
 - Scope audit: scheduling dates/identities/lifecycle, reconciliation, background semantics, domain rules, calendar write prohibition, timeline, settings, persistence schema, and event-detail business behavior are unchanged. Phase A changes are release configuration hygiene, privacy manifest, Japanese stop copy, a narrow Sendable fix, and documentation/evidence.
 
@@ -41,14 +44,12 @@ Accessibility Inspector, real VoiceOver, real-device permissions/EventKit/AlarmK
 
 ## Remaining owner inputs
 
-- Final App Icon approval.
 - App Store distribution signing/profile and export/upload readiness must be validated in the later release step; this local archive is development-signed and was not exported.
 - Support URL and Privacy Policy URL/status.
 - Final metadata, copyright holder, category, screenshots, and App Store Connect decisions.
 
 ## Release blockers
 
-- Final App Icon owner approval remains required.
 - Support/privacy URLs, final store metadata/screenshots, H01–H46, and owner GO/NO-GO remain pending.
 - Physical iPhone was listed as unavailable, so no device installation or behavior was claimed.
 - App Store distribution certificate/profile and export validation remain future release operations; no upload or submission occurred.

@@ -49,6 +49,6 @@ Human execution is mandatory. Candidate identity is AgendaCue / `com.naoki-ko.ag
 | H43 | Event Detail acceptance | Final RC | Owner reviews default/custom/OFF/past | Owner explicitly accepts | PENDING | — | — |
 | H44 | Settings acceptance | Final RC | Owner reviews controls/privacy/recovery | Owner explicitly accepts | PENDING | — | — |
 | H45 | Onboarding acceptance | Final RC/fresh install | Owner completes allow and deny variants | Owner explicitly accepts | PENDING | — | — |
-| H46 | Final App Icon acceptance | Final proposed artwork on device/store context | Owner reviews at multiple sizes | Owner explicitly approves exact artwork | PENDING | — | Current artwork is not approved |
+| H46 | Final App Icon acceptance | Phase A.4 approved artwork on device/store context | Owner reviews integrated result at multiple sizes | Integrated icon matches the approved exact artwork | PENDING | — | Artwork approved/integrated; device Human Gate evidence remains pending |
 
 Final Owner Decision: **PENDING**. Any failure requires diagnosis and a new SHA-bound gate run before release approval.
