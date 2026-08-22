@@ -1,13 +1,13 @@
 # Project State
 
-- Phase: **WU-10 Release Gate — Phase B.1**
-- Current Work: **Onboarding Permission Refresh Fix + Onboarding Simplification**
-- Status: **AUTOMATED + SIMULATOR VALIDATION COMPLETE / FINAL RELEASE AUDIT NEXT**
+- Phase: **WU-10 Release Gate — Phase B.2**
+- Current Work: **Fresh Distribution Package + Final Pre-Upload Audit**
+- Status: **FRESH DISTRIBUTION PACKAGE VALIDATED / UPLOAD AUTHORIZATION PENDING**
 - Automated Gate: **PASS**
 - Human Gate: **DEFERRED BY OWNER TO POST-REVIEW / PRE-RELEASE VALIDATION — NOT PASS**
 - Submission: **NOT STARTED**
 - Main Merge: **NOT STARTED**
-- Phase B: **B.1 COMPLETE**
+- Phase B: **B.2 COMPLETE**
 - Production Brand: **AgendaCue — OWNER APPROVED / INTEGRATED**
 - Customer Display Name: **AgendaCue**
 - Production Bundle ID: **`com.naoki-ko.agendacue` — OWNER APPROVED / INTEGRATED**
@@ -44,6 +44,7 @@ Environment: Xcode 26.6 (17F113), iOS SDK 26.5, iOS 26.5 Simulators.
 - Phase A.7A screenshot package: six visually inspected raw captures finalized under `docs/release/screenshots/final-ja/` in App Store order; every file remains 1320×2868 JPEG, RGB/no-alpha, byte-identical to its validated source.
 - Phase A.7B owner decision: use `https://naoki-ko.github.io/agendacue-site/privacy/` for both the Privacy Policy URL and App Store Support URL. No public personal contact information is approved. Support URL status is **OWNER-ACCEPTED WITH REVIEW RISK**; it is not a full-compliance PASS or an internal release blocker. Any rejection will be handled only from actual App Review feedback.
 - Phase B.1 verification: Calendar-first onboarding; authoritative post-request Calendar/Alarm state refresh; immediate Calendar data reload; 164/164 tests; required Debug/Release builds; Production Release launch and Simulator visual QA.
+- Phase B.2 verification: fresh archive `/private/tmp/AgendaCue-WU10-B2.xcarchive` and fresh App Store export `/private/tmp/AgendaCue-WU10-B2-Export/CalendarAlarmFeasibility.ipa` passed for Production candidate `4027062ce519ab15f0274417d7d65d54133097ae`; IPA SHA-256 `cc2d166677e48545f2b21a9e266a5d502b785b340ec53543e8c9ad60020aafb5`; Distribution signing, exact Store profile, entitlements, strict codesign, privacy/resources, and leakage audits passed.
 - Japanese residual audit: app-owned primary UI, permission guidance, state copy, accessibility labels, and purpose strings are Japanese. Product/system names and source-provided calendar/event/source content remain unchanged.
 - Scope audit: scheduling dates/identities/lifecycle, reconciliation, background semantics, domain rules, calendar write prohibition, timeline, settings, persistence schema, and event-detail business behavior are unchanged. Phase A changes are release configuration hygiene, privacy manifest, Japanese stop copy, a narrow Sendable fix, and documentation/evidence.
 
