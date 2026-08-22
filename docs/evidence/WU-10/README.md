@@ -25,7 +25,7 @@ Root cause was the default `Date.init` function value being converted to an expl
 
 - App bundle ID: `com.example.CalendarAlarmFeasibility` — **BLOCKED / OWNER INPUT REQUIRED**.
 - Test bundle ID: `com.example.CalendarAlarmFeasibilityTests` — development placeholder; update consistently after app identity.
-- Product/CFBundleName: `CalendarAlarmFeasibility`; no explicit CFBundleDisplayName — owner must approve final customer-facing name.
+- Internal Product/CFBundleName remains `CalendarAlarmFeasibility`; `CFBundleDisplayName` is the owner-approved customer name `AgendaCue`.
 - Marketing version/build: `1.0` / `1`, consistent between build settings and Info.plist.
 - Signing: Automatic, team `67BCCSD863` configured; Production App ID/profile/account validity not proven.
 - Entitlements: no source `.entitlements`, App Groups, URL schemes, or extra capabilities found. Simulator signature contains only its generated application identifier.
@@ -82,6 +82,6 @@ No scheduling date/identity/lifecycle, reconciliation horizon, past-event eligib
 
 ## Archive readiness
 
-**BLOCKED — archive not attempted.** An unsigned generic Release device build passed, but an App Store archive would still contain the forbidden example bundle/BGTask namespace and unapproved display identity/icon. Production Bundle ID, matching BGTask ID, owner-approved display name/icon, and valid Production signing/profile must be supplied first. No archive, upload, or submission occurred.
+**BLOCKED — archive not attempted.** An unsigned generic Release device build passed, but an App Store archive would still contain the forbidden example bundle/BGTask namespace and unapproved icon. Production Bundle ID, matching BGTask ID, owner-approved icon, and valid Production signing/profile must be supplied first. The display identity is now owner-approved and integrated as `AgendaCue`. No archive, upload, or submission occurred.
 
 Human Gate status: **PENDING — REQUIRED**. Phase A result: **HUMAN GATE READY**, not release complete.

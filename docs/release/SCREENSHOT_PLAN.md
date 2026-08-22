@@ -1,4 +1,4 @@
-# Japanese App Store Screenshot Plan
+# AgendaCue Japanese App Store Screenshot Plan
 
 Use an iPhone 17 Pro Simulator, iOS 26.5, Japanese locale, Light appearance, default text size unless a second device family is required by App Store Connect. Capture clean Production-comparable sample screens, then crop/export only with Apple's accepted dimensions. Do not fabricate system permission or AlarmKit UI.
 
@@ -10,4 +10,4 @@ Use an iPhone 17 Pro Simulator, iOS 26.5, Japanese locale, Light appearance, def
 6. **設定** — default lead, permissions, local/read-only explanation. Caption: `シンプルな設定と分かりやすい権限状態`.
 7. **オンボーディング（任意）** — use only if owner finds the privacy/read-only promise valuable. Caption: `カレンダーは読み取り専用で利用`.
 
-Avoid debug/feasibility controls, internal IDs, permission error screens as hero images, private calendar content, fake system dialogs, fake AlarmKit presentation, guaranteed-delivery language, and direct-provider claims. Final screenshots require owner acceptance and should be recaptured after Production bundle/display identity and final icon are approved.
+Use `AgendaCue` consistently anywhere the installed app name is visible. Avoid debug/feasibility controls, internal IDs, permission error screens as hero images, private calendar content, fake system dialogs, fake AlarmKit presentation, guaranteed-delivery language, and direct-provider claims. Final screenshots require owner acceptance and should be recaptured after the Production bundle identity and final icon are approved.

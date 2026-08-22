@@ -2,10 +2,12 @@
 
 Draft only; owner approval is required before App Store Connect entry.
 
+文字数はAppleの[App information reference](https://developer.apple.com/help/app-store-connect/reference/app-information/app-information)にあるApp Name/Subtitle各30文字上限に対して確認済みです。
+
 ## Core metadata
 
-- App Name candidates: `Calendar Alarm` / `カレンダーアラーム`
-- Subtitle: `予定の前に、しっかりアラーム`
+- App Name: `AgendaCue`（9/30文字）
+- Subtitle: `予定をアラームで確実にお知らせ`（15/30文字）
 - Promotional text: `iPhoneのカレンダー予定を読み取り、設定した時間前にアラームでお知らせします。`
 - Primary category: Productivity
 - Secondary category candidate: Utilities
@@ -17,7 +19,7 @@ Draft only; owner approval is required before App Store Connect entry.
 
 ## Description
 
-Calendar Alarmは、iPhoneのカレンダー予定を読み取り、設定した時間前にアラームを鳴らすシンプルなアプリです。
+AgendaCueは、iPhoneのカレンダー予定を読み取り、設定した時間前に本物のアラームを鳴らすシンプルなアプリです。
 
 参加させるカレンダーを選び、標準のアラーム時間を設定できます。予定ごとにアラームをオフにしたり、対応する時間へ変更したりすることもできます。
 

@@ -4,7 +4,7 @@ Human execution is mandatory. Record `PASS`, `FAIL`, or justified `N/A`; attach 
 
 | ID | Scenario | Setup | Steps | Expected | Result | Evidence | Notes |
 |---|---|---|---|---|---|---|---|
-| H01 | Fresh install | Delete app/data on real iPhone | Install signed RC and launch | Welcome appears with no stale state | PENDING | — | — |
+| H01 | Fresh install | Delete app/data on real iPhone | Install signed RC and launch | Installed/displayed app name is `AgendaCue`; Welcome appears with no stale state | PENDING | — | — |
 | H02 | Welcome onboarding | H01 | Review welcome and tap はじめる | Promise/privacy readable; advances once | PENDING | — | — |
 | H03 | Calendar rationale | Calendar permission not determined | Read screen before action | Japanese rationale precedes system prompt | PENDING | — | — |
 | H04 | Calendar permission allow | H03 | Request and allow full calendar access | App records authorized and advances | PENDING | — | — |
@@ -25,7 +25,7 @@ Human execution is mandatory. Record `PASS`, `FAIL`, or justified `N/A`; attach 
 | H19 | Calendar disable cancellation | Selected calendar with scheduled event | Disable calendar in app | Owned alarm is cancelled; selection reflected | PENDING | — | — |
 | H20 | Foreground/relaunch reconciliation | Change event while app inactive | Foreground, then terminate/relaunch | Both paths converge without duplicates | PENDING | — | — |
 | H21 | Real one-shot AlarmKit firing | Future event with near safe time | Schedule and wait on real iPhone | AlarmKit alarm fires at calculated instant | PENDING | — | — |
-| H22 | Exact AlarmKit title | H21 event with distinctive nonblank title | Observe system presentation | Custom title equals event title exactly | PENDING | — | — |
+| H22 | Exact AlarmKit title | H21 event with distinctive nonblank title | Observe system presentation | Custom title equals event title exactly and does not prepend/append `AgendaCue` | PENDING | — | — |
 | H23 | Blank title fallback | Only if Calendar permits safe blank title | Schedule blank/whitespace event | Custom title is `予定` | PENDING | — | Use N/A if not safely reproducible |
 | H24 | Locked-screen alarm | Scheduled near-term alarm | Lock device and wait | Native alarm appears/fires on lock screen | PENDING | — | — |
 | H25 | Backgrounded alarm | Scheduled near-term alarm | Background app and wait | Alarm fires without app foreground | PENDING | — | — |

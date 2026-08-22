@@ -1,10 +1,10 @@
-# Product Specification — Production V1
+# AgendaCue Product Specification — Production V1
 
 ## Purpose and promise
 
-Calendar Alarm converts selected calendar events available in the device's iOS calendar database into prominent AlarmKit alarms at a user-configured lead time.
+AgendaCue converts selected calendar events available in the device's iOS calendar database into prominent AlarmKit alarms at a user-configured lead time.
 
-> If an important calendar event starts at 10:00, Calendar Alarm can alert me with a real alarm at the configured time before it.
+> If an important calendar event starts at 10:00, AgendaCue can alert me with a real alarm at the configured time before it.
 
 ## Product constraints
 

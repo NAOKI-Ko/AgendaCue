@@ -1,13 +1,15 @@
 # Project State
 
-- Phase: **WU-10 Release Gate — Phase A**
-- Current Work: **Automated Release Audit + Human Gate Preparation**
+- Phase: **WU-10 Release Gate — Phase A.1**
+- Current Work: **AgendaCue Production Naming Integration**
 - Status: **HUMAN GATE READY**
 - Automated Gate: **PASS**
 - Human Gate: **PENDING — REQUIRED / CANNOT BE WAIVED**
 - Submission: **NOT STARTED**
 - Main Merge: **NOT STARTED**
 - Phase B: **NOT STARTED**
+- Production Brand: **AgendaCue — OWNER APPROVED / INTEGRATED**
+- Customer Display Name: **AgendaCue**
 
 ## Automated evidence
 
@@ -21,6 +23,8 @@ Environment: Xcode 26.6 (17F113), iOS SDK 26.5, iOS 26.5 Simulators.
 - Production Release app Simulator launch smoke without sample arguments: passed.
 - Clean Debug/Release compiler audit: zero warnings after the narrow Sendable fix.
 - WU-10 release evidence is indexed in `docs/evidence/WU-10/README.md`.
+- Phase A.1 naming evidence is indexed in `docs/evidence/WU-10/PHASE_A_1_NAMING.md`.
+- Phase A.1 verification: 160/160 tests; required specific Debug and generic Release Simulator/unsigned Device builds; Release launch; built and installed `CFBundleDisplayName = AgendaCue`.
 - Japanese residual audit: app-owned primary UI, permission guidance, state copy, accessibility labels, and purpose strings are Japanese. Product/system names and source-provided calendar/event/source content remain unchanged.
 - Scope audit: scheduling dates/identities/lifecycle, reconciliation, background semantics, domain rules, calendar write prohibition, timeline, settings, persistence schema, and event-detail business behavior are unchanged. Phase A changes are release configuration hygiene, privacy manifest, Japanese stop copy, a narrow Sendable fix, and documentation/evidence.
 
@@ -33,7 +37,6 @@ Accessibility Inspector, real VoiceOver, real-device permissions/EventKit/AlarmK
 ## Remaining owner inputs
 
 - Production Bundle ID and matching BGTask identifier namespace.
-- Final customer-facing display/App Store name.
 - Final App Icon approval.
 - Production signing/App ID/profile/account confirmation.
 - Support URL and Privacy Policy URL/status.
@@ -44,6 +47,7 @@ Accessibility Inspector, real VoiceOver, real-device permissions/EventKit/AlarmK
 - Background task identifier: `com.example.CalendarAlarmFeasibility.refresh`.
 - Current bundle identifier: `com.example.CalendarAlarmFeasibility`.
 - Both identifiers remain unchanged and require owner-approved Production replacement before archive.
+- Expected BGTask form after owner input: `<production-bundle-id>.refresh`; no namespace has been invented.
 - Actual system-scheduled background execution timing was not tested on a real device; foreground/resume remains authoritative.
 
 ## Required Human Review

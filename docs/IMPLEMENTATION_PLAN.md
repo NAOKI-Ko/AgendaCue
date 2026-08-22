@@ -4,7 +4,7 @@ Sequence is mandatory: Spec → Work Unit → Scope Gate → Implementation → 
 
 By explicit owner policy recorded for WU-01, intermediate Human Gates are waived and deferred to consolidated WU-10 review. A waiver permits readiness for the next separately authorized WU but is never a PASS and never evidence that device behavior occurred. Automated Gates remain mandatory.
 
-WU-10 Phase A automated release audit is complete. Status is HUMAN GATE READY. The required H01–H46 Human Gate, Production identity/signing inputs, final assets/metadata, archive, upload, submission, merge, and any Phase B work remain pending.
+WU-10 Phase A.1 integrates the owner-approved `AgendaCue` customer-facing name without changing internal modules or behavior. Status remains HUMAN GATE READY. The required H01–H46 Human Gate, Production Bundle/BGTask identity, signing inputs, final icon/metadata, archive, upload, submission, merge, and Phase B remain pending.
 
 ## WU-00 Feasibility & Platform Gate
 

@@ -63,6 +63,7 @@ Apply only the sections relevant to the active WU and record actual evidence aga
 ## Human/device and release
 
 - WU-10 Phase A evidence includes full tests, three Debug/two Release builds, Release launch smoke, zero-warning audit, Release leakage scan, privacy manifest validation, and identity/BGTask/icon/archive blockers. Automated PASS means HUMAN GATE READY only.
+- WU-10 Phase A.1 requires built `CFBundleDisplayName = AgendaCue`, matching Japanese/English App Store naming within 30-character limits, no `AgendaCue` in custom AlarmKit titles, and no behavior/identity/icon expansion.
 - Required device scenarios are executed by a human and evidence is attached.
 - Human Device Gate remains PENDING until explicit human confirmation.
 - Privacy descriptions/disclosures match behavior; App Store metadata, icons, screenshots, signing, archive, and release checklist are complete in WU-10.

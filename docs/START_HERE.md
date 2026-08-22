@@ -1,6 +1,6 @@
 # Start Here
 
-Calendar Alarm is at WU-10 Release Gate Phase A. Automated release audit is complete and the required Human Gate is prepared. The state is HUMAN GATE READY, not release complete.
+AgendaCue is at WU-10 Release Gate Phase A.1 Production Naming Integration. The owner-approved V1 brand and customer-facing display name are integrated. Automated naming verification is complete, but Production identity and the required Human Gate remain pending; this is not release complete.
 
 ## Reading order
 
