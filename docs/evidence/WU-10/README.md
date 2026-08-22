@@ -8,6 +8,8 @@
 
 > Non-device App Store metadata/site/screenshot/checklist package preparation is recorded in `PHASE_A_5_APP_STORE_PACKAGE.md`.
 
+> App Store Distribution signing and local export validation are recorded in `PHASE_A_6_DISTRIBUTION_EXPORT.md`.
+
 Audit date: 2026-08-20. Parent: `2f32f35926e13b35fc78698b16c1dccd757c0504`. Environment: Xcode 26.6 (17F113), iOS SDK/Simulator 26.5, iPhone 17 Pro Simulator.
 
 ## Automated result

@@ -1,6 +1,6 @@
 # AgendaCue App Store Release Checklist
 
-Status is evidence-based as of WU-10 Phase A.5. `READY` is not an App Store approval or Human Gate PASS.
+Status is evidence-based as of WU-10 Phase A.6. `READY` is not an App Store approval or Human Gate PASS.
 
 | Item | Status | Evidence / next action |
 |---|---|---|
@@ -20,8 +20,8 @@ Status is evidence-based as of WU-10 Phase A.5. `READY` is not an App Store appr
 | Support URL | BLOCKED — OWNER INPUT | Publish stable HTTPS URL |
 | Japanese screenshot sources | READY FOR OWNER REVIEW | 7 JPEGs, 1320×2868, RGB/no-alpha |
 | Screenshot marketing compositions/order | PENDING — OWNER | Raw sources contain no baked headline |
-| Distribution signing | PENDING | Phase A.3 archive is Development-signed |
-| App Store export validation | PENDING | Validate with Distribution certificate/profile |
+| Distribution signing | VALIDATED | Cloud Managed Apple Distribution; team `67BCCSD863`; exact Store profile; `get-task-allow = false` |
+| App Store export validation | PASS | Local App Store Connect export produced an inspected IPA; no upload |
 | H01–H46 | PENDING — OWNER EXECUTION | No item passed by Simulator evidence |
 | Final owner GO / NO-GO | PENDING | Requires current candidate and Human Gate evidence |
 | App Store upload | NOT STARTED | Explicit owner-authorized later operation only |

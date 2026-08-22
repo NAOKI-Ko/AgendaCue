@@ -1,8 +1,8 @@
 # Project State
 
-- Phase: **WU-10 Release Gate — Phase A.5**
-- Current Work: **App Store Package Preparation**
-- Status: **NON-DEVICE APP STORE PACKAGE PREPARED / HUMAN GATE PENDING**
+- Phase: **WU-10 Release Gate — Phase A.6**
+- Current Work: **App Store Distribution Signing + Export Validation**
+- Status: **DISTRIBUTION EXPORT VALIDATED / HUMAN GATE PENDING**
 - Automated Gate: **PASS**
 - Human Gate: **PENDING — REQUIRED / CANNOT BE WAIVED**
 - Submission: **NOT STARTED**
@@ -38,6 +38,8 @@ Environment: Xcode 26.6 (17F113), iOS SDK 26.5, iOS 26.5 Simulators.
 - Local archive: `/private/tmp/AgendaCue-WU10-A3.xcarchive`, signed by `Apple Development: Naoki Kondo (8G67FB9S72)` with team `67BCCSD863` and `iOS Team Provisioning Profile: *`.
 - Phase A.4 verification: owner-approved 1024×1024 RGB/no-alpha PNG integrated as the sole Production `AppIcon`; 160/160 tests, required Debug/Release builds, Release launch/bundle inspection, and Simulator Home Screen rendering passed.
 - Phase A.5 package: Japanese metadata finalized; privacy/support static page sources and release checklist created; seven owner-review screenshot sources captured on iPhone 17 Pro Max Simulator at 1320×2868 JPEG/no-alpha.
+- Phase A.6 verification: fresh Release archive and local App Store Connect export passed. The exported IPA is signed by `Cloud Managed Apple Distribution` for team `67BCCSD863` with exact Store profile `iOS Team Store Provisioning Profile: com.naoki-ko.agendacue`; exported entitlement `get-task-allow = false`.
+- Phase A.6 archive/export: `/private/tmp/AgendaCue-WU10-A6.xcarchive` and `/private/tmp/AgendaCue-WU10-A6-Export/CalendarAlarmFeasibility.ipa`. Nothing was uploaded or distributed.
 - Japanese residual audit: app-owned primary UI, permission guidance, state copy, accessibility labels, and purpose strings are Japanese. Product/system names and source-provided calendar/event/source content remain unchanged.
 - Scope audit: scheduling dates/identities/lifecycle, reconciliation, background semantics, domain rules, calendar write prohibition, timeline, settings, persistence schema, and event-detail business behavior are unchanged. Phase A changes are release configuration hygiene, privacy manifest, Japanese stop copy, a narrow Sendable fix, and documentation/evidence.
 
@@ -49,17 +51,17 @@ Accessibility Inspector, real VoiceOver, real-device permissions/EventKit/AlarmK
 
 ## Remaining owner inputs
 
-- App Store distribution signing/profile and export/upload readiness must be validated in the later release step; this local archive is development-signed and was not exported.
 - Support URL and Privacy Policy URL/status.
 - Owner-approved contact method for the public privacy/support pages.
 - Final screenshot composition/order and remaining App Store Connect decisions.
+- Explicit authorization for any later App Store Connect upload or App Review submission.
 
 ## Release blockers
 
 - Support/privacy URLs, final store metadata/screenshots, H01–H46, and owner GO/NO-GO remain pending.
 - Japanese metadata/category/copyright source is prepared; App Store Connect entry itself is not started. English localization must not be published until English in-app UI exists.
 - Physical iPhone was listed as unavailable, so no device installation or behavior was claimed.
-- App Store distribution certificate/profile and export validation remain future release operations; no upload or submission occurred.
+- Distribution signing and local export validation passed; App Store Connect upload and App Review submission remain NOT STARTED and require explicit owner authorization.
 - Actual system-scheduled background execution timing was not tested on a real device; foreground/resume remains authoritative.
 
 ## Required Human Review
