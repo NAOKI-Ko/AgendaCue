@@ -13,6 +13,29 @@ final class AlarmRuleEngineTests: XCTestCase {
     func testFutureEventWhoseLeadTimePushesAlarmPastIsExcluded() { XCTAssertEqual(evaluate(event(startOffset: 600), lead: .fifteenMinutes), .excluded(.alarmDateNotInFuture)) }
     func testThirtyMinuteLeadTimeSubtractsExactDuration() { assertCandidate(startOffset: 7200, lead: .thirtyMinutes, expectedAlarmOffset: 5400) }
 
+    func testTenOClockEventProducesExactAlarmForEverySupportedLeadTime() {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        let eventStart = calendar.date(from: DateComponents(year: 2026, month: 8, day: 25, hour: 10))!
+        let referenceNow = calendar.date(from: DateComponents(year: 2026, month: 8, day: 25, hour: 8))!
+        let expected: [(AlarmLeadTime, Int)] = [
+            (.fiveMinutes, 55),
+            (.tenMinutes, 50),
+            (.fifteenMinutes, 45),
+            (.thirtyMinutes, 30),
+            (.oneHour, 0),
+        ]
+
+        for (lead, expectedMinute) in expected {
+            guard case .candidate(let candidate) = engine.evaluate(event: event(at: eventStart), leadTime: lead, now: referenceNow) else {
+                return XCTFail("Expected candidate for \(lead.rawValue)-minute lead")
+            }
+            XCTAssertEqual(calendar.component(.hour, from: candidate.alarmDate), 9)
+            XCTAssertEqual(calendar.component(.minute, from: candidate.alarmDate), expectedMinute)
+            XCTAssertEqual(eventStart.timeIntervalSince(candidate.alarmDate), lead.duration)
+        }
+    }
+
     func testAlarmCanCrossMidnightIntoPreviousDay() {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(secondsFromGMT: 0)!
