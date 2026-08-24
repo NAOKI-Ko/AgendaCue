@@ -45,6 +45,8 @@
 		A00100000000000000000024 /* ReliabilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000027 /* ReliabilityTests.swift */; };
 		A00100000000000000000025 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000028 /* Assets.xcassets */; };
 		A00100000000000000000026 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B00100000000000000000029 /* PrivacyInfo.xcprivacy */; };
+		A00100000000000000000027 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B0010000000000000000002A /* Localizable.xcstrings */; };
+		A00100000000000000000028 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = B0010000000000000000002B /* InfoPlist.xcstrings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +101,8 @@
 		B00100000000000000000027 /* ReliabilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReliabilityTests.swift; sourceTree = "<group>"; };
 		B00100000000000000000028 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B00100000000000000000029 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		B0010000000000000000002A /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		B0010000000000000000002B /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +156,8 @@
 				B00100000000000000000026 /* ReliabilityService.swift */,
 				B00100000000000000000028 /* Assets.xcassets */,
 				B00100000000000000000029 /* PrivacyInfo.xcprivacy */,
+				B0010000000000000000002A /* Localizable.xcstrings */,
+				B0010000000000000000002B /* InfoPlist.xcstrings */,
 				B00100000000000000000002 /* FeasibilityModels.swift */,
 				B00100000000000000000003 /* FeasibilityProtocols.swift */,
 				B00100000000000000000004 /* AlarmCandidate.swift */,
@@ -253,6 +259,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				ja,
+				en,
 				Base,
 			);
 			mainGroup = G00100000000000000000001;
@@ -273,6 +280,8 @@
 			files = (
 				A00100000000000000000025 /* Assets.xcassets in Resources */,
 				A00100000000000000000026 /* PrivacyInfo.xcprivacy in Resources */,
+				A00100000000000000000027 /* Localizable.xcstrings in Resources */,
+				A00100000000000000000028 /* InfoPlist.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,7 +361,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 67BCCSD863;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = CalendarAlarmFeasibility/Info.plist;
@@ -373,7 +382,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 67BCCSD863;
 				EXCLUDED_SOURCE_FILE_NAMES = "AlarmCandidate.swift AlarmKitScheduler.swift EventKitCalendarEventProvider.swift FeasibilityModels.swift FeasibilityProtocols.swift FeasibilityView.swift FeasibilityViewModel.swift";
 				GENERATE_INFOPLIST_FILE = NO;

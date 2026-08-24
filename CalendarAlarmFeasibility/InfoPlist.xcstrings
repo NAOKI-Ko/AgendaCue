@@ -1,0 +1,18 @@
+{
+  "sourceLanguage" : "ja",
+  "strings" : {
+    "NSCalendarsFullAccessUsageDescription" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "AgendaCue uses read-only access to your calendar to find events and schedule alarms before they begin." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "予定を読み取り、予定前のアラームを設定するために使用します。カレンダーの内容は変更しません。" } }
+      }
+    },
+    "NSAlarmKitUsageDescription" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "AgendaCue uses alarms to alert you before your calendar events." } },
+        "ja" : { "stringUnit" : { "state" : "translated", "value" : "カレンダーの予定前に、時刻を指定したアラームを設定するために使用します。" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

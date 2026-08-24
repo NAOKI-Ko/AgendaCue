@@ -444,6 +444,48 @@ final class ProductionUXTests: XCTestCase {
         let saved = try await service.load(); XCTAssertEqual(saved.defaultLeadTime, .thirtyMinutes); XCTAssertEqual(trigger.count, 1)
     }
 
+    func testJapaneseAndEnglishCanonicalLocalizationResolveWithoutKeyLeakage() {
+        let ja = Locale(identifier: "ja")
+        let en = Locale(identifier: "en")
+        let expectations: [(String, String, String)] = [
+            ("timeline.today", "今日", "Today"),
+            ("timeline.events", "予定", "Events"),
+            ("tab.settings", "設定", "Settings"),
+            ("onboarding.calendar_title", "カレンダーへのアクセス", "Calendar Access"),
+            ("event.fallback_title", "予定", "Event"),
+            ("alarm.stop", "停止", "Stop")
+        ]
+
+        for (key, japanese, english) in expectations {
+            XCTAssertEqual(ProductionLocalization.text(key, locale: ja), japanese)
+            XCTAssertEqual(ProductionLocalization.text(key, locale: en), english)
+        }
+    }
+
+    func testLocalizedFormattingUsesRequestedLocaleCopy() {
+        XCTAssertEqual(ProductionLocalization.format("lead.minutes_before", locale: Locale(identifier: "ja"), Int64(15)), "15分前")
+        XCTAssertEqual(ProductionLocalization.format("lead.minutes_before", locale: Locale(identifier: "en"), Int64(15)), "15 min before")
+        XCTAssertEqual(ProductionLocalization.format("timeline.today_summary_one", locale: Locale(identifier: "en"), Int64(1)), "1 event today")
+        XCTAssertEqual(ProductionLocalization.format("timeline.today_summary_other", locale: Locale(identifier: "en"), Int64(2)), "2 events today")
+    }
+
+    func testBuiltProductReleaseConfigurationIsVersionOneBuildTwoAndNoExemptEncryption() {
+        XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String, "1.0")
+        XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String, "2")
+        XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "ITSAppUsesNonExemptEncryption") as? Bool, false)
+    }
+
+    func testBothLocalizationsAndLocalizedPurposeStringsShipInBuiltProduct() throws {
+        XCTAssertNotNil(Bundle.main.path(forResource: "ja", ofType: "lproj"))
+        XCTAssertNotNil(Bundle.main.path(forResource: "en", ofType: "lproj"))
+
+        let japaneseBundle = try XCTUnwrap(Bundle(path: try XCTUnwrap(Bundle.main.path(forResource: "ja", ofType: "lproj"))))
+        let englishBundle = try XCTUnwrap(Bundle(path: try XCTUnwrap(Bundle.main.path(forResource: "en", ofType: "lproj"))))
+        XCTAssertEqual(japaneseBundle.localizedString(forKey: "NSCalendarsFullAccessUsageDescription", value: nil, table: "InfoPlist"), "予定を読み取り、予定前のアラームを設定するために使用します。カレンダーの内容は変更しません。")
+        XCTAssertEqual(englishBundle.localizedString(forKey: "NSCalendarsFullAccessUsageDescription", value: nil, table: "InfoPlist"), "AgendaCue uses read-only access to your calendar to find events and schedule alarms before they begin.")
+        XCTAssertEqual(englishBundle.localizedString(forKey: "NSAlarmKitUsageDescription", value: nil, table: "InfoPlist"), "AgendaCue uses alarms to alert you before your calendar events.")
+    }
+
     private var utcCalendar: Calendar {
         var value = Calendar(identifier: .gregorian)
         value.timeZone = TimeZone(secondsFromGMT: 0)!

@@ -74,25 +74,119 @@ enum ProductionAccessibilityID {
     static let retryAction = "content.retry"
 }
 
-enum ProductionCopy {
-    static let today = "今日"
-    static let timeline = "予定"
-    static let settings = "設定"
-    static let calendars = "カレンダー"
-    static let calendarAccess = "カレンダーへのアクセス"
-    static let alarmAccess = "アラームへのアクセス"
-    static let defaultAlarmTime = "デフォルトのアラーム時間"
-    static let alarm = "アラーム"
-    static let retry = "再試行"
-    static let openSettings = "設定を開く"
-    static let returnToCurrent = "現在へ"
-    static let emptyTodayTitle = "今日の予定はありません"
-    static let emptyTimelineTitle = "表示できる予定がありません"
-    static let loadErrorTitle = "カレンダーを読み込めません"
-    static let permissionRecovery = "設定でアクセスを許可したあと、このアプリに戻ってください。"
+enum ProductionLocalization {
+    static func text(_ key: String, locale: Locale? = nil) -> String {
+        let bundle: Bundle
+        if let locale,
+           let languageCode = locale.language.languageCode?.identifier,
+           let path = Bundle.main.path(forResource: languageCode, ofType: "lproj"),
+           let localizedBundle = Bundle(path: path) {
+            bundle = localizedBundle
+        } else {
+            bundle = .main
+        }
+        return bundle.localizedString(forKey: key, value: nil, table: "Localizable")
+    }
 
-    static func minutesBefore(_ lead: AlarmLeadTime) -> String { "\(lead.rawValue)分前" }
-    static func todaySummary(count: Int) -> String { "今日の予定は\(count)件です" }
+    static func format(_ key: String, locale: Locale? = nil, _ arguments: CVarArg...) -> String {
+        String(format: text(key, locale: locale), locale: locale ?? .current, arguments: arguments)
+    }
+}
+
+enum ProductionCopy {
+    static var today: String { ProductionLocalization.text("timeline.today") }
+    static var timeline: String { ProductionLocalization.text("timeline.events") }
+    static var settings: String { ProductionLocalization.text("tab.settings") }
+    static var calendars: String { ProductionLocalization.text("calendar.calendars") }
+    static var calendarAccess: String { ProductionLocalization.text("permission.calendar_access") }
+    static var alarmAccess: String { ProductionLocalization.text("permission.alarm_access") }
+    static var defaultAlarmTime: String { ProductionLocalization.text("settings.default_alarm_time") }
+    static var alarm: String { ProductionLocalization.text("tab.alarm") }
+    static var retry: String { ProductionLocalization.text("action.retry") }
+    static var openSettings: String { ProductionLocalization.text("action.open_settings") }
+    static var returnToCurrent: String { ProductionLocalization.text("action.now") }
+    static var emptyTodayTitle: String { ProductionLocalization.text("empty.today_title") }
+    static var emptyTimelineTitle: String { ProductionLocalization.text("empty.timeline_title") }
+    static var loadErrorTitle: String { ProductionLocalization.text("error.calendar_load_title") }
+    static var permissionRecovery: String { ProductionLocalization.text("permission.recovery") }
+    static var onboardingCalendarTitle: String { ProductionLocalization.text("onboarding.calendar_title") }
+    static var onboardingAlarmTitle: String { ProductionLocalization.text("onboarding.alarm_title") }
+    static var onboardingCalendarBody: String { ProductionLocalization.text("onboarding.calendar_body") }
+    static var onboardingAlarmBody: String { ProductionLocalization.text("onboarding.alarm_body") }
+    static var allowCalendar: String { ProductionLocalization.text("onboarding.allow_calendar") }
+    static var allowAlarm: String { ProductionLocalization.text("onboarding.allow_alarm") }
+    static var calendarRequiredTitle: String { ProductionLocalization.text("permission.calendar_required_title") }
+    static var alarmRequiredTitle: String { ProductionLocalization.text("permission.alarm_required_title") }
+    static var loadingEvents: String { ProductionLocalization.text("loading.events") }
+    static var timelineDescription: String { ProductionLocalization.text("empty.timeline_description") }
+    static var selectedCalendarDescription: String { ProductionLocalization.text("empty.selected_calendar_description") }
+    static var returnToCurrentAccessibility: String { ProductionLocalization.text("accessibility.return_to_current_time") }
+    static var returnToCurrentEventAccessibility: String { ProductionLocalization.text("accessibility.return_to_current_event") }
+    static var current: String { ProductionLocalization.text("timeline.current") }
+    static var currentTimeAccessibility: String { ProductionLocalization.text("accessibility.current_time") }
+    static var retryDescription: String { ProductionLocalization.text("error.retry_description") }
+    static var calendarFallback: String { ProductionLocalization.text("calendar.fallback") }
+    static var endedEvent: String { ProductionLocalization.text("event.ended") }
+    static var endedAlarmImmutable: String { ProductionLocalization.text("event.ended_alarm_immutable") }
+    static var eventAlarmToggle: String { ProductionLocalization.text("event.alarm_toggle") }
+    static var eventAlarmToggleHint: String { ProductionLocalization.text("event.alarm_toggle_hint") }
+    static var timing: String { ProductionLocalization.text("event.timing") }
+    static var useDefault: String { ProductionLocalization.text("event.use_default") }
+    static var noAlarmForEvent: String { ProductionLocalization.text("event.no_alarm") }
+    static var privacy: String { ProductionLocalization.text("event.privacy_title") }
+    static var eventPrivacy: String { ProductionLocalization.text("event.privacy_body") }
+    static var eventDetails: String { ProductionLocalization.text("event.details_title") }
+    static var noCalendarsTitle: String { ProductionLocalization.text("calendar.none_title") }
+    static var noCalendarsDescription: String { ProductionLocalization.text("calendar.none_description") }
+    static var noSelectedCalendars: String { ProductionLocalization.text("calendar.none_selected_title") }
+    static var noSelectedCalendarsDescription: String { ProductionLocalization.text("calendar.none_selected_description") }
+    static var unnamedCalendar: String { ProductionLocalization.text("calendar.unnamed") }
+    static var calendarToggleHint: String { ProductionLocalization.text("calendar.toggle_hint") }
+    static var onDevice: String { ProductionLocalization.text("calendar.on_device") }
+    static var defaultAlarmFooter: String { ProductionLocalization.text("settings.default_alarm_footer") }
+    static var displayCalendars: String { ProductionLocalization.text("settings.display_calendars") }
+    static var permissions: String { ProductionLocalization.text("settings.permissions") }
+    static var about: String { ProductionLocalization.text("settings.about") }
+    static var aboutBody: String { ProductionLocalization.text("settings.about_body") }
+    static var phaseCompleted: String { ProductionLocalization.text("phase.completed") }
+    static var phaseInProgress: String { ProductionLocalization.text("phase.in_progress") }
+    static var phaseStarted: String { ProductionLocalization.text("phase.started") }
+    static var phasePast: String { ProductionLocalization.text("phase.past") }
+    static var phaseFuture: String { ProductionLocalization.text("phase.future") }
+    static var allDay: String { ProductionLocalization.text("event.all_day") }
+    static var noAlarm: String { ProductionLocalization.text("alarm.none") }
+    static var noAlarmForAllDay: String { ProductionLocalization.text("alarm.none_all_day") }
+    static var alarmTimePassed: String { ProductionLocalization.text("alarm.time_passed") }
+    static var permissionAuthorized: String { ProductionLocalization.text("permission.authorized") }
+    static var permissionDenied: String { ProductionLocalization.text("permission.denied") }
+    static var permissionNotDetermined: String { ProductionLocalization.text("permission.not_determined") }
+    static var permissionRestricted: String { ProductionLocalization.text("permission.restricted") }
+    static var permissionUnavailable: String { ProductionLocalization.text("permission.unavailable") }
+    static var tomorrow: String { ProductionLocalization.text("date.tomorrow") }
+    static var yesterday: String { ProductionLocalization.text("date.yesterday") }
+    static var fallbackEventTitle: String { ProductionLocalization.text("event.fallback_title") }
+
+    static func minutesBefore(_ lead: AlarmLeadTime) -> String {
+        if lead.rawValue == 60 { return ProductionLocalization.text("lead.one_hour_before") }
+        return ProductionLocalization.format("lead.minutes_before", Int64(lead.rawValue))
+    }
+
+    static func todaySummary(count: Int) -> String {
+        let key = count == 1 ? "timeline.today_summary_one" : "timeline.today_summary_other"
+        return ProductionLocalization.format(key, Int64(count))
+    }
+
+    static func joinedStatus(_ timing: String, _ status: String) -> String {
+        ProductionLocalization.format("alarm.joined_status", timing, status)
+    }
+
+    static func customTiming(_ timing: String) -> String {
+        ProductionLocalization.format("event.custom_timing", timing)
+    }
+
+    static func defaultTiming(_ timing: String) -> String {
+        ProductionLocalization.format("event.default_timing", timing)
+    }
 
     static let primaryAuditStrings = [
         today, timeline, settings, calendars, calendarAccess, alarmAccess,
@@ -137,6 +231,7 @@ final class ProductionPresentationClock: ObservableObject {
 }
 
 enum SampleScenarioPolicy {
+#if DEBUG
     static let supported: Set<String> = [
         "onboarding", "onboarding-calendar", "onboarding-alarm", "calendar-denied", "main", "today", "today-long", "today-off", "timeline", "timeline-future", "timeline-no-future",
         "upcoming", "upcoming-empty", "detail-default", "detail-custom",
@@ -145,14 +240,13 @@ enum SampleScenarioPolicy {
     ]
 
     static func scenario(arguments: [String]) -> String? {
-#if DEBUG
         guard let value = arguments.first(where: { $0.hasPrefix("-UIScenario=") }) else { return nil }
         let scenario = String(value.dropFirst("-UIScenario=".count))
         return supported.contains(scenario) ? scenario : nil
-#else
-        return nil
-#endif
     }
+#else
+    static func scenario(arguments: [String]) -> String? { nil }
+#endif
 }
 
 struct TimelinePresentationWindow: Equatable {
@@ -264,14 +358,14 @@ enum ProductionPresentationPolicy {
 
     static func phaseText(_ phase: TimelineEventPhase) -> String? {
         switch phase {
-        case .completed: "終了済み"
-        case .inProgress: "開催中"
+        case .completed: ProductionCopy.phaseCompleted
+        case .inProgress: ProductionCopy.phaseInProgress
         case .future: nil
         }
     }
 
     static func startTimeText(for event: CalendarEvent) -> String {
-        event.isAllDay ? "終日" : event.startDate.formatted(date: .omitted, time: .shortened)
+        event.isAllDay ? ProductionCopy.allDay : event.startDate.formatted(date: .omitted, time: .shortened)
     }
 
     static func currentTimeText(_ now: Date) -> String {
@@ -288,26 +382,26 @@ enum ProductionPresentationPolicy {
 
     static func todayAlarmText(event: CalendarEvent, override: EventOverride?, settings: AppSettings, now: Date) -> String {
         let policy = EventOverrideResolver().resolve(override: override, settings: settings)
-        guard case .enabled(let lead) = policy else { return "アラームなし" }
-        if event.isAllDay { return "終日予定にはアラームなし" }
+        guard case .enabled(let lead) = policy else { return ProductionCopy.noAlarm }
+        if event.isAllDay { return ProductionCopy.noAlarmForAllDay }
         switch eventPhase(event, now: now) {
-        case .completed: return "\(ProductionCopy.minutesBefore(lead))・終了済み"
-        case .inProgress: return "\(ProductionCopy.minutesBefore(lead))・開催中"
+        case .completed: return ProductionCopy.joinedStatus(ProductionCopy.minutesBefore(lead), ProductionCopy.phaseCompleted)
+        case .inProgress: return ProductionCopy.joinedStatus(ProductionCopy.minutesBefore(lead), ProductionCopy.phaseInProgress)
         case .future: break
         }
         guard case .candidate(let candidate) = AlarmRuleEngine().evaluate(event: event, leadTime: lead, now: now) else {
-            return "アラーム時刻を経過"
+            return ProductionCopy.alarmTimePassed
         }
         return candidate.alarmDate.formatted(date: .omitted, time: .shortened)
     }
 
     static func alarmTimelineText(event: CalendarEvent, override: EventOverride?, settings: AppSettings, now: Date) -> String {
         let policy = EventOverrideResolver().resolve(override: override, settings: settings)
-        guard case .enabled(let lead) = policy else { return "アラームなし" }
-        if event.isAllDay { return "終日予定にはアラームなし" }
-        if event.startDate < now { return "終了済み" }
+        guard case .enabled(let lead) = policy else { return ProductionCopy.noAlarm }
+        if event.isAllDay { return ProductionCopy.noAlarmForAllDay }
+        if event.startDate < now { return ProductionCopy.phaseCompleted }
         guard case .candidate(let candidate) = AlarmRuleEngine().evaluate(event: event, leadTime: lead, now: now) else {
-            return "アラーム時刻を経過"
+            return ProductionCopy.alarmTimePassed
         }
         return candidate.alarmDate.formatted(date: .omitted, time: .shortened)
     }
@@ -319,12 +413,19 @@ enum ProductionPresentationPolicy {
         settings: AppSettings,
         now: Date
     ) -> String {
-        let phase = alarmTimelinePhase(event, now: now) == .completed ? "過去" : "未来"
-        return "\(event.title)、開始 \(startTimeText(for: event))、\(phase)、カレンダー \(calendarTitle)、アラーム \(alarmTimelineText(event: event, override: override, settings: settings, now: now))"
+        let phase = alarmTimelinePhase(event, now: now) == .completed ? ProductionCopy.phasePast : ProductionCopy.phaseFuture
+        return ProductionLocalization.format(
+            "accessibility.timeline_event_format",
+            event.title,
+            startTimeText(for: event),
+            phase,
+            calendarTitle,
+            alarmTimelineText(event: event, override: override, settings: settings, now: now)
+        )
     }
 
     static func currentTimeAccessibilityLabel(_ now: Date) -> String {
-        "現在、\(currentTimeText(now))"
+        ProductionLocalization.format("accessibility.current_time_format", currentTimeText(now))
     }
 
     static func todayDateText(_ date: Date) -> String {
@@ -332,9 +433,9 @@ enum ProductionPresentationPolicy {
     }
 
     static func dayTitle(_ date: Date, now: Date, calendar: Calendar = .current) -> String {
-        if calendar.isDate(date, inSameDayAs: now) { return "今日" }
-        if let tomorrow = calendar.date(byAdding: .day, value: 1, to: now), calendar.isDate(date, inSameDayAs: tomorrow) { return "明日" }
-        if let yesterday = calendar.date(byAdding: .day, value: -1, to: now), calendar.isDate(date, inSameDayAs: yesterday) { return "昨日" }
+        if calendar.isDate(date, inSameDayAs: now) { return ProductionCopy.today }
+        if let tomorrow = calendar.date(byAdding: .day, value: 1, to: now), calendar.isDate(date, inSameDayAs: tomorrow) { return ProductionCopy.tomorrow }
+        if let yesterday = calendar.date(byAdding: .day, value: -1, to: now), calendar.isDate(date, inSameDayAs: yesterday) { return ProductionCopy.yesterday }
         return date.formatted(.dateTime.month(.abbreviated).day())
     }
 
@@ -344,30 +445,30 @@ enum ProductionPresentationPolicy {
 
     static func alarmText(event: CalendarEvent, override: EventOverride?, settings: AppSettings, now: Date) -> String {
         let policy = EventOverrideResolver().resolve(override: override, settings: settings)
-        guard case .enabled(let lead) = policy else { return "アラームなし" }
-        if event.isAllDay { return "終日予定にはアラームなし" }
+        guard case .enabled(let lead) = policy else { return ProductionCopy.noAlarm }
+        if event.isAllDay { return ProductionCopy.noAlarmForAllDay }
         let timing = ProductionCopy.minutesBefore(lead)
-        if event.endDate <= now { return "\(timing)・終了済み" }
-        if event.startDate <= now { return "\(timing)・開始済み" }
+        if event.endDate <= now { return ProductionCopy.joinedStatus(timing, ProductionCopy.phaseCompleted) }
+        if event.startDate <= now { return ProductionCopy.joinedStatus(timing, ProductionCopy.phaseStarted) }
         guard case .candidate(let candidate) = AlarmRuleEngine().evaluate(event: event, leadTime: lead, now: now) else {
-            return "\(timing)・アラーム時刻を経過"
+            return ProductionCopy.joinedStatus(timing, ProductionCopy.alarmTimePassed)
         }
         let alarmTime = candidate.alarmDate.formatted(date: .omitted, time: .shortened)
-        return "\(timing)・\(alarmTime)"
+        return ProductionCopy.joinedStatus(timing, alarmTime)
     }
 
     static func detailTimingText(lead: AlarmLeadTime?, settings: AppSettings) -> String {
-        if let lead { return "この予定のみ \(ProductionCopy.minutesBefore(lead))" }
-        return "デフォルト設定（\(ProductionCopy.minutesBefore(settings.defaultLeadTime))）を使用"
+        if let lead { return ProductionCopy.customTiming(ProductionCopy.minutesBefore(lead)) }
+        return ProductionCopy.defaultTiming(ProductionCopy.minutesBefore(settings.defaultLeadTime))
     }
 
     static func permissionStatusText(_ state: PermissionState) -> String {
         switch state {
-        case .authorized: "許可済み"
-        case .denied: "設定から許可してください"
-        case .notDetermined: "許可が必要です"
-        case .restricted: "このiPhoneでは制限されています"
-        case .unavailable: "このiPhoneでは利用できません"
+        case .authorized: ProductionCopy.permissionAuthorized
+        case .denied: ProductionCopy.permissionDenied
+        case .notDetermined: ProductionCopy.permissionNotDetermined
+        case .restricted: ProductionCopy.permissionRestricted
+        case .unavailable: ProductionCopy.permissionUnavailable
         }
     }
 
@@ -378,7 +479,16 @@ enum ProductionPresentationPolicy {
         settings: AppSettings,
         now: Date
     ) -> String {
-        let phase = phaseText(eventPhase(event, now: now)).map { "、\($0)" } ?? ""
-        return "\(event.title)、開始 \(startTimeText(for: event))、カレンダー \(calendarTitle)\(phase)、アラーム \(alarmText(event: event, override: override, settings: settings, now: now))"
+        let alarm = alarmText(event: event, override: override, settings: settings, now: now)
+        guard let phase = phaseText(eventPhase(event, now: now)) else {
+            return ProductionLocalization.format(
+                "accessibility.event_format_no_phase",
+                event.title, startTimeText(for: event), calendarTitle, alarm
+            )
+        }
+        return ProductionLocalization.format(
+            "accessibility.event_format",
+            event.title, startTimeText(for: event), calendarTitle, phase, alarm
+        )
     }
 }

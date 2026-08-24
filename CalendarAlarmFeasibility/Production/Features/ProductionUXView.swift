@@ -134,6 +134,7 @@ final class ProductionUXViewModel: ObservableObject {
     }
 
     private func applySampleIfNeeded() {
+#if DEBUG
         guard let scenario = SampleScenarioPolicy.scenario(arguments: ProcessInfo.processInfo.arguments) else { return }
         sampleScenario = scenario
         if ["onboarding", "onboarding-calendar", "onboarding-alarm", "calendar-denied", "alarm-denied"].contains(scenario) {
@@ -175,6 +176,7 @@ final class ProductionUXViewModel: ObservableObject {
         if scenario == "detail-off" || scenario == "today-off" { overrides["standup"] = .init(eventIdentity: "standup", state: .disabled) }
         if scenario == "detail-custom" { overrides["standup"] = .init(eventIdentity: "standup", state: .enabled(leadTimeOverride: .fifteenMinutes)) }
         loadState = scenario == "error" ? .failed : events.isEmpty ? .empty : .content
+#endif
     }
 }
 
@@ -193,9 +195,7 @@ struct ProductionRootView: View {
     var body: some View {
         Group {
             if model.route == .onboarding { OnboardingView(model: model) }
-            else if let scenario = model.sampleScenario { sample(scenario) }
-            else if model.calendarPermission != .authorized || model.alarmPermission != .authorized { ProductionPermissionRecoveryView(model: model) }
-            else { MainTabsView(model: model, clock: presentationClock) }
+            else { postOnboardingContent }
         }
         .task { await model.refresh() }
         .onAppear { if scenePhase == .active { presentationClock.activate() } }
@@ -209,6 +209,19 @@ struct ProductionRootView: View {
         }
     }
 
+    @ViewBuilder
+    private var postOnboardingContent: some View {
+#if DEBUG
+        if let scenario = model.sampleScenario { sample(scenario) }
+        else if model.calendarPermission != .authorized || model.alarmPermission != .authorized { ProductionPermissionRecoveryView(model: model) }
+        else { MainTabsView(model: model, clock: presentationClock) }
+#else
+        if model.calendarPermission != .authorized || model.alarmPermission != .authorized { ProductionPermissionRecoveryView(model: model) }
+        else { MainTabsView(model: model, clock: presentationClock) }
+#endif
+    }
+
+#if DEBUG
     @ViewBuilder
     private func sample(_ scenario: String) -> some View {
         switch scenario {
@@ -225,6 +238,7 @@ struct ProductionRootView: View {
         default: AlarmTimelineView(model: model, clock: presentationClock)
         }
     }
+#endif
 }
 
 struct OnboardingView: View {
@@ -261,16 +275,16 @@ struct OnboardingView: View {
     }
 
     private var title: String {
-        switch model.onboardingStep { case .calendarRationale: "カレンダーへのアクセス"; case .alarmRationale: "アラームの許可" }
+        switch model.onboardingStep { case .calendarRationale: ProductionCopy.onboardingCalendarTitle; case .alarmRationale: ProductionCopy.onboardingAlarmTitle }
     }
     private var bodyText: String {
         switch model.onboardingStep {
-        case .calendarRationale: "予定の開始時刻を読み取り、アラームを設定するために使用します。"
-        case .alarmRationale: "予定の前に、通知ではなくアラームを鳴らすために使用します。"
+        case .calendarRationale: ProductionCopy.onboardingCalendarBody
+        case .alarmRationale: ProductionCopy.onboardingAlarmBody
         }
     }
     private var icon: String { model.onboardingStep == .calendarRationale ? "calendar" : "alarm" }
-    private var actionTitle: String { model.onboardingStep == .calendarRationale ? "カレンダーを許可" : "アラームを許可" }
+    private var actionTitle: String { model.onboardingStep == .calendarRationale ? ProductionCopy.allowCalendar : ProductionCopy.allowAlarm }
     private var actionIdentifier: String { model.onboardingStep == .calendarRationale ? ProductionAccessibilityID.calendarPermissionAction : ProductionAccessibilityID.alarmPermissionAction }
     private var currentPermission: PermissionState { model.onboardingStep == .calendarRationale ? model.calendarPermission : model.alarmPermission }
     private func advance() {
@@ -288,12 +302,12 @@ private struct ProductionPermissionRecoveryView: View {
             ContentUnavailableView {
                 Label(title, systemImage: "lock.trianglebadge.exclamationmark")
             } description: {
-                Text("設定でアクセスを許可したあと、このアプリに戻ってください。")
+                Text(ProductionCopy.permissionRecovery)
             } actions: { OpenSettingsButton() }
             .navigationTitle(ProductionCopy.alarm)
         }
     }
-    private var title: String { model.calendarPermission != .authorized ? "カレンダーへのアクセスが必要です" : "アラームの許可が必要です" }
+    private var title: String { model.calendarPermission != .authorized ? ProductionCopy.calendarRequiredTitle : ProductionCopy.alarmRequiredTitle }
 }
 
 private struct OnboardingFeature: View {
@@ -395,7 +409,7 @@ struct AlarmTimelineView: View {
         NavigationStack {
             Group {
                 switch model.loadState {
-                case .loading: ProgressView("予定を読み込んでいます")
+                case .loading: ProgressView(ProductionCopy.loadingEvents)
                 case .failed: LoadFailureView(model: model)
                 default: timeline
                 }
@@ -421,7 +435,7 @@ struct AlarmTimelineView: View {
                         ContentUnavailableView(
                             ProductionCopy.emptyTimelineTitle,
                             systemImage: "calendar",
-                            description: Text("今日から今後14日までの予定がここに表示されます。")
+                            description: Text(ProductionCopy.timelineDescription)
                         )
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 42)
@@ -435,7 +449,7 @@ struct AlarmTimelineView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(ProductionCopy.returnToCurrent) { scrollToCurrent(proxy) }
-                        .accessibilityLabel("現在の時刻へ戻る")
+                        .accessibilityLabel(ProductionCopy.returnToCurrentAccessibility)
                         .accessibilityIdentifier(ProductionAccessibilityID.alarmTimelineReturnToCurrent)
                 }
             }
@@ -493,7 +507,7 @@ struct TodayView: View {
         NavigationStack {
             Group {
                 switch model.loadState {
-                case .loading: ProgressView("予定を読み込んでいます")
+                case .loading: ProgressView(ProductionCopy.loadingEvents)
                 case .failed: LoadFailureView(model: model)
                 default:
                     if model.todayEvents.isEmpty { empty }
@@ -551,7 +565,7 @@ struct TodayView: View {
     }
 
     private var empty: some View {
-        ContentUnavailableView(ProductionCopy.emptyTodayTitle, systemImage: "calendar", description: Text("選択したカレンダーの予定がここに表示されます。"))
+        ContentUnavailableView(ProductionCopy.emptyTodayTitle, systemImage: "calendar", description: Text(ProductionCopy.selectedCalendarDescription))
             .navigationTitle(ProductionCopy.today)
     }
 }
@@ -647,7 +661,7 @@ private struct TodayTimelineEventRow: View {
     private var alarmText: String {
         ProductionPresentationPolicy.alarmTimelineText(event: event, override: model.overrides[event.id], settings: model.settings, now: now)
     }
-    private var calendarName: String { model.calendars.first(where: { $0.id == event.calendarID })?.title ?? "カレンダー" }
+    private var calendarName: String { model.calendars.first(where: { $0.id == event.calendarID })?.title ?? ProductionCopy.calendarFallback }
     private var accessibilityLabel: String {
         ProductionPresentationPolicy.alarmTimelineAccessibilityLabel(event: event, calendarTitle: calendarName, override: model.overrides[event.id], settings: model.settings, now: now)
     }
@@ -702,7 +716,7 @@ private struct TodayCurrentTimeRow: View {
 
     private var currentLabelAndRule: some View {
         HStack(spacing: 10) {
-            Text("現在")
+            Text(ProductionCopy.current)
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(.tint)
                 .fixedSize(horizontal: true, vertical: false)
@@ -778,7 +792,7 @@ struct TimelineView: View {
         NavigationStack {
             Group {
                 switch model.loadState {
-                case .loading: ProgressView("予定を読み込んでいます")
+                case .loading: ProgressView(ProductionCopy.loadingEvents)
                 case .failed: LoadFailureView(model: model)
                 default:
                     if model.timelineEvents.isEmpty { empty }
@@ -810,7 +824,7 @@ struct TimelineView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(ProductionCopy.returnToCurrent) { scrollToCurrent(proxy) }
-                        .accessibilityLabel("現在の予定へ戻る")
+                        .accessibilityLabel(ProductionCopy.returnToCurrentEventAccessibility)
                         .accessibilityIdentifier(ProductionAccessibilityID.timelineReturnToCurrent)
                 }
             }
@@ -826,7 +840,7 @@ struct TimelineView: View {
     }
 
     private var empty: some View {
-        ContentUnavailableView(ProductionCopy.emptyTimelineTitle, systemImage: "calendar.badge.exclamationmark", description: Text("今日から今後14日までの予定がここに表示されます。"))
+        ContentUnavailableView(ProductionCopy.emptyTimelineTitle, systemImage: "calendar.badge.exclamationmark", description: Text(ProductionCopy.timelineDescription))
     }
 
     private func timelineLink(_ event: CalendarEvent) -> some View {
@@ -870,7 +884,7 @@ private struct CurrentBoundaryView: View {
             Rectangle().frame(height: 1).foregroundStyle(.orange.opacity(0.55))
             HStack(spacing: 4) {
                 Image(systemName: "clock.fill")
-                Text("現在")
+                Text(ProductionCopy.current)
             }
             .font(.caption.weight(.semibold))
             .foregroundStyle(.orange)
@@ -881,7 +895,7 @@ private struct CurrentBoundaryView: View {
         .listRowSeparator(.hidden)
         .id(ProductionAccessibilityID.timelineCurrentBoundary)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("現在の時刻")
+        .accessibilityLabel(ProductionCopy.currentTimeAccessibility)
     }
 }
 
@@ -890,7 +904,7 @@ private struct LoadFailureView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            ContentUnavailableView(ProductionCopy.loadErrorTitle, systemImage: "exclamationmark.triangle", description: Text("しばらくしてからもう一度お試しください。"))
+            ContentUnavailableView(ProductionCopy.loadErrorTitle, systemImage: "exclamationmark.triangle", description: Text(ProductionCopy.retryDescription))
             Button(ProductionCopy.retry) { Task { await model.refresh() } }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
@@ -952,7 +966,7 @@ struct EventRow: View {
         }
     }
 
-    private var calendarName: String { model.calendars.first(where: { $0.id == event.calendarID })?.title ?? "カレンダー" }
+    private var calendarName: String { model.calendars.first(where: { $0.id == event.calendarID })?.title ?? ProductionCopy.calendarFallback }
     private var phaseText: String? { ProductionPresentationPolicy.phaseText(ProductionPresentationPolicy.eventPhase(event, now: now)) }
     private var isPast: Bool { ProductionPresentationPolicy.eventPhase(event, now: now) == .completed }
     private var isOff: Bool { model.overrides[event.id]?.state == .disabled }
@@ -981,7 +995,7 @@ struct EventDetailView: View {
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
                     if isPast {
-                        Label("終了した予定", systemImage: "checkmark.circle")
+                        Label(ProductionCopy.endedEvent, systemImage: "checkmark.circle")
                             .font(.subheadline.weight(.semibold))
                             .foregroundStyle(.secondary)
                     }
@@ -992,19 +1006,19 @@ struct EventDetailView: View {
                 VStack(alignment: .leading, spacing: 14) {
                     Text(ProductionCopy.alarm).font(.title2.bold())
                     if isPast {
-                        Label("終了した予定のアラームは変更できません", systemImage: "clock.badge.xmark")
+                        Label(ProductionCopy.endedAlarmImmutable, systemImage: "clock.badge.xmark")
                             .foregroundStyle(.secondary)
                             .fixedSize(horizontal: false, vertical: true)
                     } else {
                         VStack(spacing: 0) {
-                            Toggle("この予定でアラームを使う", isOn: $enabled)
+                            Toggle(ProductionCopy.eventAlarmToggle, isOn: $enabled)
                                 .padding(16)
                                 .accessibilityIdentifier(ProductionAccessibilityID.eventAlarmToggle)
-                                .accessibilityHint("この予定のアラームをオンまたはオフにします")
+                                .accessibilityHint(ProductionCopy.eventAlarmToggleHint)
                             if enabled {
                                 Divider().padding(.leading, 16)
-                                Picker("タイミング", selection: $lead) {
-                                    Text("デフォルト設定を使用").tag(AlarmLeadTime?.none)
+                                Picker(ProductionCopy.timing, selection: $lead) {
+                                    Text(ProductionCopy.useDefault).tag(AlarmLeadTime?.none)
                                     ForEach(AlarmLeadTime.allCases, id: \.self) { Text(ProductionCopy.minutesBefore($0)).tag(Optional($0)) }
                                 }
                                 .padding(16)
@@ -1013,15 +1027,15 @@ struct EventDetailView: View {
                         }
                         .background(Color(uiColor: .secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
 
-                        Text(enabled ? ProductionPresentationPolicy.detailTimingText(lead: lead, settings: model.settings) : "この予定にはアラームを設定しません")
+                        Text(enabled ? ProductionPresentationPolicy.detailTimingText(lead: lead, settings: model.settings) : ProductionCopy.noAlarmForEvent)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
                 }
 
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("プライバシー").font(.headline)
-                    Text("この予定はアラームの設定にだけ使用します。カレンダーの内容を変更することはありません。")
+                    Text(ProductionCopy.privacy).font(.headline)
+                    Text(ProductionCopy.eventPrivacy)
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
@@ -1032,7 +1046,7 @@ struct EventDetailView: View {
             .frame(maxWidth: .infinity)
         }
         .background(Color(uiColor: .systemGroupedBackground))
-        .navigationTitle("予定の詳細")
+        .navigationTitle(ProductionCopy.eventDetails)
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             if let value = model.overrides[event.id] {
@@ -1053,7 +1067,7 @@ struct EventDetailView: View {
         }
     }
 
-    private var calendarName: String { model.calendars.first(where: { $0.id == event.calendarID })?.title ?? "カレンダー" }
+    private var calendarName: String { model.calendars.first(where: { $0.id == event.calendarID })?.title ?? ProductionCopy.calendarFallback }
     private var isPast: Bool { event.startDate <= now }
 }
 
@@ -1063,13 +1077,13 @@ struct CalendarSelectionView: View {
     var body: some View {
         Group {
             if model.calendars.isEmpty {
-                ContentUnavailableView("カレンダーがありません", systemImage: "calendar.badge.exclamationmark", description: Text("このiPhoneで利用できるカレンダーがここに表示されます。"))
+                ContentUnavailableView(ProductionCopy.noCalendarsTitle, systemImage: "calendar.badge.exclamationmark", description: Text(ProductionCopy.noCalendarsDescription))
             } else {
                 Form {
                     if model.enabledCalendarIDs.isEmpty {
                         Section {
-                            Label("選択中のカレンダーはありません", systemImage: "exclamationmark.circle")
-                            Text("予定を表示するカレンダーをオンにしてください。")
+                            Label(ProductionCopy.noSelectedCalendars, systemImage: "exclamationmark.circle")
+                            Text(ProductionCopy.noSelectedCalendarsDescription)
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                         }
@@ -1078,10 +1092,10 @@ struct CalendarSelectionView: View {
                         Section(source) {
                             ForEach(calendars(for: source)) { calendar in
                                 Toggle(isOn: Binding(get: { model.enabledCalendarIDs.contains(calendar.id) }, set: { value in Task { await model.setCalendar(value, id: calendar.id) } })) {
-                                    Text(calendar.title.isEmpty ? "名称未設定のカレンダー" : calendar.title)
+                                    Text(calendar.title.isEmpty ? ProductionCopy.unnamedCalendar : calendar.title)
                                         .fixedSize(horizontal: false, vertical: true)
                                 }
-                                .accessibilityHint("このカレンダーの予定を表示するか選択します")
+                                .accessibilityHint(ProductionCopy.calendarToggleHint)
                             }
                         }
                     }
@@ -1093,7 +1107,7 @@ struct CalendarSelectionView: View {
     }
 
     private var sourceTitles: [String] { Set(model.calendars.map(sourceTitle)).sorted() }
-    private func sourceTitle(_ calendar: CalendarDescriptor) -> String { calendar.source.title.isEmpty ? "このiPhone内" : calendar.source.title }
+    private func sourceTitle(_ calendar: CalendarDescriptor) -> String { calendar.source.title.isEmpty ? ProductionCopy.onDevice : calendar.source.title }
     private func calendars(for source: String) -> [CalendarDescriptor] { model.calendars.filter { sourceTitle($0) == source } }
 }
 
@@ -1109,15 +1123,15 @@ struct SettingsView: View {
                     }
                     .accessibilityIdentifier(ProductionAccessibilityID.defaultLeadTimePicker)
                 } header: { Text(ProductionCopy.defaultAlarmTime) }
-                  footer: { Text("予定ごとに変更しない場合、この時間が使われます。") }
+                  footer: { Text(ProductionCopy.defaultAlarmFooter) }
 
                 Section(ProductionCopy.calendars) {
                     NavigationLink { CalendarSelectionView(model: model) } label: {
-                        Label("表示するカレンダー", systemImage: "calendar")
+                        Label(ProductionCopy.displayCalendars, systemImage: "calendar")
                     }
                 }
 
-                Section("アクセス権") {
+                Section(ProductionCopy.permissions) {
                     permissionStatus(ProductionCopy.calendarAccess, model.calendarPermission)
                     permissionStatus(ProductionCopy.alarmAccess, model.alarmPermission)
                     if ProductionPresentationPolicy.shouldOfferSettings(calendar: model.calendarPermission, alarm: model.alarmPermission) {
@@ -1128,8 +1142,8 @@ struct SettingsView: View {
                     }
                 }
 
-                Section("このアプリについて") {
-                    Text("カレンダーの予定を読み取り、アラームを作成します。カレンダー自体は変更しません。アプリの設定は端末内に保存され、アカウントやサーバーは必要ありません。")
+                Section(ProductionCopy.about) {
+                    Text(ProductionCopy.aboutBody)
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }

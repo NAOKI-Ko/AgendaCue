@@ -80,7 +80,7 @@ actor EventKitCalendarSource: CalendarSourceProviding {
         let predicate = store.predicateForEvents(withStart: interval.start, end: interval.end, calendars: calendars)
         return CalendarDomainMapper.sortedEvents(store.events(matching: predicate).map { event in
             CalendarDomainMapper.event(EventSnapshot(identifier: event.eventIdentifier,
-                calendarID: event.calendar.calendarIdentifier, title: event.title ?? "予定",
+                calendarID: event.calendar.calendarIdentifier, title: event.title ?? ProductionCopy.fallbackEventTitle,
                 start: event.startDate, end: event.endDate, isAllDay: event.isAllDay))
         })
     }
