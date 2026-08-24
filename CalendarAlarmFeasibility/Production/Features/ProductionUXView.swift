@@ -153,7 +153,7 @@ final class ProductionUXViewModel: ObservableObject {
         let long = scenario == "today-long" || scenario == "calendars-long"
         if long {
             calendars = [
-                .init(id: "sample", title: "家族の予定と大切な記念日を共有するカレンダー", source: .init(id: "icloud", title: "このiPhoneに保存されている個人用カレンダー", typeDescription: "CalDAV")),
+                .init(id: "sample", title: "プライベート用カレンダー", source: .init(id: "icloud", title: "このiPhoneに保存されている個人用カレンダー", typeDescription: "CalDAV")),
                 .init(id: "work", title: "プロダクト企画とお客さまとの打ち合わせ", source: .init(id: "google", title: "勤務先と組織のカレンダー", typeDescription: "CalDAV"))
             ]
         }
@@ -162,7 +162,7 @@ final class ProductionUXViewModel: ObservableObject {
             CalendarEvent(id: "two-days-ago", eventIdentifier: "two-days-ago", title: "プロジェクト振り返り", startDate: now.addingTimeInterval(-176_400), endDate: now.addingTimeInterval(-172_800), isAllDay: false, calendarID: "work"),
             CalendarEvent(id: "yesterday", eventIdentifier: "yesterday", title: "資料レビュー", startDate: now.addingTimeInterval(-90_000), endDate: now.addingTimeInterval(-86_400), isAllDay: false, calendarID: "work"),
             CalendarEvent(id: "completed-today", eventIdentifier: "completed-today", title: "朝の打ち合わせ", startDate: now.addingTimeInterval(-14_400), endDate: now.addingTimeInterval(-12_600), isAllDay: false, calendarID: "work"),
-            CalendarEvent(id: "standup", eventIdentifier: "standup", title: long ? "アクセシビリティ改善についてプロダクトチーム全員で確認する定例ミーティング" : "チーム定例", startDate: now.addingTimeInterval(3_600), endDate: now.addingTimeInterval(5_400), isAllDay: false, calendarID: "work"),
+            CalendarEvent(id: "standup", eventIdentifier: "standup", title: long ? "非常に長いプロジェクト定例ミーティングの予定確認" : "チーム定例", startDate: now.addingTimeInterval(3_600), endDate: now.addingTimeInterval(5_400), isAllDay: false, calendarID: "work"),
             CalendarEvent(id: "dentist", eventIdentifier: "dentist", title: "歯科検診", startDate: now.addingTimeInterval(14_400), endDate: now.addingTimeInterval(16_200), isAllDay: false, calendarID: "sample"),
             CalendarEvent(id: "tomorrow", eventIdentifier: "tomorrow", title: "企画レビュー", startDate: now.addingTimeInterval(90_000), endDate: now.addingTimeInterval(93_600), isAllDay: false, calendarID: "work"),
             CalendarEvent(id: "planning", eventIdentifier: "planning", title: "リリース計画", startDate: now.addingTimeInterval(262_800), endDate: now.addingTimeInterval(266_400), isAllDay: false, calendarID: "sample")
@@ -556,6 +556,15 @@ struct TodayView: View {
     }
 }
 
+enum TimelineRowLayoutMode: Equatable {
+    case compact
+    case expanded
+
+    static func resolve(dynamicTypeSize: DynamicTypeSize) -> Self {
+        dynamicTypeSize == .xxxLarge || dynamicTypeSize.isAccessibilitySize ? .expanded : .compact
+    }
+}
+
 private struct TodayTimelineEventRow: View {
     let event: CalendarEvent
     @ObservedObject var model: ProductionUXViewModel
@@ -566,7 +575,7 @@ private struct TodayTimelineEventRow: View {
 
     var body: some View {
         Group {
-            if dynamicTypeSize.isAccessibilitySize { accessibilityLayout }
+            if TimelineRowLayoutMode.resolve(dynamicTypeSize: dynamicTypeSize) == .expanded { expandedLayout }
             else { standardLayout }
         }
         .padding(.horizontal, 20)
@@ -588,14 +597,15 @@ private struct TodayTimelineEventRow: View {
         .frame(minHeight: 82)
     }
 
-    private var accessibilityLayout: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            timeAndState.padding(.top, 14)
-            HStack(alignment: .top, spacing: 8) {
-                TodayTimelineRail(phase: phase, connectsAbove: connectsAbove, connectsBelow: connectsBelow)
-                    .frame(width: 30)
-                details.padding(.bottom, 14)
+    private var expandedLayout: some View {
+        HStack(alignment: .top, spacing: 8) {
+            TodayTimelineRail(phase: phase, connectsAbove: connectsAbove, connectsBelow: connectsBelow)
+                .frame(width: 30)
+            VStack(alignment: .leading, spacing: 8) {
+                timeAndState
+                details
             }
+            .padding(.vertical, 14)
         }
     }
 
@@ -647,30 +657,58 @@ private struct TodayCurrentTimeRow: View {
     let now: Date
     let connectsAbove: Bool
     let connectsBelow: Bool
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
-        HStack(alignment: .center, spacing: 0) {
-            Text(ProductionPresentationPolicy.currentTimeText(now))
-                .font(.title3.monospacedDigit().weight(.semibold))
-                .foregroundStyle(.tint)
-                .frame(width: 70, alignment: .leading)
-            TodayTimelineRail(phase: nil, connectsAbove: connectsAbove, connectsBelow: connectsBelow)
-                .frame(width: 32)
-            HStack(spacing: 10) {
-                Text("現在")
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(.tint)
-                    .fixedSize()
-                DashedCurrentRule()
-            }
+        Group {
+            if TimelineRowLayoutMode.resolve(dynamicTypeSize: dynamicTypeSize) == .expanded { expandedLayout }
+            else { compactLayout }
         }
-        .frame(minHeight: 58)
         .padding(.horizontal, 20)
         .id(ProductionAccessibilityID.todayCurrentMarker)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(ProductionPresentationPolicy.currentTimeAccessibilityLabel(now))
     }
 
+    private var compactLayout: some View {
+        HStack(alignment: .center, spacing: 0) {
+            timeText
+                .frame(width: 70, alignment: .leading)
+            TodayTimelineRail(phase: nil, connectsAbove: connectsAbove, connectsBelow: connectsBelow)
+                .frame(width: 32)
+            currentLabelAndRule
+        }
+        .frame(minHeight: 58)
+    }
+
+    private var expandedLayout: some View {
+        HStack(alignment: .top, spacing: 8) {
+            TodayTimelineRail(phase: nil, connectsAbove: connectsAbove, connectsBelow: connectsBelow)
+                .frame(width: 30)
+            VStack(alignment: .leading, spacing: 8) {
+                timeText
+                currentLabelAndRule
+            }
+            .padding(.vertical, 14)
+        }
+    }
+
+    private var timeText: some View {
+        Text(ProductionPresentationPolicy.currentTimeText(now))
+            .font(.title3.monospacedDigit().weight(.semibold))
+            .foregroundStyle(.tint)
+            .fixedSize(horizontal: true, vertical: false)
+    }
+
+    private var currentLabelAndRule: some View {
+        HStack(spacing: 10) {
+            Text("現在")
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.tint)
+                .fixedSize(horizontal: true, vertical: false)
+            DashedCurrentRule()
+        }
+    }
 }
 
 private struct TodayTimelineRail: View {

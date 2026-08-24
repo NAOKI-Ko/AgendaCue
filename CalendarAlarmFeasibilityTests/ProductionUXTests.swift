@@ -1,5 +1,6 @@
 import Foundation
 import SwiftData
+import SwiftUI
 import XCTest
 @testable import CalendarAlarmFeasibility
 
@@ -114,6 +115,19 @@ final class ProductionUXTests: XCTestCase {
         // The clock exposes only lifecycle/refresh operations and owns no service dependency;
         // advancing it therefore cannot fetch, reconcile, persist, or schedule an alarm.
         XCTAssertEqual(clock.now, Date(timeIntervalSince1970: 2))
+    }
+
+    func testTimelineRowsKeepCompactLayoutBelowXXXL() {
+        XCTAssertEqual(TimelineRowLayoutMode.resolve(dynamicTypeSize: .large), .compact)
+        XCTAssertEqual(TimelineRowLayoutMode.resolve(dynamicTypeSize: .xLarge), .compact)
+        XCTAssertEqual(TimelineRowLayoutMode.resolve(dynamicTypeSize: .xxLarge), .compact)
+    }
+
+    func testTimelineRowsExpandAtXXXLAndAccessibilitySizes() {
+        XCTAssertEqual(TimelineRowLayoutMode.resolve(dynamicTypeSize: .xxxLarge), .expanded)
+        XCTAssertEqual(TimelineRowLayoutMode.resolve(dynamicTypeSize: .accessibility1), .expanded)
+        XCTAssertEqual(TimelineRowLayoutMode.resolve(dynamicTypeSize: .accessibility3), .expanded)
+        XCTAssertEqual(TimelineRowLayoutMode.resolve(dynamicTypeSize: .accessibility5), .expanded)
     }
 
     func testUnifiedTimelineUsesStartDateAsPastFutureBoundary() {
