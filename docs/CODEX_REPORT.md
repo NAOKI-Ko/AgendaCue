@@ -57,9 +57,9 @@ Calendar and AlarmKit CTA strings, localization, Swift source, tests, resources,
 - Repository: `https://github.com/NAOKI-Ko/AgendaCue`
 - Visibility: **PRIVATE**
 - Origin: `https://github.com/NAOKI-Ko/AgendaCue.git`
-- Remote `main`: `d6423938dedb17df3aaa0f925c30636efc61f948`
-- Remote `main` policy: production baseline/history only; WU-16A not merged
-- Recovery branch push and local/remote equality: verified after State Snapshot creation and reported in the final handoff
+- Bootstrap Remote `main`: `d6423938dedb17df3aaa0f925c30636efc61f948` before WU-16A closure
+- Current Remote `main`: WU-16A closure merged by fast-forward only; exact final SHA is reported after closure-state commit creation because a commit cannot contain its own SHA
+- Recovery branch and `main` local/remote equality: verified after closure and reported in the final handoff
 
 ## Review Receipt and Closure
 

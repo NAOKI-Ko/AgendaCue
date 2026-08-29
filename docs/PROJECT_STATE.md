@@ -58,11 +58,13 @@ The production baseline above is re-established from the authoritative Notion Re
 - WU-16A Execution/Bootstrap Visibility: **PRIVATE**
 - Current Visibility: **PUBLIC — changed manually by the owner after reviewed State Snapshot `ff10b057ced4ff1343bdb0810f2cb679b2292724`**
 - Remote: `origin` → `https://github.com/NAOKI-Ko/AgendaCue.git`
-- Remote `main`: `d6423938dedb17df3aaa0f925c30636efc61f948` (frozen production baseline; WU-16A is not merged)
+- Bootstrap Remote `main`: `d6423938dedb17df3aaa0f925c30636efc61f948` before closure
+- Current Remote `main`: **WU-16A closure merged by fast-forward only; exact final SHA is reported after closure-state commit creation because a commit cannot contain its own SHA**
 - Recovery Branch: `wu-16a-continuity-recovery`
 - Recovery Commit: `623af3fc3a37fcb8a9a217dfc5c41f22d1fed463`
-- State Snapshot Commit: reported after commit creation because a commit cannot contain its own SHA
-- Branch push and local/remote equality: verified after the State Snapshot commit and reported in the final WU-16A handoff
+- State Snapshot Commit: `ff10b057ced4ff1343bdb0810f2cb679b2292724`
+- Review Sync Commit: `fe1353ff47bc34e20e9d990232f617bc062b6177`
+- Recovery branch and `main` push/equality: verified after closure and reported with exact final SHAs in the WU-16A closure handoff
 
 ## Verification contract
 
