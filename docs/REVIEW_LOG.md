@@ -50,3 +50,17 @@ The same SHA-binding rule applies to WU-01. Owner waiver allows the pipeline to 
 - History integrity: existing commits were not amended, rebased, squashed, recreated, or otherwise rewritten.
 - Recovery reason: continuity had to be restored before implementing the App Review 5.1.1(iv) permission CTA correction so a future review can bind to an exact WU-16 implementation SHA without misrepresenting earlier reviews.
 - WU-16A review target: recorded separately as a **Continuity Recovery Review Target**, not as a production implementation target.
+
+## WU-16A ChatGPT State Review — 2026-08-30
+
+- Work Unit: **WU-16A — Continuity Recovery / Git State Sync**
+- Review Target: `623af3fc3a37fcb8a9a217dfc5c41f22d1fed463`
+- State Snapshot observed: `ff10b057ced4ff1343bdb0810f2cb679b2292724`
+- Production baseline: `d6423938dedb17df3aaa0f925c30636efc61f948`
+- Reviewer: **ChatGPT**
+- Decision: **PASS**
+- Verified scope: docs-only continuity recovery; production Swift source delta `0`, test source delta `0`, localization/resource delta `0`, and Xcode project/configuration delta `0`.
+- History integrity: no rebase, squash, force-push, or other history rewrite; no historical Review Receipt was fabricated.
+- Historical gaps: WU-14 remains unresolved, and exact historical Review Receipts for WU-11 through WU-15 remain unavailable.
+- Visibility chronology: the repository was PRIVATE during WU-16A bootstrap and at reviewed snapshot `ff10b057ced4ff1343bdb0810f2cb679b2292724`; the owner manually changed it to PUBLIC after that snapshot. This post-review state change does not alter the reviewed decision.
+- Closure: WU-16A continuity recovery accepted. WU-16 permission CTA correction remains a separate, not-yet-started Work Unit.

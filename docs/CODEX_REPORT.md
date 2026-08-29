@@ -61,6 +61,19 @@ Calendar and AlarmKit CTA strings, localization, Swift source, tests, resources,
 - Remote `main` policy: production baseline/history only; WU-16A not merged
 - Recovery branch push and local/remote equality: verified after State Snapshot creation and reported in the final handoff
 
+## Review Receipt and Closure
+
+- Review date: **2026-08-30**
+- Reviewer: **ChatGPT**
+- Reviewed Recovery Commit: `623af3fc3a37fcb8a9a217dfc5c41f22d1fed463`
+- Reviewed State Snapshot: `ff10b057ced4ff1343bdb0810f2cb679b2292724`
+- Decision: **PASS**
+- Reviewed production, test, localization/resource, and Xcode project/configuration deltas: **0**
+- Repository visibility during bootstrap/reviewed snapshot: **PRIVATE**
+- Current repository visibility: **PUBLIC — changed manually by the owner after the reviewed snapshot**
+- Review Sync Commit: reported after commit creation because a commit cannot contain its own SHA
+- Closure merge: fast-forward-only result and final `main` SHA are reported in the final closure handoff
+
 ## Next Action
 
-After repository bootstrap and branch push, stop for ChatGPT State Review of the exact WU-16A continuity recovery target. Start WU-16 only after that review passes.
+WU-16A review passed. Complete the docs-only Review Receipt sync and fast-forward-only closure to `main`, then stop. The next Work Unit is WU-16; its permission CTA correction is not part of this closure.

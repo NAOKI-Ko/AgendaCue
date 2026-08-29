@@ -2,15 +2,16 @@
 
 ## Current state
 
-- Current Phase: **App Review Correction / Continuity Recovery**
-- Current Work Unit: **WU-16A — Continuity Recovery / Git State Sync**
-- Status: **CONTINUITY RECOVERY REVIEW PENDING**
+- Current Phase: **App Review Correction / WU-16A Closed**
+- Completed Work Unit: **WU-16A — Continuity Recovery / Git State Sync**
+- Status: **PASS — CHATGPT STATE REVIEWED / CLOSURE SYNCED**
+- Next Work Unit: **WU-16 — App Review 5.1.1(iv) Permission CTA Correction**
 - Production Baseline: `d6423938dedb17df3aaa0f925c30636efc61f948`
 - Baseline Commit: `WU-15 localize AgendaCue and package build 2`
 - App Store Version/Build: **1.0 (2)**
 - Production Implementation: **COMPLETE / FROZEN AT BASELINE**
 - Public Release: **NOT COMPLETED**
-- Git Continuity State: **RECOVERED / STATE REVIEW PENDING**
+- Git Continuity State: **RECOVERED / REVIEWED PASS**
 - Production Source Synchronization: **FROZEN / NO WU-16A PRODUCTION DELTA ALLOWED**
 
 ## App Review
@@ -43,14 +44,19 @@ The production baseline above is re-established from the authoritative Notion Re
 
 - Production Implementation Review Target: **none for WU-16A**
 - Frozen Production Baseline: `d6423938dedb17df3aaa0f925c30636efc61f948`
-- Continuity Recovery Review Target: `623af3fc3a37fcb8a9a217dfc5c41f22d1fed463`
+- Latest Reviewed Recovery Commit: `623af3fc3a37fcb8a9a217dfc5c41f22d1fed463`
+- WU-16A State Snapshot: `ff10b057ced4ff1343bdb0810f2cb679b2292724`
+- Review Date: **2026-08-30**
+- Reviewer: **ChatGPT**
+- Decision: **PASS**
 - Review type: **docs-only continuity/state review, not a production implementation review**
 
 ## Repository synchronization
 
 - Authenticated GitHub Owner: `NAOKI-Ko`
 - Repository: `https://github.com/NAOKI-Ko/AgendaCue`
-- Visibility: **PRIVATE**
+- WU-16A Execution/Bootstrap Visibility: **PRIVATE**
+- Current Visibility: **PUBLIC — changed manually by the owner after reviewed State Snapshot `ff10b057ced4ff1343bdb0810f2cb679b2292724`**
 - Remote: `origin` → `https://github.com/NAOKI-Ko/AgendaCue.git`
 - Remote `main`: `d6423938dedb17df3aaa0f925c30636efc61f948` (frozen production baseline; WU-16A is not merged)
 - Recovery Branch: `wu-16a-continuity-recovery`
@@ -70,7 +76,7 @@ The production baseline above is re-established from the authoritative Notion Re
 
 ## Next action
 
-Stop for ChatGPT State Review of recovery target `623af3fc3a37fcb8a9a217dfc5c41f22d1fed463` and its State Snapshot. Begin WU-16 only after that review passes. Do not merge WU-16A into `main` before review.
+WU-16A is reviewed PASS and closes after this Review Receipt sync is fast-forwarded to `main`. The next action is to start WU-16 as a separate branch/Work Unit. The permission CTA correction remains unimplemented at this state.
 
 ## Prohibited in WU-16A
 

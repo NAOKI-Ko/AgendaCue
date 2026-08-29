@@ -17,12 +17,13 @@ Apple identified the Calendar and AlarmKit custom pre-permission CTA wording as 
 
 ## Current work
 
-- Current Work Unit: **WU-16A — Continuity Recovery / Git State Sync**
-- Phase: **App Review Correction / Continuity Recovery**
-- Scope: Git documentation, portable AI memory, and repository bootstrap only
+- Completed Work Unit: **WU-16A — Continuity Recovery / Git State Sync — ChatGPT State Review PASS**
+- Review target: `623af3fc3a37fcb8a9a217dfc5c41f22d1fed463`
+- Reviewed State Snapshot: `ff10b057ced4ff1343bdb0810f2cb679b2292724`
+- Current repository: `https://github.com/NAOKI-Ko/AgendaCue` — **PUBLIC** after an owner visibility change made after the reviewed WU-16A snapshot; WU-16A originally bootstrapped it as PRIVATE.
 - Production source: **frozen at `d6423938dedb17df3aaa0f925c30636efc61f948`**
-- Next action: **ChatGPT State Review of the exact WU-16A recovery target**
-- After review PASS only: start **WU-16 — App Review 5.1.1(iv) Permission CTA Correction** as a separate Work Unit
+- Next Work Unit: **WU-16 — App Review 5.1.1(iv) Permission CTA Correction**
+- Correction status: **not implemented**
 
 ## Historical continuity gap
 
@@ -42,4 +43,4 @@ The former portable AI memory stopped at WU-10 even though Git history continued
 
 ## Stop line
 
-Stop after the WU-16A recovery branch is pushed for ChatGPT State Review. Do not change permission CTA/localization, create Build 3, archive, upload, resubmit, merge to `main`, or begin WU-16.
+WU-16A is closed after its exact Review Receipt is synchronized and fast-forwarded to `main`. Start WU-16 only as a separate Work Unit. Do not change permission CTA/localization, create Build 3, archive, upload, or resubmit during this closure step.
