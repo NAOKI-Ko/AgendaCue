@@ -1,78 +1,67 @@
 # Project State
 
-- Phase: **WU-10 Release Gate — Phase B.4R**
-- Current Work: **Final App Store Screenshot Recapture Correction**
-- Status: **FINAL APP STORE SCREENSHOTS RECAPTURED / OWNER VISUAL APPROVAL PENDING**
-- Automated Gate: **PASS**
-- Human Gate: **DEFERRED BY OWNER TO POST-REVIEW / PRE-RELEASE VALIDATION — NOT PASS**
-- Submission: **NOT STARTED**
-- Main Merge: **NOT STARTED**
-- Phase B: **B.4R COMPLETE**
-- Production Brand: **AgendaCue — OWNER APPROVED / INTEGRATED**
-- Customer Display Name: **AgendaCue**
-- Production Bundle ID: **`com.naoki-ko.agendacue` — OWNER APPROVED / INTEGRATED**
-- Production BGTask ID: **`com.naoki-ko.agendacue.refresh` — OWNER APPROVED / INTEGRATED**
-- Final AppIcon: **APPROVED + INTEGRATED**
-- AppIcon Technical Validation: **PASS**
-- Japanese App Store Metadata: **FINALIZED / READY FOR OWNER ENTRY**
-- English App Store Localization: **DRAFT ONLY — DO NOT PUBLISH YET**
-- Category Recommendation: **Utilities / Productivity**
-- Copyright: **© 2026 Naoki Kondo**
+## Current state
 
-## Automated evidence
+- Current Phase: **App Review Correction / Continuity Recovery**
+- Current Work Unit: **WU-16A — Continuity Recovery / Git State Sync**
+- Status: **RECOVERY IN PROGRESS**
+- Production Baseline: `d6423938dedb17df3aaa0f925c30636efc61f948`
+- Baseline Commit: `WU-15 localize AgendaCue and package build 2`
+- App Store Version/Build: **1.0 (2)**
+- Production Implementation: **COMPLETE / FROZEN AT BASELINE**
+- Public Release: **NOT COMPLETED**
+- Git Continuity State: **RECOVERY IN PROGRESS**
+- Production Source Synchronization: **FROZEN / NO WU-16A PRODUCTION DELTA ALLOWED**
 
-Environment: Xcode 26.6 (17F113), iOS SDK 26.5, iOS 26.5 Simulators.
+## App Review
 
-- Current Phase B.3 XCTest: 167 tests passed, 0 failures.
-- Specific iPhone 17 Pro Simulator build: succeeded.
-- Generic iOS Simulator build: succeeded.
-- Generic iOS Device Debug and Release builds with code signing disabled: succeeded.
-- Generic iOS Simulator Debug and Release builds: succeeded.
-- Production Release app Simulator launch smoke without sample arguments: passed.
-- Clean Debug/Release compiler audit: zero warnings after the narrow Sendable fix.
-- WU-10 release evidence is indexed in `docs/evidence/WU-10/README.md`.
-- Phase A.1 naming evidence is indexed in `docs/evidence/WU-10/PHASE_A_1_NAMING.md`.
-- Phase A.1 verification: 160/160 tests; required specific Debug and generic Release Simulator/unsigned Device builds; Release launch; built and installed `CFBundleDisplayName = AgendaCue`.
-- Phase A.2 verification: 160/160 tests; all three Debug and both unsigned Release builds; Release launch under `com.naoki-ko.agendacue`; built plist identity and BGTask checks passed.
-- Phase A.3 verification: valid Apple Development identity restored; signed generic Release build and local Release archive passed; archive identity/plist/privacy/icon/leakage inspection passed.
-- Local archive: `/private/tmp/AgendaCue-WU10-A3.xcarchive`, signed by `Apple Development: Naoki Kondo (8G67FB9S72)` with team `67BCCSD863` and `iOS Team Provisioning Profile: *`.
-- Phase A.4 verification: owner-approved 1024×1024 RGB/no-alpha PNG integrated as the sole Production `AppIcon`; 160/160 tests, required Debug/Release builds, Release launch/bundle inspection, and Simulator Home Screen rendering passed.
-- Phase A.5 package: Japanese metadata finalized; privacy/support static page sources and release checklist created; seven owner-review screenshot sources captured on iPhone 17 Pro Max Simulator at 1320×2868 JPEG/no-alpha.
-- Phase A.6 verification: fresh Release archive and local App Store Connect export passed. The exported IPA is signed by `Cloud Managed Apple Distribution` for team `67BCCSD863` with exact Store profile `iOS Team Store Provisioning Profile: com.naoki-ko.agendacue`; exported entitlement `get-task-allow = false`.
-- Phase A.6 archive/export: `/private/tmp/AgendaCue-WU10-A6.xcarchive` and `/private/tmp/AgendaCue-WU10-A6-Export/CalendarAlarmFeasibility.ipa`. Nothing was uploaded or distributed.
-- Phase A.7A public site: `https://naoki-ko.github.io/agendacue-site/`; Privacy Policy and informational Support pages are public over HTTPS and live-validated. No personal contact information is exposed.
-- Phase A.7A screenshot package: six visually inspected raw captures finalized under `docs/release/screenshots/final-ja/` in App Store order; every file remains 1320×2868 JPEG, RGB/no-alpha, byte-identical to its validated source.
-- Phase A.7B owner decision: use `https://naoki-ko.github.io/agendacue-site/privacy/` for both the Privacy Policy URL and App Store Support URL. No public personal contact information is approved. Support URL status is **OWNER-ACCEPTED WITH REVIEW RISK**; it is not a full-compliance PASS or an internal release blocker. Any rejection will be handled only from actual App Review feedback.
-- Phase B.1 verification: Calendar-first onboarding; authoritative post-request Calendar/Alarm state refresh; immediate Calendar data reload; 164/164 tests; required Debug/Release builds; Production Release launch and Simulator visual QA.
-- Phase B.2 verification: fresh archive `/private/tmp/AgendaCue-WU10-B2.xcarchive` and fresh App Store export `/private/tmp/AgendaCue-WU10-B2-Export/CalendarAlarmFeasibility.ipa` passed for Production candidate `4027062ce519ab15f0274417d7d65d54133097ae`; IPA SHA-256 `cc2d166677e48545f2b21a9e266a5d502b785b340ec53543e8c9ad60020aafb5`; Distribution signing, exact Store profile, entitlements, strict codesign, privacy/resources, and leakage audits passed.
-- Phase B.3 verification: visible Alarm timeline begins at local `Calendar.startOfDay(for: now)` while the independent 14-day historical EventKit fetch overlap remains unchanged; sticky date headers and navigation background are opaque system surfaces. XCTest 167/167, required Debug/Release builds, and light/dark pinned-header Simulator QA passed.
-- Phase B.4 verification: six fresh Japanese Light-appearance screenshots captured from UI candidate `50fc6258384f0ac80cc88661132dbec1a7bca2da` on iPhone 17 Pro Max Simulator, iOS 26.5. Every image is 1320×2868 JPEG, RGB/no-alpha; visual, privacy, uniqueness, Today-first timeline, and opaque pinned-header checks passed. Owner visual approval remains pending.
-- Phase B.4R correction: the B.4 package was superseded because normal Production navigation context was missing and the supplied set was reported as duplicated. Six distinct images were recaptured through the real root TabView and NavigationStack, with back affordances on detail/calendar screens. DEBUG-only scenario routing/data preparation changed; Generic iOS Simulator Release passed and Release behavior is unchanged.
-- Japanese residual audit: app-owned primary UI, permission guidance, state copy, accessibility labels, and purpose strings are Japanese. Product/system names and source-provided calendar/event/source content remain unchanged.
-- Scope audit: scheduling dates/identities/lifecycle, reconciliation, background semantics, domain rules, calendar write prohibition, timeline, settings, persistence schema, and event-detail business behavior are unchanged. Phase A changes are release configuration hygiene, privacy manifest, Japanese stop copy, a narrow Sendable fix, and documentation/evidence.
+- Submission: **COMPLETED**
+- Review Date: **2026-08-29**
+- Submission ID: `1fad3077-c612-45aa-9f65-bc99102a671b`
+- Result: **REJECTED — Guideline 5.1.1(iv)**
+- Category: **Legal — Privacy — Data Collection and Storage**
+- Finding: custom Calendar and AlarmKit pre-permission CTAs directly encourage permission grant.
+- Required future wording: English `Continue`; Japanese `続ける`.
+- Correction status: **NOT STARTED — OUT OF SCOPE FOR WU-16A**
 
-WU-10 Phase B.1 provides two lightweight first-launch steps: Calendar rationale/request and Alarm rationale/request. After a request completes, the observable state is set from the authoritative provider status; Calendar authorization also triggers immediate calendar discovery/data refresh before advancing. Each request is made only while authorization is not determined. Denial still permits completion; completion persists independently of permission state, so later revocation does not replay onboarding. Completed users see the existing inline/System Settings recovery path, and foreground activation continues to refresh authorization and data.
+## Baseline release record
 
-AlarmKit presentation receives the unmodified nonblank source event title. Blank or whitespace-only titles use the Japanese fallback `予定`. Alarm date, stable identity, generated UUID, lifecycle, reconciliation, and capacity behavior are unchanged.
+The production baseline above is re-established from the authoritative Notion Release Record as AgendaCue 1.0 (2). Known baseline results are XCTest 174/174 PASS, Japanese Visual QA PASS, English Visual QA PASS, Distribution signing PASS, Export compliance PASS, and App Review submission completed. This continuity recovery records those authoritative release facts; it does not recreate missing historical ChatGPT Review Receipts.
 
-Accessibility Inspector, real VoiceOver, real-device permissions/EventKit/AlarmKit/Watch/background behavior, physical usability, and final owner acceptance remain post-review / pre-release owner validation. No item is passed by Codex.
+## Historical continuity recovery
 
-## Remaining owner inputs
+- Portable AI memory previously stopped at WU-10 while Git history continued.
+- WU-11 is represented by `bebe9de87e4018c384e242b6c5ad40d24ae6adf4`.
+- WU-12 is represented by `f89ed8a0a600e0134d4e6a97e8f801ea7821ef1d`.
+- WU-13 is represented by `4c4fbff6db84542d95e2b31f0a24d488767bf9dc`.
+- No WU-14 commit or document was found in the available Git history.
+- WU-15 is represented by production baseline `d6423938dedb17df3aaa0f925c30636efc61f948`.
+- Historical status: **Recovered from Git history; exact historical Review Receipt unavailable.**
+- No historical Review Gate is newly marked PASS by WU-16A.
 
-- Post-review / pre-release physical execution and evidence for H01–H46, followed by final owner public-release GO / NO-GO.
-- Explicit authorization for any later App Store Connect upload or App Review submission.
-- Owner visual approval of the final App Store screenshot package, followed by a fresh post-UI-freeze Distribution archive/IPA.
+## Review target
 
-## Release blockers
+- Production Implementation Review Target: **none for WU-16A**
+- Frozen Production Baseline: `d6423938dedb17df3aaa0f925c30636efc61f948`
+- Continuity Recovery Review Target: **pending creation of the WU-16A recovery commit**
+- Review type: **docs-only continuity/state review, not a production implementation review**
 
-- H01–H46 and final owner public-release GO / NO-GO remain pending but, by explicit owner policy, do not block App Review submission.
-- App Store Connect upload and App Review submission require separate explicit owner authorization.
-- The App Store Support URL remains a **KNOWN REVIEW RISK — OPEN / ACCEPTED**, not an internal blocker. It uses the Privacy Policy URL without public email, phone number, physical/legal address, personal contact details, contact form, or external ticket system.
-- Japanese metadata/category/copyright source is prepared; App Store Connect entry itself is not started. English localization must not be published until English in-app UI exists.
-- Physical iPhone was listed as unavailable, so no device installation or behavior was claimed.
-- The B.2 Distribution IPA is stale after B.3 Production UI changes. A fresh post-screenshot/UI-freeze package is required before any upload.
-- Actual system-scheduled background execution timing was not tested on a real device; foreground/resume remains authoritative.
+## Verification contract
 
-## Deferred Owner Validation
+- Production source diff: must be `0`.
+- App resources/localization diff: must be `0`.
+- Test source diff: must be `0`.
+- Xcode project/configuration diff: must be `0`.
+- Build: **NOT REQUIRED — docs-only continuity recovery**.
+- Tests: **NOT REQUIRED — production source unchanged**.
+- Visual QA: **NOT REQUIRED**.
 
-H01–H46 are defined in `docs/release/HUMAN_GATE_CHECKLIST.md`; the result record is `docs/release/HUMAN_GATE_RESULT.md`. No human item is marked passed. The owner deferred execution until post-review / pre-release validation. Manual release is preferred; the final public-release decision remains PENDING.
+## Next action
+
+Complete repository bootstrap and push the WU-16A recovery branch, then stop for ChatGPT State Review of the exact recovery target. Begin WU-16 only after that review passes. Do not merge WU-16A into `main` before review.
+
+## Prohibited in WU-16A
+
+- Calendar or AlarmKit CTA/localization changes
+- Swift, test, resource, project configuration, version, build number, or signing changes
+- Build 3, archive, upload, App Review resubmission, release, rebase, force-push, or history rewrite

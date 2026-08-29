@@ -38,3 +38,15 @@ Record the exact full SHA, commands/evidence locations, unresolved findings, and
 The WU-00 row is intentionally not a review approval: its exact final commit SHA is emitted in the handoff report after the single intentional commit is created. Automated conclusions apply only after confirming that commit's tree matches the tested worktree. A human review entry must record that exact SHA before merge.
 
 The same SHA-binding rule applies to WU-01. Owner waiver allows the pipeline to continue after automated evidence; it does not convert deferred device checks into PASS results.
+
+## Continuity Recovery Record — 2026-08-30
+
+- Recovery Work Unit: **WU-16A — Continuity Recovery / Git State Sync**.
+- Finding: Git portable AI memory (`START_HERE.md`, `PROJECT_STATE.md`, and this log) stopped at WU-10 while production history continued through WU-15 commit `d6423938dedb17df3aaa0f925c30636efc61f948`.
+- Re-established baseline: the authoritative Notion Release Record identifies `d6423938dedb17df3aaa0f925c30636efc61f948` as the AgendaCue 1.0 (2) Build 2 production/distribution baseline.
+- Recoverable Git history: WU-11 `bebe9de87e4018c384e242b6c5ad40d24ae6adf4`, WU-12 `f89ed8a0a600e0134d4e6a97e8f801ea7821ef1d`, WU-13 `4c4fbff6db84542d95e2b31f0a24d488767bf9dc`, and WU-15 `d6423938dedb17df3aaa0f925c30636efc61f948`.
+- WU-14 gap: no corresponding commit or document was found in the available Git history.
+- Review receipt limitation: **Recovered from Git history; exact historical Review Receipt unavailable.** WU-16A does not infer reviewer identity, exact reviewed SHA, historical Review Gate result, or a new PASS for WU-11 through WU-15.
+- History integrity: existing commits were not amended, rebased, squashed, recreated, or otherwise rewritten.
+- Recovery reason: continuity had to be restored before implementing the App Review 5.1.1(iv) permission CTA correction so a future review can bind to an exact WU-16 implementation SHA without misrepresenting earlier reviews.
+- WU-16A review target: recorded separately as a **Continuity Recovery Review Target**, not as a production implementation target.
