@@ -4,13 +4,13 @@
 
 - Current Phase: **App Review Correction / Continuity Recovery**
 - Current Work Unit: **WU-16A — Continuity Recovery / Git State Sync**
-- Status: **RECOVERY IN PROGRESS**
+- Status: **CONTINUITY RECOVERY REVIEW PENDING**
 - Production Baseline: `d6423938dedb17df3aaa0f925c30636efc61f948`
 - Baseline Commit: `WU-15 localize AgendaCue and package build 2`
 - App Store Version/Build: **1.0 (2)**
 - Production Implementation: **COMPLETE / FROZEN AT BASELINE**
 - Public Release: **NOT COMPLETED**
-- Git Continuity State: **RECOVERY IN PROGRESS**
+- Git Continuity State: **RECOVERED / STATE REVIEW PENDING**
 - Production Source Synchronization: **FROZEN / NO WU-16A PRODUCTION DELTA ALLOWED**
 
 ## App Review
@@ -43,8 +43,20 @@ The production baseline above is re-established from the authoritative Notion Re
 
 - Production Implementation Review Target: **none for WU-16A**
 - Frozen Production Baseline: `d6423938dedb17df3aaa0f925c30636efc61f948`
-- Continuity Recovery Review Target: **pending creation of the WU-16A recovery commit**
+- Continuity Recovery Review Target: `623af3fc3a37fcb8a9a217dfc5c41f22d1fed463`
 - Review type: **docs-only continuity/state review, not a production implementation review**
+
+## Repository synchronization
+
+- Authenticated GitHub Owner: `NAOKI-Ko`
+- Repository: `https://github.com/NAOKI-Ko/AgendaCue`
+- Visibility: **PRIVATE**
+- Remote: `origin` → `https://github.com/NAOKI-Ko/AgendaCue.git`
+- Remote `main`: `d6423938dedb17df3aaa0f925c30636efc61f948` (frozen production baseline; WU-16A is not merged)
+- Recovery Branch: `wu-16a-continuity-recovery`
+- Recovery Commit: `623af3fc3a37fcb8a9a217dfc5c41f22d1fed463`
+- State Snapshot Commit: reported after commit creation because a commit cannot contain its own SHA
+- Branch push and local/remote equality: verified after the State Snapshot commit and reported in the final WU-16A handoff
 
 ## Verification contract
 
@@ -58,7 +70,7 @@ The production baseline above is re-established from the authoritative Notion Re
 
 ## Next action
 
-Complete repository bootstrap and push the WU-16A recovery branch, then stop for ChatGPT State Review of the exact recovery target. Begin WU-16 only after that review passes. Do not merge WU-16A into `main` before review.
+Stop for ChatGPT State Review of recovery target `623af3fc3a37fcb8a9a217dfc5c41f22d1fed463` and its State Snapshot. Begin WU-16 only after that review passes. Do not merge WU-16A into `main` before review.
 
 ## Prohibited in WU-16A
 

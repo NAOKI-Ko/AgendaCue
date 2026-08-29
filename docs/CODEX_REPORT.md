@@ -39,10 +39,10 @@ Calendar and AlarmKit CTA strings, localization, Swift source, tests, resources,
 
 ## Verification
 
-- Production source diff: required to remain `0` and audited before commit.
-- App resource/localization diff: required to remain `0` and audited before commit.
-- Test source diff: required to remain `0` and audited before commit.
-- Project configuration diff: required to remain `0` and audited before commit.
+- Production source diff: **0**.
+- App resource/localization diff: **0**.
+- Test source diff: **0**.
+- Project configuration diff: **0**.
 - Build: **NOT REQUIRED — docs-only continuity recovery**.
 - Tests: **NOT REQUIRED — production source unchanged**.
 - Visual QA: **NOT REQUIRED**.
@@ -51,10 +51,15 @@ Calendar and AlarmKit CTA strings, localization, Swift source, tests, resources,
 
 - Branch: `wu-16a-continuity-recovery`
 - Baseline: `d6423938dedb17df3aaa0f925c30636efc61f948`
-- Recovery Commit: pending
-- State Snapshot Commit: pending if required
+- Recovery Commit: `623af3fc3a37fcb8a9a217dfc5c41f22d1fed463`
+- State Snapshot Commit: reported after commit creation because a commit cannot contain its own SHA
 - Authenticated GitHub owner: `NAOKI-Ko`
-- Remote/repository/push: pending safe private repository bootstrap
+- Repository: `https://github.com/NAOKI-Ko/AgendaCue`
+- Visibility: **PRIVATE**
+- Origin: `https://github.com/NAOKI-Ko/AgendaCue.git`
+- Remote `main`: `d6423938dedb17df3aaa0f925c30636efc61f948`
+- Remote `main` policy: production baseline/history only; WU-16A not merged
+- Recovery branch push and local/remote equality: verified after State Snapshot creation and reported in the final handoff
 
 ## Next Action
 
