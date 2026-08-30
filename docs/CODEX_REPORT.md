@@ -84,8 +84,8 @@ All four 1206×2622 iPhone 17 Pro Simulator captures were directly inspected. CT
 
 ## Git State
 
-- Implementation Commit: pending
-- State Snapshot Commit: pending
+- Implementation Commit / Review Target: `c06b4c38b0ece0e2010b8505c9bcfee86b232fc1`
+- State Snapshot Commit: reported after commit creation because a commit cannot contain its own SHA
 - Remote push/synchronization: pending
 
 ## Deviations

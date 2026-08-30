@@ -4,7 +4,7 @@
 
 - Current Phase: **App Review Correction**
 - Current Work Unit: **WU-16 — App Review 5.1.1(iv) Permission CTA Correction**
-- Status: **IMPLEMENTATION VERIFIED / IMPLEMENTATION COMMIT PENDING**
+- Status: **REVIEW PENDING**
 - Branch: `wu-16-permission-cta-correction`
 - Branch Baseline: `3b06f919889cbc8e56c4f71b0208aa5e0dfa23b7`
 - Production Source Baseline Lineage: `d6423938dedb17df3aaa0f925c30636efc61f948`
@@ -28,10 +28,10 @@
 
 ## Review target
 
-- Implementation Commit: **pending**
-- Review Target Implementation Commit: **pending**
-- State Snapshot Commit: **pending**
-- Review Status: **NOT SUBMITTED**
+- Implementation Commit: `c06b4c38b0ece0e2010b8505c9bcfee86b232fc1`
+- Review Target Implementation Commit: `c06b4c38b0ece0e2010b8505c9bcfee86b232fc1`
+- State Snapshot Commit: **reported after commit creation because a commit cannot contain its own SHA**
+- Review Status: **PENDING — CHATGPT IMPLEMENTATION REVIEW NOT YET PERFORMED**
 
 ## Verification
 
@@ -43,7 +43,7 @@
 
 ## Next action
 
-Complete the scoped implementation and verification, create the Implementation Commit, then create a separate State Snapshot Commit and push the branch. Stop for ChatGPT Implementation Review. WU-17 is **NOT STARTED**.
+Push the Implementation Commit and State Snapshot Commit, then stop for ChatGPT Implementation Review of exact target `c06b4c38b0ece0e2010b8505c9bcfee86b232fc1`. WU-17 is **NOT STARTED**.
 
 ## Historical unresolved items
 

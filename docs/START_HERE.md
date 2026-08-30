@@ -23,7 +23,8 @@ Apple identified the Calendar and AlarmKit custom pre-permission CTA wording as 
 - Production source lineage: `d6423938dedb17df3aaa0f925c30636efc61f948`
 - Current repository: `https://github.com/NAOKI-Ko/AgendaCue` — **PUBLIC** after an owner visibility change made after the reviewed WU-16A snapshot; WU-16A originally bootstrapped it as PRIVATE.
 - Scope: neutralize only the Calendar and AlarmKit custom pre-permission CTA wording while preserving request timing, permission flow, and denied recovery.
-- Status: **implementation and verification in progress**
+- Status: **implementation verified / ChatGPT Implementation Review pending**
+- Review Target Implementation Commit: `c06b4c38b0ece0e2010b8505c9bcfee86b232fc1`
 - Next action after WU-16 review PASS only: **WU-17 — AgendaCue 1.0 (3) Release Candidate / App Review Resubmission**
 
 ## Historical continuity gap
