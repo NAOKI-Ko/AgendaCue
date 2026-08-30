@@ -18,14 +18,15 @@ Apple identified the Calendar and AlarmKit custom pre-permission CTA wording as 
 
 ## Current work
 
-- Current Work Unit: **WU-16 — App Review 5.1.1(iv) Permission CTA Correction**
+- Completed Work Unit: **WU-16 — App Review 5.1.1(iv) Permission CTA Correction — ChatGPT Implementation Review PASS**
 - Branch baseline: `3b06f919889cbc8e56c4f71b0208aa5e0dfa23b7`
 - Production source lineage: `d6423938dedb17df3aaa0f925c30636efc61f948`
 - Current repository: `https://github.com/NAOKI-Ko/AgendaCue` — **PUBLIC** after an owner visibility change made after the reviewed WU-16A snapshot; WU-16A originally bootstrapped it as PRIVATE.
 - Scope: neutralize only the Calendar and AlarmKit custom pre-permission CTA wording while preserving request timing, permission flow, and denied recovery.
-- Status: **implementation verified / ChatGPT Implementation Review pending**
-- Review Target Implementation Commit: `c06b4c38b0ece0e2010b8505c9bcfee86b232fc1`
-- Next action after WU-16 review PASS only: **WU-17 — AgendaCue 1.0 (3) Release Candidate / App Review Resubmission**
+- Status: **PASS / REVIEWED**
+- Latest Reviewed Implementation Commit: `c06b4c38b0ece0e2010b8505c9bcfee86b232fc1`
+- Reviewed State Snapshot: `5cce155a4c79e6a2e354b7a3db5321e776436cd3`
+- Next Work Unit: **WU-17 — AgendaCue 1.0 (3) Release Candidate / App Review Resubmission — NOT STARTED**
 
 ## Historical continuity gap
 
@@ -41,8 +42,8 @@ The former portable AI memory stopped at WU-10 even though Git history continued
 6. `IMPLEMENTATION_PLAN.md` — Work Unit sequence and gates.
 7. `QA_CHECKLIST.md` — reusable verification inventory.
 8. `REVIEW_LOG.md` — append-only SHA-bound review and recovery record.
-9. `CODEX_REPORT.md` — current WU-16A execution report.
+9. `CODEX_REPORT.md` — WU-16 implementation, verification, and review receipt.
 
 ## Stop line
 
-Stop after the WU-16 Implementation Commit and State Snapshot Commit are pushed for ChatGPT Implementation Review. Do not merge to `main`, create Build 3, archive, upload, or resubmit.
+WU-16 is closed after its Review Sync Commit is fast-forwarded and pushed to `main`. Do not begin WU-17, change version/build, create Build 3, archive, export, upload, modify App Store Connect, or resubmit during this closure step.

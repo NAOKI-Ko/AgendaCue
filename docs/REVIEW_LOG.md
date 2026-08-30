@@ -64,3 +64,19 @@ The same SHA-binding rule applies to WU-01. Owner waiver allows the pipeline to 
 - Historical gaps: WU-14 remains unresolved, and exact historical Review Receipts for WU-11 through WU-15 remain unavailable.
 - Visibility chronology: the repository was PRIVATE during WU-16A bootstrap and at reviewed snapshot `ff10b057ced4ff1343bdb0810f2cb679b2292724`; the owner manually changed it to PUBLIC after that snapshot. This post-review state change does not alter the reviewed decision.
 - Closure: WU-16A continuity recovery accepted. WU-16 permission CTA correction remains a separate, not-yet-started Work Unit.
+
+## WU-16 ChatGPT Implementation Review — 2026-08-31
+
+- Work Unit: **WU-16 — App Review 5.1.1(iv) Permission CTA Correction**
+- Branch: `wu-16-permission-cta-correction`
+- Branch Baseline: `3b06f919889cbc8e56c4f71b0208aa5e0dfa23b7`
+- Reviewed Implementation SHA: `c06b4c38b0ece0e2010b8505c9bcfee86b232fc1`
+- State Snapshot observed: `5cce155a4c79e6a2e354b7a3db5321e776436cd3`
+- Reviewer: **ChatGPT**
+- Decision: **PASS**
+- Automated evidence: Debug/Release Simulator and unsigned Device builds PASS; XCTest **174/174 PASS**, 0 failed, 0 skipped.
+- Visual QA: **PASS** — ChatGPT directly inspected final Japanese/English Calendar/Alarm custom pre-permission evidence; copy, layout, and non-coaching presentation passed.
+- Scope: only two localized permission CTA values, two focused localization expectations, WU-16 evidence, and documentation changed. No Swift production, EventKit, AlarmKit, request timing/wiring, Xcode configuration, version, or build delta.
+- Physical-device Calendar/AlarmKit native authorization behavior: **DEVICE_VERIFICATION_DEFERRED — NOT PASS**.
+- App Review history preserved: Apple rejection on 2026-08-29 and owner Developer Cancel on 2026-08-30 remain distinct facts. Build 3 was not created and WU-17 was not started.
+- Closure: WU-16 accepted for fast-forward-only merge after this exact Review Receipt sync.

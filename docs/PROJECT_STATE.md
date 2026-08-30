@@ -2,9 +2,10 @@
 
 ## Current state
 
-- Current Phase: **App Review Correction**
-- Current Work Unit: **WU-16 — App Review 5.1.1(iv) Permission CTA Correction**
-- Status: **REVIEW PENDING**
+- Current Phase: **App Review Correction / WU-16 Closed**
+- Completed Work Unit: **WU-16 — App Review 5.1.1(iv) Permission CTA Correction**
+- Status: **PASS / REVIEWED**
+- Next Work Unit: **WU-17 — AgendaCue 1.0 (3) Release Candidate / App Review Resubmission — NOT STARTED**
 - Branch: `wu-16-permission-cta-correction`
 - Branch Baseline: `3b06f919889cbc8e56c4f71b0208aa5e0dfa23b7`
 - Production Source Baseline Lineage: `d6423938dedb17df3aaa0f925c30636efc61f948`
@@ -28,10 +29,12 @@
 
 ## Review target
 
-- Implementation Commit: `c06b4c38b0ece0e2010b8505c9bcfee86b232fc1`
-- Review Target Implementation Commit: `c06b4c38b0ece0e2010b8505c9bcfee86b232fc1`
-- State Snapshot Commit: **reported after commit creation because a commit cannot contain its own SHA**
-- Review Status: **PENDING — CHATGPT IMPLEMENTATION REVIEW NOT YET PERFORMED**
+- Latest Reviewed Implementation Commit: `c06b4c38b0ece0e2010b8505c9bcfee86b232fc1`
+- WU-16 State Snapshot: `5cce155a4c79e6a2e354b7a3db5321e776436cd3`
+- Review Date: **2026-08-31**
+- Reviewer: **ChatGPT**
+- Decision: **PASS**
+- Review Sync Commit: **reported after commit creation because a commit cannot contain its own SHA**
 
 ## Verification
 
@@ -43,7 +46,7 @@
 
 ## Next action
 
-Push the Implementation Commit and State Snapshot Commit, then stop for ChatGPT Implementation Review of exact target `c06b4c38b0ece0e2010b8505c9bcfee86b232fc1`. WU-17 is **NOT STARTED**.
+Close WU-16 by pushing its docs-only Review Sync Commit and fast-forwarding it to `main`. Then stop. WU-17 is the next Work Unit and remains **NOT STARTED**.
 
 ## Historical unresolved items
 
