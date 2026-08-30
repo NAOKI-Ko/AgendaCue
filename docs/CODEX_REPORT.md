@@ -2,109 +2,134 @@
 
 ## Objective
 
-WU-16 App Review 5.1.1(iv) Permission CTA Correction. Replace the Calendar and AlarmKit custom pre-permission CTA copy with neutral wording without changing permission behavior.
+WU-17 Phase A — AgendaCue 1.0 (3) Release Candidate Packaging. Create and audit a fresh Build 3 distribution archive and IPA without upload or App Store Connect changes.
 
 ## Baseline
 
-- Current `main` / branch baseline: `3b06f919889cbc8e56c4f71b0208aa5e0dfa23b7`
-- Production source baseline lineage: `d6423938dedb17df3aaa0f925c30636efc61f948`
-- Branch: `wu-16-permission-cta-correction`
-- App Store version/build: **1.0 (2)**
+- `main`: `ac138b1b6f7260f0841c5c81e5c66d4213511e8c`
+- WU-16 reviewed implementation: `c06b4c38b0ece0e2010b8505c9bcfee86b232fc1`
+- Production lineage: `d6423938dedb17df3aaa0f925c30636efc61f948`
+- Branch: `wu-17-build3-release-candidate`
 
-## Implementation
+## Version
 
-- Updated only the localized Calendar and AlarmKit onboarding CTA values.
-- Added the two CTA localization keys to the existing Japanese/English canonical localization regression table.
-- Preserved the SwiftUI action wiring, EventKit and AlarmKit providers, permission request timing, authoritative state refresh, denial behavior, and Settings recovery.
+- Before: **1.0 (2)**
+- After: **1.0 (3)**
+- Marketing version remains `1.0`.
 
-## Exact Copy
+## Production Delta
 
-- Calendar EN: `Allow Calendar Access` → `Continue`
-- Calendar JA: `カレンダーを許可` → `続ける`
-- Alarm EN: `Allow Alarms` → `Continue`
-- Alarm JA: `アラームを許可` → `続ける`
+- `CalendarAlarmFeasibility.xcodeproj/project.pbxproj`: `CURRENT_PROJECT_VERSION` changed from `2` to `3` in Debug and Release.
+- `CalendarAlarmFeasibilityTests/ProductionUXTests.swift`: the existing release-configuration test name and build expectation changed from Build 2 to Build 3.
+- Functional Swift production source delta: **0**.
+- No other production, UI, behavior, identity, signing configuration, entitlement, asset, dependency, or metadata change.
 
-## Changed Files
+## Build 3 Source SHA
 
-- `CalendarAlarmFeasibility/Localizable.xcstrings`
-- `CalendarAlarmFeasibilityTests/ProductionUXTests.swift`
-- `docs/START_HERE.md`
-- `docs/PROJECT_STATE.md`
-- `docs/CODEX_REPORT.md`
-- `docs/evidence/WU-16/README.md`
-- `docs/evidence/WU-16/ui/01-ja-calendar-pre-permission.png`
-- `docs/evidence/WU-16/ui/02-en-calendar-pre-permission.png`
-- `docs/evidence/WU-16/ui/03-ja-alarm-pre-permission.png`
-- `docs/evidence/WU-16/ui/04-en-alarm-pre-permission.png`
+`620296af562afd37eda7a59263371c51cd64b046`
 
-## Verification
+The formal archive and IPA were produced while `HEAD` equaled this exact Packaging Commit and `git status --porcelain` was empty. The later evidence commit does not change the binary mapping.
 
-- Debug Simulator build: **PASS**
-- Release Simulator build: **PASS**
-- Unsigned Device Debug build: **PASS**
-- Unsigned Device Release build: **PASS**
-- Complete XCTest: **PASS — 174 passed, 0 failed, 0 skipped**
-- Result bundle: `/private/tmp/AgendaCue-WU16-Tests-20260830.xcresult`
-- Static old-CTA audit: **PASS** — no old CTA remains in production source, tests, or localization. Repository-wide matches are confined to the intentional Before → After history in this report.
+## Tests
 
-Commands:
+Result: **PASS — 174 passed, 0 failed, 0 skipped**.
 
 ```sh
-xcodebuild -quiet -project CalendarAlarmFeasibility.xcodeproj -scheme CalendarAlarmFeasibility -configuration Debug -destination 'generic/platform=iOS Simulator' -derivedDataPath /private/tmp/AgendaCue-WU16-Debug-Sim CODE_SIGNING_ALLOWED=NO build
-xcodebuild -quiet -project CalendarAlarmFeasibility.xcodeproj -scheme CalendarAlarmFeasibility -configuration Release -destination 'generic/platform=iOS Simulator' -derivedDataPath /private/tmp/AgendaCue-WU16-Release-Sim CODE_SIGNING_ALLOWED=NO build
-xcodebuild -quiet -project CalendarAlarmFeasibility.xcodeproj -scheme CalendarAlarmFeasibility -configuration Debug -destination 'generic/platform=iOS' -derivedDataPath /private/tmp/AgendaCue-WU16-Debug-Device CODE_SIGNING_ALLOWED=NO build
-xcodebuild -quiet -project CalendarAlarmFeasibility.xcodeproj -scheme CalendarAlarmFeasibility -configuration Release -destination 'generic/platform=iOS' -derivedDataPath /private/tmp/AgendaCue-WU16-Release-Device CODE_SIGNING_ALLOWED=NO build
-xcodebuild -quiet -project CalendarAlarmFeasibility.xcodeproj -scheme CalendarAlarmFeasibility -configuration Debug -destination 'platform=iOS Simulator,id=9D870918-AC43-4F0C-9C63-49B824D22C5B' -derivedDataPath /private/tmp/AgendaCue-WU16-Tests-DD -resultBundlePath /private/tmp/AgendaCue-WU16-Tests-20260830.xcresult test
-xcrun xcresulttool get test-results summary --path /private/tmp/AgendaCue-WU16-Tests-20260830.xcresult
+xcodebuild -quiet -project CalendarAlarmFeasibility.xcodeproj -scheme CalendarAlarmFeasibility -configuration Debug -destination 'platform=iOS Simulator,id=9D870918-AC43-4F0C-9C63-49B824D22C5B' -derivedDataPath /private/tmp/AgendaCue-WU17-Tests-DD -resultBundlePath /private/tmp/AgendaCue-WU17-Tests-20260831.xcresult test
+xcrun xcresulttool get test-results summary --path /private/tmp/AgendaCue-WU17-Tests-20260831.xcresult
 ```
 
-## Functional Verification
+## Builds
 
-- Calendar request path: **PASS by unchanged-source inspection and complete XCTest** — the custom button still invokes `continueCalendarOnboarding()`, which resolves only `.notDetermined` through the existing EventKit `requestFullAccessToEvents()` provider and rereads authoritative state.
-- AlarmKit request path: **PASS by unchanged-source inspection and complete XCTest** — the custom button still invokes `continueAlarmOnboarding()`, which resolves only `.notDetermined` through the existing AlarmKit `requestAuthorization()` provider and rereads authoritative state.
-- Denial and Settings recovery: **PASS by unchanged-source inspection and complete XCTest** — denial does not reprompt, onboarding can complete, and the existing Settings recovery policy/button remains unchanged.
-- Native system permission behavior on physical hardware: **DEVICE_VERIFICATION_DEFERRED**
+- Release generic Simulator: **PASS**.
+- Release unsigned generic Device: **PASS**.
+- Signed generic Device Release archive: **PASS**.
 
-## Visual Evidence
+```sh
+xcodebuild -quiet -project CalendarAlarmFeasibility.xcodeproj -scheme CalendarAlarmFeasibility -configuration Release -destination 'generic/platform=iOS Simulator' -derivedDataPath /private/tmp/AgendaCue-WU17-Release-Sim CODE_SIGNING_ALLOWED=NO build
+xcodebuild -quiet -project CalendarAlarmFeasibility.xcodeproj -scheme CalendarAlarmFeasibility -configuration Release -destination 'generic/platform=iOS' -derivedDataPath /private/tmp/AgendaCue-WU17-Release-Device-Unsigned CODE_SIGNING_ALLOWED=NO build
+```
 
-- Result: **PASS**
-- Japanese Calendar pre-permission: `docs/evidence/WU-16/ui/01-ja-calendar-pre-permission.png`
-- English Calendar pre-permission: `docs/evidence/WU-16/ui/02-en-calendar-pre-permission.png`
-- Japanese Alarm pre-permission: `docs/evidence/WU-16/ui/03-ja-alarm-pre-permission.png`
-- English Alarm pre-permission: `docs/evidence/WU-16/ui/04-en-alarm-pre-permission.png`
+## Archive
 
-All four 1206×2622 iPhone 17 Pro Simulator captures were directly inspected. CTA copy is correct and fully visible with no truncation, overlap, horizontal overflow, layout regression, OS-alert imitation, arrow, or added grant instruction. Details and SHA-256 values are recorded under `docs/evidence/WU-16/`.
+- Xcode: **26.6 (17F113)**; iPhoneOS SDK: **26.5**.
+- Path: `/private/tmp/AgendaCue-WU17-Build3-620296af-20260831T010322.xcarchive`.
+- Timestamp: `2026-08-31T01:03:39+0900`.
+- Result: **ARCHIVE SUCCEEDED**.
+- Archive-stage signing: `Apple Development: Naoki Kondo (8G67FB9S72)` with team `67BCCSD863`; strict codesign verification passed.
 
-## App Review State
+```sh
+xcodebuild -project CalendarAlarmFeasibility.xcodeproj -scheme CalendarAlarmFeasibility -configuration Release -destination 'generic/platform=iOS' -archivePath /private/tmp/AgendaCue-WU17-Build3-620296af-20260831T010322.xcarchive -derivedDataPath /private/tmp/AgendaCue-WU17-Archive-DD -allowProvisioningUpdates archive
+```
 
-- 2026-08-29: Apple rejected Build 2 under Guideline 5.1.1(iv), submission `1fad3077-c612-45aa-9f65-bc99102a671b`.
-- 2026-08-30: the owner accidentally Developer-Cancelled the rejected submission. The rejection remains historical fact.
-- Build 3: **NOT CREATED**
-- Archive/export/upload/resubmission: **NOT PERFORMED**
+## Distribution Signing
 
-## Git State
+- Exported authority: `Apple Distribution: Naoki Kondo (67BCCSD863)`.
+- Certificate SHA-1: `78552718BE68D7426FA66E9CF19554D6A09B69A4`; Cloud Managed Apple Distribution; expires 2027-05-06.
+- Store profile: `iOS Team Store Provisioning Profile: com.naoki-ko.agendacue`.
+- Profile UUID: `2085a254-5677-48a9-8199-8115dec074ad`; expires 2027-05-06.
+- Team/App ID: `67BCCSD863` / `67BCCSD863.com.naoki-ko.agendacue`.
+- Effective entitlements: application identifier, team identifier, `get-task-allow=false`, `beta-reports-active=true` only.
+- `codesign --verify --deep --strict --verbose=4`: **PASS — valid on disk and satisfies Designated Requirement**.
 
-- Implementation Commit / Review Target: `c06b4c38b0ece0e2010b8505c9bcfee86b232fc1`
-- State Snapshot Commit: `5cce155a4c79e6a2e354b7a3db5321e776436cd3`
-- Review Sync Commit: reported after commit creation because a commit cannot contain its own SHA
-- Closure merge: fast-forward-only final result and exact `main` SHA are reported after commit creation in the closure handoff
+## Export
 
-## ChatGPT Review Receipt
+- ExportOptions source: `/private/tmp/AgendaCue-WU17-ExportOptions.plist`.
+- Method/destination: `app-store-connect` / `export`; automatic signing; version/build management disabled.
+- Export path: `/private/tmp/AgendaCue-WU17-Build3-Export-20260831T010322`.
+- IPA: `/private/tmp/AgendaCue-WU17-Build3-Export-20260831T010322/CalendarAlarmFeasibility.ipa`.
+- Size: `2,010,329` bytes.
+- Timestamp: `2026-08-31T01:04:16+0900`.
+- Result: **EXPORT SUCCEEDED**.
+- Upload was not requested or performed.
 
-- Review date: **2026-08-31**
-- Reviewer: **ChatGPT**
-- Reviewed Implementation Commit: `c06b4c38b0ece0e2010b8505c9bcfee86b232fc1`
-- Observed State Snapshot: `5cce155a4c79e6a2e354b7a3db5321e776436cd3`
-- Decision: **PASS**
-- Accepted verification: four builds PASS; XCTest 174/174 PASS; final four-screen Visual QA PASS.
-- Physical-device native Calendar/AlarmKit authorization behavior: **DEVICE_VERIFICATION_DEFERRED — NOT PASS**
-- Next Work Unit: **WU-17 — NOT STARTED**
+```sh
+xcodebuild -exportArchive -archivePath /private/tmp/AgendaCue-WU17-Build3-620296af-20260831T010322.xcarchive -exportPath /private/tmp/AgendaCue-WU17-Build3-Export-20260831T010322 -exportOptionsPlist /private/tmp/AgendaCue-WU17-ExportOptions.plist -allowProvisioningUpdates
+```
+
+## IPA SHA-256
+
+`522d0d603ecdd6330ed5f22a2c432b052099d4728de6ecce86cb5995ae640d3c`
+
+## Package Inspection
+
+- `CFBundleShortVersionString`: `1.0`.
+- `CFBundleVersion`: `3`.
+- Bundle ID: `com.naoki-ko.agendacue`.
+- Display name: `AgendaCue`.
+- BGTask permitted identifier: `com.naoki-ko.agendacue.refresh` only.
+- Background mode: `fetch` only.
+- `ITSAppUsesNonExemptEncryption`: `false`.
+- Minimum OS: `26.0`; platform executable: arm64 iPhoneOS.
+- Executable, nonempty `Assets.car`, compiled AppIcons, `PrivacyInfo.xcprivacy`, Store profile, signature resources, and Japanese/English localization resources are present.
+- Privacy manifest: tracking false, collected data empty, UserDefaults accessed API reason `CA92.1` only.
+- No embedded `Frameworks` or `PlugIns`; linkage is Apple system frameworks and Swift runtime only.
+- Local strict signature validation: **PASS**. The first sandboxed trust check returned `CSSMERR_TP_NOT_TRUSTED` because Apple trust/OCSP access was unavailable; the same unchanged artifact passed immediately when verified with trust access.
+
+## App Review Correction
+
+- Exported English Calendar CTA: `Continue`.
+- Exported Japanese Calendar CTA: `続ける`.
+- Exported English Alarm CTA: `Continue`.
+- Exported Japanese Alarm CTA: `続ける`.
+- Old production/package CTA exact matches: **0**.
+- WU-16 visual evidence remains source-equivalent because the only Production configuration delta is build number.
+- Release Simulator launch smoke: **PASS**, launch PID `14308`.
+
+## Physical Device Gate
+
+**DEVICE_VERIFICATION_DEFERRED — NOT PASS**. H01–H46 remain **PENDING / NOT PASS**. No Simulator or automated evidence is converted to physical-device evidence.
+
+## App Store Connect
+
+**NOT TOUCHED**. Build 3 upload, build selection, Add for Review, Submit for Review, release, and WU-17 Phase B are **NOT STARTED**.
 
 ## Deviations
 
-The first Alarm screenshot attempt used the wrong DEBUG scenario argument form and displayed Calendar. Both invalid captures were replaced before commit using `-UIScenario=onboarding-alarm`; only the corrected Alarm evidence is retained. No production or acceptance-criteria deviation remains.
+The initial strict codesign check was executed without external trust/OCSP access and returned `CSSMERR_TP_NOT_TRUSTED`. It did not alter the artifact. Rechecking the same exported app with Apple trust access passed as valid on disk and satisfying its Designated Requirement. No package, source, or acceptance-scope deviation remains.
 
 ## Unresolved
 
-- Physical-device Calendar/AlarmKit native authorization behavior remains deferred and is not claimed by Simulator evidence.
+- ChatGPT Release Candidate Review is pending for exact Build 3 Source SHA.
+- Physical-device authorization behavior and H01–H46 remain deferred / NOT PASS.
 - Historical WU-14 and exact WU-11 through WU-15 Review Receipt gaps remain as recorded by WU-16A.

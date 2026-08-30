@@ -2,53 +2,69 @@
 
 ## Current state
 
-- Current Phase: **App Review Correction / WU-16 Closed**
-- Completed Work Unit: **WU-16 — App Review 5.1.1(iv) Permission CTA Correction**
-- Status: **PASS / REVIEWED**
-- Next Work Unit: **WU-17 — AgendaCue 1.0 (3) Release Candidate / App Review Resubmission — NOT STARTED**
-- Branch: `wu-16-permission-cta-correction`
-- Branch Baseline: `3b06f919889cbc8e56c4f71b0208aa5e0dfa23b7`
+- Current Work Unit: **WU-17 Phase A — AgendaCue 1.0 (3) Release Candidate Packaging**
+- Status: **RELEASE CANDIDATE REVIEW PENDING**
+- Branch: `wu-17-build3-release-candidate`
+- Branch Baseline / current unchanged `main`: `ac138b1b6f7260f0841c5c81e5c66d4213511e8c`
+- WU-16 Reviewed Implementation: `c06b4c38b0ece0e2010b8505c9bcfee86b232fc1`
 - Production Source Baseline Lineage: `d6423938dedb17df3aaa0f925c30636efc61f948`
-- App Store Version/Build: **1.0 (2)**
+- Build 3 Source SHA: `620296af562afd37eda7a59263371c51cd64b046`
+- State Snapshot Commit: **reported after creation because a commit cannot contain its own SHA**
+- App Store Version: **1.0**
+- Build: **3**
+- Upload: **NOT STARTED**
+- App Review Resubmission: **NOT STARTED**
 - Repository: `https://github.com/NAOKI-Ko/AgendaCue` — **PUBLIC**
 - Public Release: **NOT COMPLETED**
 
-## App Review state
+## Phase A scope and binary contract
 
-- 2026-08-29: Apple rejected Build 2 under Guideline 5.1.1(iv), submission `1fad3077-c612-45aa-9f65-bc99102a671b`, because the Calendar and AlarmKit custom pre-permission CTAs directly encouraged permission grant.
-- 2026-08-30: the owner accidentally Developer-Cancelled the rejected submission in App Store Connect. This does not erase or replace the rejection history and does not change WU-16 scope.
-- WU-16 correction: Calendar and Alarm custom pre-permission CTAs become English `Continue` and Japanese `続ける`.
-- Next release action: after WU-16 ChatGPT Implementation Review PASS only, create Build 3 and resubmit in separate **WU-17**.
-
-## WU-16 scope contract
-
-- Change only the two localized custom pre-permission CTA values and the focused existing localization expectations.
-- Preserve the custom explanation → neutral CTA → native system request flow.
-- Preserve EventKit/AlarmKit request timing, authorization refresh, denial handling, and Settings recovery.
-- No EventKit fetch/reconciliation, AlarmKit scheduling/identity/cleanup, calendar selection, timeline, event detail, persistence, architecture, dependency, version/build, signing, archive, upload, or submission change.
-
-## Review target
-
-- Latest Reviewed Implementation Commit: `c06b4c38b0ece0e2010b8505c9bcfee86b232fc1`
-- WU-16 State Snapshot: `5cce155a4c79e6a2e354b7a3db5321e776436cd3`
-- Review Date: **2026-08-31**
-- Reviewer: **ChatGPT**
-- Decision: **PASS**
-- Review Sync Commit: **reported after commit creation because a commit cannot contain its own SHA**
+- The only production configuration change is `CURRENT_PROJECT_VERSION = 2` → `3` for Debug and Release.
+- The corresponding existing configuration regression test name and expected build value were updated to Build 3.
+- Swift production source, permission CTA copy, EventKit, AlarmKit, request timing, reconciliation, scheduling, persistence, UI, identity, entitlements, assets, dependencies, version, and metadata are unchanged.
+- Formal archive and IPA were generated while `HEAD == 620296af562afd37eda7a59263371c51cd64b046` and the working tree was clean.
+- The binary maps to the Packaging Commit above, not the later docs-only State Snapshot.
 
 ## Verification
 
-- Build: **PASS — Debug/Release Simulator and unsigned Device**
-- Complete XCTest: **PASS — 174 passed, 0 failed, 0 skipped**
-- Functional request/recovery path inspection: **PASS — unchanged CTA action/provider/recovery wiring; complete tests green**
-- Japanese/English Calendar/Alarm Visual QA: **PASS — four inspected iPhone 17 Pro Simulator captures under `docs/evidence/WU-16/ui/`**
-- Physical device/system authorization behavior: **DEVICE_VERIFICATION_DEFERRED — must not be inferred from Simulator**
+- Complete XCTest: **PASS — 174 passed, 0 failed, 0 skipped**.
+- Release Simulator build: **PASS**.
+- Unsigned generic Device Release build: **PASS**.
+- Signed Release archive: **PASS**.
+- App Store distribution export: **PASS**.
+- Strict exported-app codesign verification: **PASS**.
+- Release Simulator launch smoke: **PASS**.
+- Package identity/configuration/resources/privacy audit: **PASS**.
+- Packaged CTA: Calendar and Alarm are `Continue` / `続ける`; old CTA matches are 0.
+- Physical Device Gate: **DEVICE_VERIFICATION_DEFERRED / NOT PASS**.
+- H01–H46: **PENDING / NOT PASS**.
+
+## App Review state
+
+- 2026-08-29: Apple rejected Build 2 under Guideline 5.1.1(iv), submission `1fad3077-c612-45aa-9f65-bc99102a671b`.
+- 2026-08-30: the owner accidentally Developer-Cancelled the rejected submission. Both facts remain preserved.
+- WU-16 correction received ChatGPT Implementation Review PASS.
+- WU-17 Phase A has not received Release Candidate Review yet.
+- App Store Connect was not touched; Build 3 upload, selection, Add for Review, and submission were not started.
 
 ## Next action
 
-Close WU-16 by pushing its docs-only Review Sync Commit and fast-forwarding it to `main`. Then stop. WU-17 is the next Work Unit and remains **NOT STARTED**.
+**ChatGPT Release Candidate Review** of exact Build 3 Source SHA `620296af562afd37eda7a59263371c51cd64b046`, its build-number-only diff, archive/export evidence, distribution identity, IPA hash, and binary-to-Git mapping. WU-17 Phase B is not started.
 
 ## Historical unresolved items
 
 - No WU-14 commit or document was found during WU-16A continuity recovery.
 - Exact historical Review Receipts for WU-11 through WU-15 remain unavailable in Git.
+
+## Required Phase A state
+
+- Current Work Unit: **WU-17 Phase A — AgendaCue 1.0 (3) Release Candidate Packaging**
+- Status: **RELEASE CANDIDATE REVIEW PENDING**
+- Build 3 Source SHA: `620296af562afd37eda7a59263371c51cd64b046`
+- State Snapshot Commit: **reported after creation**
+- App Store Version: **1.0**
+- Build: **3**
+- Upload: **NOT STARTED**
+- App Review Resubmission: **NOT STARTED**
+- Physical Device Gate: **DEVICE_VERIFICATION_DEFERRED / NOT PASS**
+- Next Action: **ChatGPT Release Candidate Review**
