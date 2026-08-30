@@ -2,86 +2,50 @@
 
 ## Current state
 
-- Current Phase: **App Review Correction / WU-16A Closed**
-- Completed Work Unit: **WU-16A — Continuity Recovery / Git State Sync**
-- Status: **PASS — CHATGPT STATE REVIEWED / CLOSURE SYNCED**
-- Next Work Unit: **WU-16 — App Review 5.1.1(iv) Permission CTA Correction**
-- Production Baseline: `d6423938dedb17df3aaa0f925c30636efc61f948`
-- Baseline Commit: `WU-15 localize AgendaCue and package build 2`
+- Current Phase: **App Review Correction**
+- Current Work Unit: **WU-16 — App Review 5.1.1(iv) Permission CTA Correction**
+- Status: **IMPLEMENTATION VERIFIED / IMPLEMENTATION COMMIT PENDING**
+- Branch: `wu-16-permission-cta-correction`
+- Branch Baseline: `3b06f919889cbc8e56c4f71b0208aa5e0dfa23b7`
+- Production Source Baseline Lineage: `d6423938dedb17df3aaa0f925c30636efc61f948`
 - App Store Version/Build: **1.0 (2)**
-- Production Implementation: **COMPLETE / FROZEN AT BASELINE**
+- Repository: `https://github.com/NAOKI-Ko/AgendaCue` — **PUBLIC**
 - Public Release: **NOT COMPLETED**
-- Git Continuity State: **RECOVERED / REVIEWED PASS**
-- Production Source Synchronization: **FROZEN / NO WU-16A PRODUCTION DELTA ALLOWED**
 
-## App Review
+## App Review state
 
-- Submission: **COMPLETED**
-- Review Date: **2026-08-29**
-- Submission ID: `1fad3077-c612-45aa-9f65-bc99102a671b`
-- Result: **REJECTED — Guideline 5.1.1(iv)**
-- Category: **Legal — Privacy — Data Collection and Storage**
-- Finding: custom Calendar and AlarmKit pre-permission CTAs directly encourage permission grant.
-- Required future wording: English `Continue`; Japanese `続ける`.
-- Correction status: **NOT STARTED — OUT OF SCOPE FOR WU-16A**
+- 2026-08-29: Apple rejected Build 2 under Guideline 5.1.1(iv), submission `1fad3077-c612-45aa-9f65-bc99102a671b`, because the Calendar and AlarmKit custom pre-permission CTAs directly encouraged permission grant.
+- 2026-08-30: the owner accidentally Developer-Cancelled the rejected submission in App Store Connect. This does not erase or replace the rejection history and does not change WU-16 scope.
+- WU-16 correction: Calendar and Alarm custom pre-permission CTAs become English `Continue` and Japanese `続ける`.
+- Next release action: after WU-16 ChatGPT Implementation Review PASS only, create Build 3 and resubmit in separate **WU-17**.
 
-## Baseline release record
+## WU-16 scope contract
 
-The production baseline above is re-established from the authoritative Notion Release Record as AgendaCue 1.0 (2). Known baseline results are XCTest 174/174 PASS, Japanese Visual QA PASS, English Visual QA PASS, Distribution signing PASS, Export compliance PASS, and App Review submission completed. This continuity recovery records those authoritative release facts; it does not recreate missing historical ChatGPT Review Receipts.
-
-## Historical continuity recovery
-
-- Portable AI memory previously stopped at WU-10 while Git history continued.
-- WU-11 is represented by `bebe9de87e4018c384e242b6c5ad40d24ae6adf4`.
-- WU-12 is represented by `f89ed8a0a600e0134d4e6a97e8f801ea7821ef1d`.
-- WU-13 is represented by `4c4fbff6db84542d95e2b31f0a24d488767bf9dc`.
-- No WU-14 commit or document was found in the available Git history.
-- WU-15 is represented by production baseline `d6423938dedb17df3aaa0f925c30636efc61f948`.
-- Historical status: **Recovered from Git history; exact historical Review Receipt unavailable.**
-- No historical Review Gate is newly marked PASS by WU-16A.
+- Change only the two localized custom pre-permission CTA values and the focused existing localization expectations.
+- Preserve the custom explanation → neutral CTA → native system request flow.
+- Preserve EventKit/AlarmKit request timing, authorization refresh, denial handling, and Settings recovery.
+- No EventKit fetch/reconciliation, AlarmKit scheduling/identity/cleanup, calendar selection, timeline, event detail, persistence, architecture, dependency, version/build, signing, archive, upload, or submission change.
 
 ## Review target
 
-- Production Implementation Review Target: **none for WU-16A**
-- Frozen Production Baseline: `d6423938dedb17df3aaa0f925c30636efc61f948`
-- Latest Reviewed Recovery Commit: `623af3fc3a37fcb8a9a217dfc5c41f22d1fed463`
-- WU-16A State Snapshot: `ff10b057ced4ff1343bdb0810f2cb679b2292724`
-- Review Date: **2026-08-30**
-- Reviewer: **ChatGPT**
-- Decision: **PASS**
-- Review type: **docs-only continuity/state review, not a production implementation review**
+- Implementation Commit: **pending**
+- Review Target Implementation Commit: **pending**
+- State Snapshot Commit: **pending**
+- Review Status: **NOT SUBMITTED**
 
-## Repository synchronization
+## Verification
 
-- Authenticated GitHub Owner: `NAOKI-Ko`
-- Repository: `https://github.com/NAOKI-Ko/AgendaCue`
-- WU-16A Execution/Bootstrap Visibility: **PRIVATE**
-- Current Visibility: **PUBLIC — changed manually by the owner after reviewed State Snapshot `ff10b057ced4ff1343bdb0810f2cb679b2292724`**
-- Remote: `origin` → `https://github.com/NAOKI-Ko/AgendaCue.git`
-- Bootstrap Remote `main`: `d6423938dedb17df3aaa0f925c30636efc61f948` before closure
-- Current Remote `main`: **WU-16A closure merged by fast-forward only; exact final SHA is reported after closure-state commit creation because a commit cannot contain its own SHA**
-- Recovery Branch: `wu-16a-continuity-recovery`
-- Recovery Commit: `623af3fc3a37fcb8a9a217dfc5c41f22d1fed463`
-- State Snapshot Commit: `ff10b057ced4ff1343bdb0810f2cb679b2292724`
-- Review Sync Commit: `fe1353ff47bc34e20e9d990232f617bc062b6177`
-- Recovery branch and `main` push/equality: verified after closure and reported with exact final SHAs in the WU-16A closure handoff
-
-## Verification contract
-
-- Production source diff: must be `0`.
-- App resources/localization diff: must be `0`.
-- Test source diff: must be `0`.
-- Xcode project/configuration diff: must be `0`.
-- Build: **NOT REQUIRED — docs-only continuity recovery**.
-- Tests: **NOT REQUIRED — production source unchanged**.
-- Visual QA: **NOT REQUIRED**.
+- Build: **PASS — Debug/Release Simulator and unsigned Device**
+- Complete XCTest: **PASS — 174 passed, 0 failed, 0 skipped**
+- Functional request/recovery path inspection: **PASS — unchanged CTA action/provider/recovery wiring; complete tests green**
+- Japanese/English Calendar/Alarm Visual QA: **PASS — four inspected iPhone 17 Pro Simulator captures under `docs/evidence/WU-16/ui/`**
+- Physical device/system authorization behavior: **DEVICE_VERIFICATION_DEFERRED — must not be inferred from Simulator**
 
 ## Next action
 
-WU-16A is reviewed PASS and closes after this Review Receipt sync is fast-forwarded to `main`. The next action is to start WU-16 as a separate branch/Work Unit. The permission CTA correction remains unimplemented at this state.
+Complete the scoped implementation and verification, create the Implementation Commit, then create a separate State Snapshot Commit and push the branch. Stop for ChatGPT Implementation Review. WU-17 is **NOT STARTED**.
 
-## Prohibited in WU-16A
+## Historical unresolved items
 
-- Calendar or AlarmKit CTA/localization changes
-- Swift, test, resource, project configuration, version, build number, or signing changes
-- Build 3, archive, upload, App Review resubmission, release, rebase, force-push, or history rewrite
+- No WU-14 commit or document was found during WU-16A continuity recovery.
+- Exact historical Review Receipts for WU-11 through WU-15 remain unavailable in Git.

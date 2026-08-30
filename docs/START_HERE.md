@@ -9,21 +9,22 @@ AgendaCue is a local-only iOS 26+ SwiftUI app that reads selected device calenda
 - Production implementation: **complete and frozen at the baseline above**
 - App Review submission: **completed**
 - App Review result: **Rejected on 2026-08-29**
+- App Store Connect state: **owner accidentally Developer-Cancelled the rejected submission on 2026-08-30**
 - Submission ID: `1fad3077-c612-45aa-9f65-bc99102a671b`
 - Guideline: **5.1.1(iv) — Legal — Privacy — Data Collection and Storage**
 - Public release: **not completed**
 
-Apple identified the Calendar and AlarmKit custom pre-permission CTA wording as directly encouraging permission grant. The future correction is `Continue` in English and `続ける` in Japanese. WU-16A must not make that production change.
+Apple identified the Calendar and AlarmKit custom pre-permission CTA wording as directly encouraging permission grant. The WU-16 correction is `Continue` in English and `続ける` in Japanese. The rejection remains part of the review history even though the owner later Developer-Cancelled the submission.
 
 ## Current work
 
-- Completed Work Unit: **WU-16A — Continuity Recovery / Git State Sync — ChatGPT State Review PASS**
-- Review target: `623af3fc3a37fcb8a9a217dfc5c41f22d1fed463`
-- Reviewed State Snapshot: `ff10b057ced4ff1343bdb0810f2cb679b2292724`
+- Current Work Unit: **WU-16 — App Review 5.1.1(iv) Permission CTA Correction**
+- Branch baseline: `3b06f919889cbc8e56c4f71b0208aa5e0dfa23b7`
+- Production source lineage: `d6423938dedb17df3aaa0f925c30636efc61f948`
 - Current repository: `https://github.com/NAOKI-Ko/AgendaCue` — **PUBLIC** after an owner visibility change made after the reviewed WU-16A snapshot; WU-16A originally bootstrapped it as PRIVATE.
-- Production source: **frozen at `d6423938dedb17df3aaa0f925c30636efc61f948`**
-- Next Work Unit: **WU-16 — App Review 5.1.1(iv) Permission CTA Correction**
-- Correction status: **not implemented**
+- Scope: neutralize only the Calendar and AlarmKit custom pre-permission CTA wording while preserving request timing, permission flow, and denied recovery.
+- Status: **implementation and verification in progress**
+- Next action after WU-16 review PASS only: **WU-17 — AgendaCue 1.0 (3) Release Candidate / App Review Resubmission**
 
 ## Historical continuity gap
 
@@ -43,4 +44,4 @@ The former portable AI memory stopped at WU-10 even though Git history continued
 
 ## Stop line
 
-WU-16A is closed after its exact Review Receipt is synchronized and fast-forwarded to `main`. Start WU-16 only as a separate Work Unit. Do not change permission CTA/localization, create Build 3, archive, upload, or resubmit during this closure step.
+Stop after the WU-16 Implementation Commit and State Snapshot Commit are pushed for ChatGPT Implementation Review. Do not merge to `main`, create Build 3, archive, upload, or resubmit.

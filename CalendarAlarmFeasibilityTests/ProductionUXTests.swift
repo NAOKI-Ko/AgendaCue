@@ -452,6 +452,8 @@ final class ProductionUXTests: XCTestCase {
             ("timeline.events", "予定", "Events"),
             ("tab.settings", "設定", "Settings"),
             ("onboarding.calendar_title", "カレンダーへのアクセス", "Calendar Access"),
+            ("onboarding.allow_calendar", "続ける", "Continue"),
+            ("onboarding.allow_alarm", "続ける", "Continue"),
             ("event.fallback_title", "予定", "Event"),
             ("alarm.stop", "停止", "Stop")
         ]
