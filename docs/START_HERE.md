@@ -9,7 +9,7 @@ AgendaCue is a local-only iOS 26+ SwiftUI app that reads selected device calenda
 - WU-16 closure / WU-17 branch baseline: `ac138b1b6f7260f0841c5c81e5c66d4213511e8c`.
 - Build 3 source / Packaging Commit: `620296af562afd37eda7a59263371c51cd64b046`.
 - App Store version/build release candidate: **1.0 (3)**.
-- WU-17 Phase A status: **RELEASE CANDIDATE REVIEW PENDING**.
+- WU-17 Phase A status: **CHATGPT RELEASE CANDIDATE REVIEW PASS — CLOSURE SYNC**.
 - Build 3 upload and App Review resubmission: **NOT STARTED**.
 - Public release: **not completed**.
 
@@ -21,13 +21,14 @@ AgendaCue is a local-only iOS 26+ SwiftUI app that reads selected device calenda
 
 ## Current work
 
-- Current Work Unit: **WU-17 Phase A — AgendaCue 1.0 (3) Release Candidate Packaging**.
+- Current Work Unit: **WU-17 Phase A — AgendaCue 1.0 (3) Release Candidate Packaging Closure**.
 - Branch: `wu-17-build3-release-candidate`.
 - Scope: build number `2` → `3`, complete regression/build gates, fresh archive/export, package audit, and evidence only.
 - Functional production source delta: **0**.
 - Formal archive and IPA were generated from clean exact Packaging Commit `620296af562afd37eda7a59263371c51cd64b046`.
 - Physical-device Calendar/AlarmKit authorization and H01–H46: **DEVICE_VERIFICATION_DEFERRED / NOT PASS**.
-- Next action: **ChatGPT Release Candidate Review**.
+- ChatGPT Release Candidate Review: **PASS** on 2026-08-31 for Build 3 Source SHA `620296af562afd37eda7a59263371c51cd64b046`, with State Snapshot `99d46761df112a8f965746dbc7b5c37c9e59b944` observed.
+- Next action: fast-forward Phase A to `main`, then create `wu-17-app-review-resubmission` from the updated `main` for authorized Build 3 upload and App Review resubmission.
 
 ## Historical continuity gap
 
@@ -48,4 +49,4 @@ The former portable AI memory stopped at WU-10 even though Git history continued
 
 ## Stop line
 
-WU-17 Phase A stops after the Packaging Commit and State Snapshot/evidence commit are pushed. Do not merge to `main`, upload Build 3, select a build, change App Store Connect, Add for Review, Submit for Review, or begin WU-17 Phase B before exact-SHA ChatGPT Release Candidate Review PASS.
+The exact-SHA ChatGPT Release Candidate Review gate is **PASS**. The owner has separately authorized a fast-forward-only Phase A closure and continuous WU-17 Phase B execution subject to the recorded integrity, authentication, upload, processing, App Store state, metadata, build-selection, and target-identity stop conditions. Physical-device verification remains **DEVICE_VERIFICATION_DEFERRED — NOT PASS** and public release remains incomplete.

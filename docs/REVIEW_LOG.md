@@ -80,3 +80,18 @@ The same SHA-binding rule applies to WU-01. Owner waiver allows the pipeline to 
 - Physical-device Calendar/AlarmKit native authorization behavior: **DEVICE_VERIFICATION_DEFERRED — NOT PASS**.
 - App Review history preserved: Apple rejection on 2026-08-29 and owner Developer Cancel on 2026-08-30 remain distinct facts. Build 3 was not created and WU-17 was not started.
 - Closure: WU-16 accepted for fast-forward-only merge after this exact Review Receipt sync.
+
+## WU-17 Phase A ChatGPT Release Candidate Review — 2026-08-31
+
+- Work Unit: **WU-17 Phase A — AgendaCue 1.0 (3) Release Candidate Packaging**
+- Branch: `wu-17-build3-release-candidate`
+- Phase A Baseline: `ac138b1b6f7260f0841c5c81e5c66d4213511e8c`
+- Reviewed Build 3 Source SHA: `620296af562afd37eda7a59263371c51cd64b046`
+- State Snapshot observed: `99d46761df112a8f965746dbc7b5c37c9e59b944`
+- Reviewer: **ChatGPT**
+- Decision: **PASS**
+- Accepted evidence: marketing version `1.0` unchanged; build `2` → `3`; functional Swift production delta `0`; XCTest **174/174 PASS**; signed archive, App Store export, Distribution signing, and packaged identity/configuration/privacy audit **PASS**.
+- App Review correction in packaged binary: Calendar and Alarm custom CTA are `Continue` / `続ける`; native system permission dialogs and permission behavior/timing are unchanged.
+- IPA: `/private/tmp/AgendaCue-WU17-Build3-Export-20260831T010322/CalendarAlarmFeasibility.ipa`; SHA-256 `522d0d603ecdd6330ed5f22a2c432b052099d4728de6ecce86cb5995ae640d3c`.
+- Physical-device Calendar/AlarmKit verification: **DEVICE_VERIFICATION_DEFERRED — NOT PASS**. H01–H46 remain pending / NOT PASS.
+- Closure: Phase A accepted for fast-forward-only merge after this docs-only Review Receipt sync. Build 3 upload and App Review resubmission remain separate Phase B external operations.

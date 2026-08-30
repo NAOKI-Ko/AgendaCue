@@ -2,6 +2,14 @@
 
 Audit date: 2026-08-31 (Asia/Tokyo)
 
+## ChatGPT Release Candidate Review
+
+- Review date: **2026-08-31**.
+- Reviewed Build 3 Source SHA: `620296af562afd37eda7a59263371c51cd64b046`.
+- Observed State Snapshot: `99d46761df112a8f965746dbc7b5c37c9e59b944`.
+- Decision: **PASS**.
+- Physical-device Calendar/AlarmKit verification remains **DEVICE_VERIFICATION_DEFERRED — NOT PASS**.
+
 ## Exact source contract
 
 - Branch baseline: `ac138b1b6f7260f0841c5c81e5c66d4213511e8c`.
