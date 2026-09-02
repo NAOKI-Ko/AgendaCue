@@ -39,6 +39,7 @@ final class ProductionUXViewModel: ObservableObject {
         onboardingCompletion = dependencies.onboardingCompletion
         onboardingCompleted = dependencies.onboardingCompletion.isCompleted
         applySampleIfNeeded()
+        logState("model.init")
     }
 
     var route: ProductionRoute { ProductionPresentationPolicy.route(onboardingCompleted: onboardingCompleted) }
@@ -47,13 +48,18 @@ final class ProductionUXViewModel: ObservableObject {
 
     func refresh() async {
         guard sampleScenario == nil else { return }
+        logState("model.refresh.before")
         let permissions = PermissionRefreshSnapshot.current(
             calendar: { calendarPermissionProvider.state },
             alarm: { alarmPermissionProvider.state }
         )
         calendarPermission = permissions.calendar
         alarmPermission = permissions.alarm
-        guard calendarPermission == .authorized else { loadState = .permissionBlocked; return }
+        guard calendarPermission == .authorized else {
+            loadState = .permissionBlocked
+            logState("model.refresh.blocked")
+            return
+        }
         loadState = .loading
         do {
             let discovery = try await source.discover()
@@ -68,6 +74,7 @@ final class ProductionUXViewModel: ObservableObject {
         } catch {
             loadState = .failed
         }
+        logState("model.refresh.after")
     }
 
     func requestCalendar() async {
@@ -83,24 +90,44 @@ final class ProductionUXViewModel: ObservableObject {
     }
 
     func continueCalendarOnboarding() async {
+        logState("onboarding.calendar.before")
         calendarPermission = await OnboardingPermissionSequence.resolve(
             state: calendarPermission,
             request: { try await self.calendarPermissionProvider.requestAccess() },
             authoritativeState: { self.calendarPermissionProvider.state }
         )
+        logState("onboarding.calendar.after-resolve")
         await refresh()
-        onboardingStep = OnboardingFlow.stepAfterCalendar
+        logState("onboarding.calendar.after-refresh")
+        if OnboardingPermissionInvariant.canAdvanceToAlarm(calendar: calendarPermission) {
+            onboardingStep = OnboardingFlow.stepAfterCalendar
+            logState("onboarding.calendar.advanced")
+        } else {
+            logState("onboarding.calendar.blocked")
+        }
     }
 
     func continueAlarmOnboarding() async {
+        logState("onboarding.alarm.before")
         alarmPermission = await OnboardingPermissionSequence.resolve(
             state: alarmPermission,
             request: { try await self.alarmPermissionProvider.requestAccess() },
             authoritativeState: { self.alarmPermissionProvider.state }
         )
+        await refresh()
+        guard OnboardingPermissionInvariant.canComplete(calendar: calendarPermission, alarm: alarmPermission) else {
+            logState("onboarding.alarm.blocked")
+            return
+        }
         onboardingCompletion.markCompleted()
         onboardingCompleted = true
-        await refresh()
+        logState("onboarding.alarm.completed")
+    }
+
+    func logState(_ event: String, scenePhase: String? = nil, refreshGeneration: Int? = nil) {
+        let scene = scenePhase ?? "nil"
+        let generation = refreshGeneration.map { String($0) } ?? "nil"
+        PermissionDiagnostics.log(event, "raw=\(PermissionDiagnostics.calendarAuthorizationStatus()) calendar=\(calendarPermission) alarm=\(alarmPermission) step=\(onboardingStep) completed=\(onboardingCompleted) route=\(route) load=\(loadState) scene=\(scene) generation=\(generation)")
     }
 
     func setCalendar(_ enabled: Bool, id: String) async {
@@ -201,9 +228,11 @@ struct ProductionRootView: View {
         .onAppear { if scenePhase == .active { presentationClock.activate() } }
         .onDisappear { presentationClock.deactivate() }
         .onChange(of: scenePhase) { _, phase in
+            model.logState("production.scenePhase", scenePhase: String(describing: phase), refreshGeneration: refreshGeneration)
             if phase == .active { presentationClock.activate() } else { presentationClock.deactivate() }
         }
         .onChange(of: refreshGeneration) { _, _ in
+            model.logState("production.refreshGeneration", scenePhase: String(describing: scenePhase), refreshGeneration: refreshGeneration)
             presentationClock.refresh()
             Task { await model.refresh() }
         }

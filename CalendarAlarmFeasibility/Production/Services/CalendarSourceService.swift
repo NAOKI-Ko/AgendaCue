@@ -61,10 +61,15 @@ final class CalendarSourceCoordinator {
 
 actor EventKitCalendarSource: CalendarSourceProviding {
     private let store: EKEventStore
-    init(store: EKEventStore = EKEventStore()) { self.store = store }
+    private let permission: any CalendarPermissionProviding
 
-    func discoverCalendars() throws -> [CalendarDescriptor] {
-        try requireAccess()
+    init(store: EKEventStore = EKEventStore(), permission: any CalendarPermissionProviding) {
+        self.store = store
+        self.permission = permission
+    }
+
+    func discoverCalendars() async throws -> [CalendarDescriptor] {
+        try await requireAccess()
         return store.calendars(for: .event).map { calendar in
             CalendarDomainMapper.calendar(CalendarSnapshot(id: calendar.calendarIdentifier, title: calendar.title,
                 sourceID: calendar.source.sourceIdentifier, sourceTitle: calendar.source.title,
@@ -72,8 +77,8 @@ actor EventKitCalendarSource: CalendarSourceProviding {
         }.sorted { ($0.title, $0.id) < ($1.title, $1.id) }
     }
 
-    func fetchEvents(in interval: CalendarInterval, enabledCalendarIDs: Set<String>) throws -> [CalendarEvent] {
-        try requireAccess()
+    func fetchEvents(in interval: CalendarInterval, enabledCalendarIDs: Set<String>) async throws -> [CalendarEvent] {
+        try await requireAccess()
         guard interval.start < interval.end else { throw CalendarSourceError.invalidInterval }
         let calendars = store.calendars(for: .event).filter { enabledCalendarIDs.contains($0.calendarIdentifier) }
         guard !calendars.isEmpty else { return [] }
@@ -85,7 +90,7 @@ actor EventKitCalendarSource: CalendarSourceProviding {
         })
     }
 
-    private func requireAccess() throws {
-        guard EKEventStore.authorizationStatus(for: .event) == .fullAccess else { throw CalendarSourceError.permissionRequired }
+    private func requireAccess() async throws {
+        guard await permission.state == .authorized else { throw CalendarSourceError.permissionRequired }
     }
 }

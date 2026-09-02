@@ -20,7 +20,7 @@ struct AppDependencies {
             let calendarPermission = EventKitPermissionProvider()
             let alarmPermission = AlarmKitPermissionProvider()
             let selections = CalendarSelectionStore(context: container.mainContext)
-            let source = CalendarSourceCoordinator(source: EventKitCalendarSource(), selections: selections)
+            let source = CalendarSourceCoordinator(source: EventKitCalendarSource(permission: calendarPermission), selections: selections)
             let mappingStore = SwiftDataScheduledAlarmStore(container: container)
             let overrideStore = SwiftDataEventOverrideStore(container: container)
             let scheduler = AlarmSchedulingCoordinator(system: AlarmKitSystemScheduler(), store: mappingStore)

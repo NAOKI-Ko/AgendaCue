@@ -33,34 +33,122 @@ final class ProductionUXTests: XCTestCase {
         XCTAssertTrue(UserDefaultsOnboardingCompletionStore(defaults: defaults).isCompleted)
     }
 
-    func testNotDeterminedPermissionRequestsExactlyOnce() async {
+    func testNotDeterminedPermissionRequestsExactlyOnceAndUsesRequestResult() async {
         var requests = 0
-        var authoritativeState = PermissionState.notDetermined
+        let authoritativeState = PermissionState.notDetermined
         let result = await OnboardingPermissionSequence.resolve(
             state: .notDetermined,
-            request: { requests += 1; authoritativeState = .authorized; return .denied },
+            request: { requests += 1; return .authorized },
             authoritativeState: { authoritativeState }
         )
         XCTAssertEqual(result, .authorized); XCTAssertEqual(requests, 1)
     }
 
-    func testPermissionResultUsesAuthoritativeStatusAfterRequest() async {
+    func testPermissionResultIsRetainedWhenAuthoritativeStatusIsStale() async {
         let result = await OnboardingPermissionSequence.resolve(
             state: .notDetermined,
-            request: { .denied },
-            authoritativeState: { .authorized }
+            request: { .authorized },
+            authoritativeState: { .notDetermined }
         )
         XCTAssertEqual(result, .authorized)
     }
 
-    func testPermissionDenialIsReadImmediatelyAfterRequest() async {
+    func testPermissionRequestResultIsNotLostToImmediateStaleRead() async {
         let result = await OnboardingPermissionSequence.resolve(
             state: .notDetermined,
             request: { .authorized },
-            authoritativeState: { .denied }
+            authoritativeState: { .notDetermined }
         )
-        XCTAssertEqual(result, .denied)
-        XCTAssertEqual(OnboardingFlow.stepAfterCalendar, .alarmRationale)
+        XCTAssertEqual(result, .authorized)
+    }
+
+    @MainActor
+    func testCalendarPermissionBoundedConvergenceSucceedsWhenAuthoritativeStateCatchesUp() async {
+        var reads = 0
+        var waits = 0
+        let result = await CalendarPermissionConvergence.resolve(
+            requestResult: .authorized,
+            maximumAuthoritativeReads: 3,
+            authoritativeState: {
+                reads += 1
+                return reads < 3 ? .notDetermined : .authorized
+            },
+            waitForNextRead: { waits += 1 }
+        )
+        XCTAssertEqual(result, .authorized)
+        XCTAssertEqual(reads, 3)
+        XCTAssertEqual(waits, 2)
+    }
+
+    @MainActor
+    func testCalendarPermissionBoundedConvergenceExpiresUsingSuccessfulRequestResult() async {
+        var reads = 0
+        var waits = 0
+        let result = await CalendarPermissionConvergence.resolve(
+            requestResult: .authorized,
+            maximumAuthoritativeReads: 3,
+            authoritativeState: { reads += 1; return .notDetermined },
+            waitForNextRead: { waits += 1 }
+        )
+        XCTAssertEqual(result, .authorized)
+        XCTAssertEqual(reads, 3)
+        XCTAssertEqual(waits, 2)
+    }
+
+    func testConclusiveAuthoritativeDenialOverridesEarlierSuccessfulRequest() {
+        XCTAssertEqual(
+            CalendarPermissionConvergence.resolvedState(requestResult: .authorized, authoritativeState: .denied),
+            .denied
+        )
+    }
+
+    func testCalendarOnboardingCannotAdvanceWithoutAuthorization() {
+        XCTAssertFalse(OnboardingPermissionInvariant.canAdvanceToAlarm(calendar: .notDetermined))
+        XCTAssertFalse(OnboardingPermissionInvariant.canAdvanceToAlarm(calendar: .denied))
+        XCTAssertTrue(OnboardingPermissionInvariant.canAdvanceToAlarm(calendar: .authorized))
+    }
+
+    func testAlarmCompletionCannotProduceInvalidCalendarState() {
+        XCTAssertFalse(OnboardingPermissionInvariant.canComplete(calendar: .notDetermined, alarm: .authorized))
+        XCTAssertFalse(OnboardingPermissionInvariant.canComplete(calendar: .authorized, alarm: .denied))
+        XCTAssertTrue(OnboardingPermissionInvariant.canComplete(calendar: .authorized, alarm: .authorized))
+    }
+
+    func testCompleteCalendarAlarmMainOnboardingContract() async {
+        let calendar = await OnboardingPermissionSequence.resolve(
+            state: .notDetermined,
+            request: { .authorized },
+            authoritativeState: { .notDetermined }
+        )
+        XCTAssertTrue(OnboardingPermissionInvariant.canAdvanceToAlarm(calendar: calendar))
+        let alarm = await OnboardingPermissionSequence.resolve(
+            state: .notDetermined,
+            request: { .authorized },
+            authoritativeState: { .authorized }
+        )
+        XCTAssertTrue(OnboardingPermissionInvariant.canComplete(calendar: calendar, alarm: alarm))
+        XCTAssertEqual(ProductionPresentationPolicy.route(onboardingCompleted: true), .main)
+    }
+
+    func testDeniedSettingsFullAccessForegroundRecoveryContract() {
+        var calendar = PermissionState.denied
+        XCTAssertEqual(PermissionRefreshSnapshot.current(calendar: { calendar }, alarm: { .authorized }).calendar, .denied)
+        calendar = .authorized
+        let refreshed = PermissionRefreshSnapshot.current(calendar: { calendar }, alarm: { .authorized })
+        XCTAssertEqual(refreshed.calendar, .authorized)
+        XCTAssertTrue(OnboardingPermissionInvariant.canAdvanceToAlarm(calendar: refreshed.calendar))
+    }
+
+    @MainActor
+    func testCalendarPermissionConvergenceHasNoInfinitePolling() async {
+        var reads = 0
+        _ = await CalendarPermissionConvergence.resolve(
+            requestResult: .authorized,
+            maximumAuthoritativeReads: 2,
+            authoritativeState: { reads += 1; return .notDetermined },
+            waitForNextRead: { }
+        )
+        XCTAssertEqual(reads, 2)
     }
 
     func testAlreadyAuthorizedPermissionDoesNotPrompt() async {

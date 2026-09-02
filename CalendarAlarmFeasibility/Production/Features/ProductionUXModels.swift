@@ -28,9 +28,30 @@ enum OnboardingPermissionSequence {
         request: () async throws -> PermissionState,
         authoritativeState: () -> PermissionState
     ) async -> PermissionState {
-        guard state == .notDetermined else { return state }
-        do { _ = try await request() } catch { }
-        return authoritativeState()
+        PermissionDiagnostics.log("onboarding.resolve.begin", "input=\(state)")
+        guard state == .notDetermined else {
+            PermissionDiagnostics.log("onboarding.resolve.skipped", "output=\(state)")
+            return state
+        }
+        do {
+            let requestResult = try await request()
+            PermissionDiagnostics.log("onboarding.resolve.end", "request=\(requestResult) output=\(requestResult)")
+            return requestResult
+        } catch {
+            let output = authoritativeState()
+            PermissionDiagnostics.log("onboarding.resolve.end", "request=nil error=\(String(describing: error)) output=\(output)")
+            return output
+        }
+    }
+}
+
+enum OnboardingPermissionInvariant {
+    static func canAdvanceToAlarm(calendar: PermissionState) -> Bool {
+        calendar == .authorized
+    }
+
+    static func canComplete(calendar: PermissionState, alarm: PermissionState) -> Bool {
+        calendar == .authorized && alarm == .authorized
     }
 }
 
