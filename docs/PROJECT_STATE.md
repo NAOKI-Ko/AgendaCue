@@ -3,16 +3,18 @@
 ## Current state
 
 - Current Work Unit: **WU-18 — Physical Device Permission State Recovery**
-- Status: **IMPLEMENTATION + PHYSICAL DEVICE GATE PASS — CHATGPT REVIEW PENDING**
+- Status: **PASS / REVIEWED**
 - Branch: `wu-18-physical-permission-recovery`
-- Baseline / unchanged `main`: `6b75fb90a2c153e34fcc6fe5f307c2558eb5383b`
+- WU-18 baseline `main`: `6b75fb90a2c153e34fcc6fe5f307c2558eb5383b`
 - Build 3 Source SHA: `620296af562afd37eda7a59263371c51cd64b046`
 - WU-18 Implementation Commit: `31d4cf71060e1e6e05acba6b1d2d576966046f22`
-- State Snapshot: this docs-only commit
+- Reviewed State Snapshot: `9ec89202408dd153c8eff398933f33f97efd24aa`
+- Review Sync: this docs-only commit
 - App Store Version/Build: **1.0 (3)** unchanged
-- Build 4: **NOT CREATED**
-- App Store Connect: **NOT TOUCHED**
-- Public Release: **NOT COMPLETED**
+- WU-18 Build 4: **NOT CREATED**
+- WU-18 App Store Connect mutation: **NOT PERFORMED**
+- Current app: **PUBLICLY RELEASED**
+- WU-18 fix/update release: **NOT YET RELEASED**
 
 ## Confirmed root cause
 
@@ -38,7 +40,8 @@ Physical iPhone logs confirmed that `requestFullAccessToEvents()` returned `true
 - Unsigned Device Release: PASS.
 - Physical iPhone 17 / iOS 26.6.1: PD-01, PD-02, PD-03, PD-04, PD-05, PD-06 PASS as recorded in `docs/evidence/WU-18/PHYSICAL_PERMISSION_RECOVERY.md`.
 - Physical Device Gate: **PASS for WU-18 permission recovery scope**.
+- ChatGPT exact-SHA review: **PASS** for Implementation Commit `31d4cf71060e1e6e05acba6b1d2d576966046f22`, with State Snapshot `9ec89202408dd153c8eff398933f33f97efd24aa` observed.
 
-## Next action
+## Closure contract
 
-Push the exact WU-18 State Snapshot, prove local/remote equality and 0/0 ahead/behind, then stop for ChatGPT review. Do not merge, create Build 4, archive, upload, or mutate App Store Connect.
+Push this docs-only Review Sync commit, fast-forward-only merge the WU-18 branch into `main`, push `main`, prove local/remote equality, then stop. Do not create Build 4, archive, upload, or mutate App Store Connect. The current app is already public; the WU-18 fix itself is not yet released.

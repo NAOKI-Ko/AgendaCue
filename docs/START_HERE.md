@@ -6,11 +6,15 @@ AgendaCue is a local-only iOS 26+ SwiftUI app that reads selected device calenda
 
 - Current Work Unit: **WU-18 — Physical Device Permission State Recovery**.
 - Branch: `wu-18-physical-permission-recovery`.
-- Baseline / current `main`: `6b75fb90a2c153e34fcc6fe5f307c2558eb5383b`.
+- WU-18 baseline `main`: `6b75fb90a2c153e34fcc6fe5f307c2558eb5383b`.
 - Build 3 source: `620296af562afd37eda7a59263371c51cd64b046`.
 - WU-18 Implementation Commit: `31d4cf71060e1e6e05acba6b1d2d576966046f22`.
+- Reviewed State Snapshot: `9ec89202408dd153c8eff398933f33f97efd24aa`.
+- WU-18 status: **PASS / REVIEWED**.
+- Current app: **PUBLICLY RELEASED**.
+- WU-18 fix/update release: **NOT YET RELEASED**.
 - Version/build remains **1.0 (3)**.
-- Build 4, archive, upload, App Store Connect changes, and merge: **NOT PERFORMED**.
+- Build 4, archive, upload, and App Store Connect changes: **NOT PERFORMED**.
 
 ## Incident and resolution
 
@@ -24,7 +28,8 @@ WU-18 retains the bounded request outcome until EventKit publishes a conclusive 
 - Debug/Release Simulator: PASS.
 - Unsigned Debug/Release Device: PASS.
 - Physical PD-01 through PD-06: PASS for the WU-18 permission scope.
-- Status: **CHATGPT REVIEW PENDING**.
+- Physical Device Gate: **PASS**.
+- ChatGPT exact-SHA review: **PASS**.
 
 ## Reading order
 
@@ -41,4 +46,4 @@ WU-18 retains the bounded request outcome until EventKit publishes a conclusive 
 
 ## Stop line
 
-After branch push and equality verification, stop for ChatGPT review. Do not merge to `main`, create Build 4, archive, upload, or touch App Store Connect.
+After the docs-only Review Sync and fast-forward-only `main` closure are pushed and equality is verified, stop. Do not create Build 4, change version/build, archive, upload, or touch App Store Connect. The current app is already public; the WU-18 fix is not yet released.

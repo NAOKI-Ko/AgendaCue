@@ -2,7 +2,7 @@
 
 ## WU-18 result
 
-**PASS — IMPLEMENTATION AND PHYSICAL DEVICE PERMISSION GATE COMPLETE; CHATGPT REVIEW PENDING**
+**PASS / REVIEWED — IMPLEMENTATION AND PHYSICAL DEVICE PERMISSION GATE ACCEPTED BY CHATGPT EXACT-SHA REVIEW**
 
 ## Exact root cause
 
@@ -17,6 +17,8 @@ The provider retains the request result only while authoritative status is `.not
 ## Evidence
 
 - Implementation Commit: `31d4cf71060e1e6e05acba6b1d2d576966046f22`
+- Reviewed State Snapshot: `9ec89202408dd153c8eff398933f33f97efd24aa`
+- ChatGPT exact-SHA review: **PASS**.
 - Full XCTest: **182 passed, 0 failed, 0 skipped**.
 - Debug/Release Simulator builds: PASS.
 - Unsigned Debug/Release Device builds: PASS.
@@ -27,5 +29,7 @@ The provider retains the request result only while authoritative status is `.not
 
 - CTA `Continue` / `続ける`: unchanged.
 - Version/build: `1.0 (3)` unchanged.
-- No Build 4, archive, upload, App Store Connect mutation, main merge, dependency, analytics, backend, schema, event-model, or alarm-scheduling change.
-- Physical WU-18 gate is PASS; exact-SHA ChatGPT review remains required before any release packaging decision.
+- Current app: **PUBLICLY RELEASED**.
+- WU-18 fix/update release: **NOT YET RELEASED**.
+- No Build 4, archive, upload, App Store Connect mutation, dependency, analytics, backend, schema, event-model, or alarm-scheduling change occurred in WU-18.
+- Physical WU-18 gate and exact-SHA ChatGPT review are PASS. Release packaging remains outside WU-18 closure scope.

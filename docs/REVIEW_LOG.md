@@ -105,5 +105,40 @@ The same SHA-binding rule applies to WU-01. Owner waiver allows the pipeline to 
 - Root cause: physical EventKit request returned `true` while same-process static authorization remained `.notDetermined`; Build 3 discarded the result and produced invalid completed onboarding state.
 - Automated evidence: XCTest **182/182 PASS**; Debug/Release Simulator and unsigned Debug/Release Device builds PASS.
 - Physical evidence: iPhone 17 / iOS 26.6.1, PD-01 through PD-06 PASS for permission recovery scope.
-- Review status: **CHATGPT REVIEW PENDING**.
+- Review status at this target snapshot: **CHATGPT REVIEW PENDING; superseded by the PASS receipt below**.
 - Prohibited/not performed: main merge, Build 4, archive, upload, App Store Connect mutation.
+
+## WU-18 ChatGPT Review Receipt — 2026-09-02
+
+- Work Unit: **WU-18 — Physical Device Permission State Recovery**
+- Branch: `wu-18-physical-permission-recovery`
+- Baseline main: `6b75fb90a2c153e34fcc6fe5f307c2558eb5383b`
+- Reviewed Implementation Commit: `31d4cf71060e1e6e05acba6b1d2d576966046f22`
+- Observed State Snapshot: `9ec89202408dd153c8eff398933f33f97efd24aa`
+- Reviewer: **ChatGPT**
+- Decision: **PASS**
+
+Accepted:
+
+- Physical-device root cause confirmed.
+- EventKit request result is retained while same-process raw status remains `.notDetermined`.
+- Later conclusive OS authorization state overrides retained request state.
+- Convergence is bounded; no sleep / infinite polling.
+- Calendar onboarding cannot advance to Alarm without Calendar authorization.
+- Onboarding completion requires both Calendar and Alarm authorization.
+- Calendar source consumes the coherent permission provider.
+- Permission UI refresh is published before reconciliation on activation.
+- DEBUG diagnostics contain permission/lifecycle state only.
+- XCTest: 182 passed / 0 failed / 0 skipped.
+- PD-01 through PD-06: PASS.
+- Physical Device Gate: PASS for WU-18 permission recovery scope.
+- Version/build remains 1.0 (3).
+- No Build 4/archive/upload/App Store Connect mutation occurred in WU-18.
+
+Release continuity correction:
+
+- Current app: **PUBLICLY RELEASED**.
+- WU-18 fix/update release: **NOT YET RELEASED**.
+- No public release date or App Store URL is asserted by this receipt.
+
+Closure: WU-18 is **PASS / REVIEWED** and accepted for docs-only Review Sync followed by fast-forward-only merge to `main`. No squash, rebase, merge commit, force push, Build 4, archive, upload, or App Store Connect mutation is authorized as part of this closure.
