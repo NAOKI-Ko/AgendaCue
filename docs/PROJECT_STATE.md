@@ -2,69 +2,43 @@
 
 ## Current state
 
-- Current Work Unit: **WU-17 Phase A — AgendaCue 1.0 (3) Release Candidate Packaging Closure**
-- Status: **CHATGPT RELEASE CANDIDATE REVIEW PASS — CLOSURE SYNC**
-- Branch: `wu-17-build3-release-candidate`
-- Branch Baseline / current unchanged `main`: `ac138b1b6f7260f0841c5c81e5c66d4213511e8c`
-- WU-16 Reviewed Implementation: `c06b4c38b0ece0e2010b8505c9bcfee86b232fc1`
-- Production Source Baseline Lineage: `d6423938dedb17df3aaa0f925c30636efc61f948`
+- Current Work Unit: **WU-18 — Physical Device Permission State Recovery**
+- Status: **IMPLEMENTATION + PHYSICAL DEVICE GATE PASS — CHATGPT REVIEW PENDING**
+- Branch: `wu-18-physical-permission-recovery`
+- Baseline / unchanged `main`: `6b75fb90a2c153e34fcc6fe5f307c2558eb5383b`
 - Build 3 Source SHA: `620296af562afd37eda7a59263371c51cd64b046`
-- Reviewed State Snapshot Commit: `99d46761df112a8f965746dbc7b5c37c9e59b944`
-- App Store Version: **1.0**
-- Build: **3**
-- Upload: **NOT STARTED**
-- App Review Resubmission: **NOT STARTED**
-- Repository: `https://github.com/NAOKI-Ko/AgendaCue` — **PUBLIC**
+- WU-18 Implementation Commit: `31d4cf71060e1e6e05acba6b1d2d576966046f22`
+- State Snapshot: this docs-only commit
+- App Store Version/Build: **1.0 (3)** unchanged
+- Build 4: **NOT CREATED**
+- App Store Connect: **NOT TOUCHED**
 - Public Release: **NOT COMPLETED**
 
-## Phase A scope and binary contract
+## Confirmed root cause
 
-- The only production configuration change is `CURRENT_PROJECT_VERSION = 2` → `3` for Debug and Release.
-- The corresponding existing configuration regression test name and expected build value were updated to Build 3.
-- Swift production source, permission CTA copy, EventKit, AlarmKit, request timing, reconciliation, scheduling, persistence, UI, identity, entitlements, assets, dependencies, version, and metadata are unchanged.
-- Formal archive and IPA were generated while `HEAD == 620296af562afd37eda7a59263371c51cd64b046` and the working tree was clean.
-- The binary maps to the Packaging Commit above, not the later docs-only State Snapshot.
+Physical iPhone logs confirmed that `requestFullAccessToEvents()` returned `true` while the same-process static EventKit authorization status remained `.notDetermined` until process relaunch. Build 3 discarded the request result twice, refreshed from the stale raw state, advanced to Alarm, and persisted onboarding completion without valid Calendar state. This produced `onboardingCompleted=true` plus `calendarPermission != .authorized`, exactly matching the observed Calendar recovery screen.
+
+## WU-18 implementation
+
+- Retains the EventKit request outcome during the same-process `.notDetermined` lag.
+- Uses a maximum of three yielded authoritative reads; no sleep or infinite polling.
+- Lets later conclusive OS authorization override the retained result.
+- Gives `EventKitCalendarSource` the same coherent permission provider.
+- Enforces Calendar-authorized-before-Alarm and Calendar+Alarm-authorized-before-completion invariants.
+- Publishes activation permission refresh before reconciliation.
+- Adds DEBUG/internal state diagnostics without user/calendar content.
 
 ## Verification
 
-- Complete XCTest: **PASS — 174 passed, 0 failed, 0 skipped**.
-- Release Simulator build: **PASS**.
-- Unsigned generic Device Release build: **PASS**.
-- Signed Release archive: **PASS**.
-- App Store distribution export: **PASS**.
-- Strict exported-app codesign verification: **PASS**.
-- Release Simulator launch smoke: **PASS**.
-- Package identity/configuration/resources/privacy audit: **PASS**.
-- Packaged CTA: Calendar and Alarm are `Continue` / `続ける`; old CTA matches are 0.
-- Physical Device Gate: **DEVICE_VERIFICATION_DEFERRED / NOT PASS**.
-- H01–H46: **PENDING / NOT PASS**.
-
-## App Review state
-
-- 2026-08-29: Apple rejected Build 2 under Guideline 5.1.1(iv), submission `1fad3077-c612-45aa-9f65-bc99102a671b`.
-- 2026-08-30: the owner accidentally Developer-Cancelled the rejected submission. Both facts remain preserved.
-- WU-16 correction received ChatGPT Implementation Review PASS.
-- WU-17 Phase A received ChatGPT Release Candidate Review **PASS** on 2026-08-31 for exact Build 3 Source SHA `620296af562afd37eda7a59263371c51cd64b046`; State Snapshot `99d46761df112a8f965746dbc7b5c37c9e59b944` was observed.
-- App Store Connect was not touched; Build 3 upload, selection, Add for Review, and submission were not started.
+- Focused permission/onboarding XCTest: PASS.
+- Complete XCTest: **PASS — 182 passed, 0 failed, 0 skipped**.
+- Debug Simulator: PASS.
+- Release Simulator: PASS.
+- Unsigned Device Debug: PASS.
+- Unsigned Device Release: PASS.
+- Physical iPhone 17 / iOS 26.6.1: PD-01, PD-02, PD-03, PD-04, PD-05, PD-06 PASS as recorded in `docs/evidence/WU-18/PHYSICAL_PERMISSION_RECOVERY.md`.
+- Physical Device Gate: **PASS for WU-18 permission recovery scope**.
 
 ## Next action
 
-Create the docs-only Phase A Review Receipt sync commit, fast-forward `main`, then create `wu-17-app-review-resubmission` from updated `main` and execute the separately authorized Build 3 upload and App Review resubmission workflow. Stop only at its explicit safety blockers. WU-17 Phase B has not started at this snapshot.
-
-## Historical unresolved items
-
-- No WU-14 commit or document was found during WU-16A continuity recovery.
-- Exact historical Review Receipts for WU-11 through WU-15 remain unavailable in Git.
-
-## Required Phase A state
-
-- Current Work Unit: **WU-17 Phase A — AgendaCue 1.0 (3) Release Candidate Packaging Closure**
-- Status: **CHATGPT RELEASE CANDIDATE REVIEW PASS — CLOSURE SYNC**
-- Build 3 Source SHA: `620296af562afd37eda7a59263371c51cd64b046`
-- Reviewed State Snapshot Commit: `99d46761df112a8f965746dbc7b5c37c9e59b944`
-- App Store Version: **1.0**
-- Build: **3**
-- Upload: **NOT STARTED**
-- App Review Resubmission: **NOT STARTED**
-- Physical Device Gate: **DEVICE_VERIFICATION_DEFERRED / NOT PASS**
-- Next Action: **Phase A fast-forward closure, then WU-17 Phase B App Review resubmission**
+Push the exact WU-18 State Snapshot, prove local/remote equality and 0/0 ahead/behind, then stop for ChatGPT review. Do not merge, create Build 4, archive, upload, or mutate App Store Connect.

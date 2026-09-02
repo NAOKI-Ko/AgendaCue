@@ -95,3 +95,15 @@ The same SHA-binding rule applies to WU-01. Owner waiver allows the pipeline to 
 - IPA: `/private/tmp/AgendaCue-WU17-Build3-Export-20260831T010322/CalendarAlarmFeasibility.ipa`; SHA-256 `522d0d603ecdd6330ed5f22a2c432b052099d4728de6ecce86cb5995ae640d3c`.
 - Physical-device Calendar/AlarmKit verification: **DEVICE_VERIFICATION_DEFERRED — NOT PASS**. H01–H46 remain pending / NOT PASS.
 - Closure: Phase A accepted for fast-forward-only merge after this docs-only Review Receipt sync. Build 3 upload and App Review resubmission remain separate Phase B external operations.
+
+## WU-18 Implementation Review Target — 2026-09-02
+
+- Work Unit: **WU-18 — Physical Device Permission State Recovery**
+- Branch: `wu-18-physical-permission-recovery`
+- Baseline: `6b75fb90a2c153e34fcc6fe5f307c2558eb5383b`
+- Implementation Commit: `31d4cf71060e1e6e05acba6b1d2d576966046f22`
+- Root cause: physical EventKit request returned `true` while same-process static authorization remained `.notDetermined`; Build 3 discarded the result and produced invalid completed onboarding state.
+- Automated evidence: XCTest **182/182 PASS**; Debug/Release Simulator and unsigned Debug/Release Device builds PASS.
+- Physical evidence: iPhone 17 / iOS 26.6.1, PD-01 through PD-06 PASS for permission recovery scope.
+- Review status: **CHATGPT REVIEW PENDING**.
+- Prohibited/not performed: main merge, Build 4, archive, upload, App Store Connect mutation.

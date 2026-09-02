@@ -68,3 +68,4 @@ Apply only the sections relevant to the active WU and record actual evidence aga
 - Human Device Gate remains PENDING until explicit human confirmation.
 - Privacy descriptions/disclosures match behavior; App Store metadata, icons, screenshots, signing, archive, and release checklist are complete in WU-10.
 - Review targets the exact SHA and merge occurs only after all applicable gates pass.
+- WU-18 evidence covers the physical EventKit request-result/status lag, bounded convergence, onboarding invariants, prompt permission refresh on activation, 182/182 XCTest, four build configurations, and PD-01 through PD-06 on iPhone 17 / iOS 26.6.1.
