@@ -3,14 +3,15 @@
 ## Current state
 
 - Current Work Unit: **WU-19 — Public Hotfix Release Packaging**
-- Status: **RELEASE CANDIDATE PACKAGE PASS — CHATGPT REVIEW PENDING**
+- Status: **PASS / REVIEWED — RELEASE CANDIDATE REVIEW PASS**
 - Branch: `wu-19-public-hotfix-release`
-- Baseline / unchanged main: `ad25b3ea513c481bb27b7345cb272c183395d104`
+- Baseline main before WU-19 closure: `ad25b3ea513c481bb27b7345cb272c183395d104`
 - Current app: **PUBLICLY RELEASED — 1.0 (3)**, verified read-only in App Store Connect on 2026-09-03.
 - Highest uploaded build: **3**; no draft or in-review app version observed.
 - Candidate: **1.0.1 (4) — NOT YET RELEASED**
-- Packaging Commit: `e35868b0612d707c476fa51f2e1272bd9797850e`
-- State Snapshot: this docs-only commit
+- Reviewed Packaging Commit: `e35868b0612d707c476fa51f2e1272bd9797850e`
+- Observed State Snapshot: `b210f0bbe6f751435fd307608081f272b81ad6ed`
+- Review Sync: this docs-only commit; exact ChatGPT receipt recorded in `docs/REVIEW_LOG.md`.
 - App Store Connect: **READ ONLY / NOT MUTATED**
 - Upload / submission: **NOT STARTED**
 
@@ -30,6 +31,8 @@
 - Debug Simulator, Release Simulator, unsigned Device Debug, unsigned Device Release: **PASS**.
 - Fresh signed Release archive from clean Packaging Commit: **PASS**.
 - Local App Store distribution export and strict archive/IPA codesign: **PASS**.
+- Exact reviewed archive: `/private/tmp/AgendaCue-WU19-uyonHi/AgendaCue-1.0.1-4-e35868b.xcarchive`.
+- Release identity: Packaging Commit `e35868b0612d707c476fa51f2e1272bd9797850e` → this exact reviewed archive → future App Store Connect Build 4. Review Sync does not recreate the archive or modify the IPA.
 - IPA: `/private/tmp/AgendaCue-WU19-uyonHi/Export/CalendarAlarmFeasibility.ipa`
 - IPA SHA-256: `0e974c87797d0c2a1a694f9fd680ea71f0a72994e8f0be6240d0d84f1a808636`
 - Distribution identity, Team, Bundle ID, 1.0.1 (4), get-task-allow=false, encryption=false, privacy manifest, and Continue / 続ける CTA: **PASS**.
@@ -37,4 +40,6 @@
 
 ## Stop line
 
-Push the WU-19 branch, verify exact local/remote equality and 0/0 ahead/behind, then **STOP for ChatGPT Release Candidate Review**. Do not merge main, upload, create/edit an App Store version, select a build, edit Review Notes, add/submit for review, or release.
+The owner accepted the exact-SHA ChatGPT Release Candidate Review as **PASS**. Closure is this docs-only Review Sync, normal WU-19 branch push, then fast-forward-only merge into `main` and normal main push. Verify equality, 0/0 ahead/behind, clean working tree, and reachability of Packaging, State Snapshot, and Review Sync commits. No merge commit, squash, rebase, or force push.
+
+After main closure, **STOP**. The next phase is separate hotfix upload/submission, not authorized by this closure. App Store Connect remained read-only during WU-19 packaging; upload/submission remain **NOT STARTED**. Do not rebuild/recreate the archive, modify the IPA, change version/build, upload, create version 1.0.1, select Build 4, edit Review Notes, Add/Submit for Review, or release.

@@ -142,3 +142,106 @@ Release continuity correction:
 - No public release date or App Store URL is asserted by this receipt.
 
 Closure: WU-18 is **PASS / REVIEWED** and accepted for docs-only Review Sync followed by fast-forward-only merge to `main`. No squash, rebase, merge commit, force push, Build 4, archive, upload, or App Store Connect mutation is authorized as part of this closure.
+
+## WU-19 ChatGPT Release Candidate Review Receipt — 2026-09-03
+
+ChatGPT exact-SHA Release Candidate Review result:
+
+PASS
+
+Reviewed Packaging Commit:
+
+e35868b0612d707c476fa51f2e1272bd9797850e
+
+Observed State Snapshot:
+
+b210f0bbe6f751435fd307608081f272b81ad6ed
+
+Baseline main:
+
+ad25b3ea513c481bb27b7345cb272c183395d104
+
+Release Candidate:
+
+AgendaCue 1.0.1 (4)
+
+### REVIEW RECEIPT
+
+Decision:
+
+PASS
+
+Accepted:
+
+- App Store Connect read-only preflight confirmed:
+  - current public release = 1.0 (3)
+  - highest uploaded build = 3
+  - no draft/in-review app version observed
+- selected hotfix = 1.0.1 (4)
+- Packaging Commit changes only:
+  - MARKETING_VERSION 1.0 → 1.0.1
+  - CURRENT_PROJECT_VERSION 3 → 4
+  - focused version/build regression expectation
+- functional production delta = 0
+- WU-18 reviewed production implementation remains unchanged
+- XCTest = 182 passed / 0 failed / 0 skipped
+- Debug Simulator PASS
+- Release Simulator PASS
+- unsigned Device Debug PASS
+- unsigned Device Release PASS
+- fresh signed Release archive PASS
+- local App Store distribution export PASS
+- Apple Distribution signing PASS
+- strict codesign PASS
+- Bundle ID / Team ID PASS
+- get-task-allow = false in distribution payload
+- ITSAppUsesNonExemptEncryption = false
+- PrivacyInfo.xcprivacy PASS
+- no unexpected frameworks/plugins/SDKs
+- packaged CTA = Continue / 続ける
+- DEBUG permission diagnostic message markers absent from Release executable
+- IPA SHA-256:
+  0e974c87797d0c2a1a694f9fd680ea71f0a72994e8f0be6240d0d84f1a808636
+
+Physical verification:
+
+WU-18 Physical Device Gate was previously PASS on the exact reviewed
+implementation lineage.
+
+WU-19 does NOT claim a new physical-device run.
+
+This is accepted because WU-19 production functional delta is exactly 0.
+
+### BINARY / ARCHIVE CONTRACT
+
+The release candidate archive remains the exact reviewed archive:
+
+/private/tmp/AgendaCue-WU19-uyonHi/AgendaCue-1.0.1-4-e35868b.xcarchive
+
+The reviewed local export remains:
+
+/private/tmp/AgendaCue-WU19-uyonHi/Export/CalendarAlarmFeasibility.ipa
+
+Do NOT recreate or rebuild the archive during Review Sync.
+
+The authoritative release identity is:
+
+Packaging Commit
+e35868b0612d707c476fa51f2e1272bd9797850e
+
+→ exact reviewed archive
+
+→ App Store Connect Build 4
+
+The local exported IPA hash remains release evidence.
+
+### Review Sync / closure state
+
+- WU-19 Release Candidate Review: **PASS / REVIEWED**.
+- Current app: **PUBLICLY RELEASED — 1.0 (3)**.
+- Candidate: **1.0.1 (4) — NOT YET RELEASED**.
+- Upload / submission: **NOT STARTED**; Build 4 above denotes the future upload identity, not an existing upload.
+- App Store Connect remained **READ ONLY / NOT MUTATED** during WU-19 packaging.
+- This Review Sync is docs-only; no production source, tests, Xcode version/build, archive, or IPA changes.
+- Owner-authorized closure: one docs-only Review Sync commit, normal `wu-19-public-hotfix-release` push, fast-forward-only merge into `main`, normal main push; verify equality, reachability of all three WU-19 commits, clean working tree, and 0/0 ahead/behind. No merge commit, squash, rebase, or force push.
+- After main closure: **STOP**. Next phase is separate hotfix upload/submission. Do not repackage, increment build, upload, create version 1.0.1, select Build 4, edit Review Notes, Add for Review, Submit for Review, or release.

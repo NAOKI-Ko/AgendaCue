@@ -102,4 +102,6 @@ Sandbox-limited Git metadata, Simulator service, and XCTest report-cache operati
 
 App Store Connect = **READ ONLY / NOT MUTATED**. Upload = **NOT STARTED**. Submission = **NOT STARTED**. Hotfix release = **NOT YET RELEASED**.
 
-No package gate remains unresolved. ChatGPT Release Candidate Review is **PENDING**. Push the two-commit WU-19 branch and verify equality, then STOP. Do not merge main, upload, create/update an App Store version record, select build, edit Review Notes, Add/Submit for Review, or release.
+No package gate remains unresolved. ChatGPT Release Candidate Review is **PASS**, reviewing Packaging Commit `e35868b0612d707c476fa51f2e1272bd9797850e` and observing State Snapshot `b210f0bbe6f751435fd307608081f272b81ad6ed`; exact receipt is in `docs/REVIEW_LOG.md`. The owner authorized docs-only Review Sync, normal branch push, fast-forward-only main merge, and normal main push. No merge commit, squash, rebase, or force push.
+
+The archive and IPA above remain the exact reviewed artifacts and are not recreated or modified by Review Sync. Packaging Commit → exact reviewed archive → future App Store Connect Build 4 is the authoritative identity; the local IPA hash remains evidence. After main closure, STOP. Next phase is separate hotfix upload/submission. Do not change version/build, repackage, upload, create/update an App Store version record, select build, edit Review Notes, Add/Submit for Review, or release. Candidate **1.0.1 (4) remains NOT YET RELEASED**.
