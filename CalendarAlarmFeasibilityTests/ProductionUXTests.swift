@@ -559,9 +559,9 @@ final class ProductionUXTests: XCTestCase {
         XCTAssertEqual(ProductionLocalization.format("timeline.today_summary_other", locale: Locale(identifier: "en"), Int64(2)), "2 events today")
     }
 
-    func testBuiltProductReleaseConfigurationIsVersionOneBuildThreeAndNoExemptEncryption() {
-        XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String, "1.0")
-        XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String, "3")
+    func testBuiltProductReleaseConfigurationIsVersionOneZeroOneBuildFourAndNoExemptEncryption() {
+        XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String, "1.0.1")
+        XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String, "4")
         XCTAssertEqual(Bundle.main.object(forInfoDictionaryKey: "ITSAppUsesNonExemptEncryption") as? Bool, false)
     }
 
