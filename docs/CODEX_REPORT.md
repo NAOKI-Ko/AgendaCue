@@ -1,42 +1,35 @@
 # Codex Report
 
-## WU-19 result
+## WU-20 result
 
-**PASS / REVIEWED — CHATGPT RELEASE CANDIDATE REVIEW PASS**
+**SUBMISSION PASS — WAITING FOR REVIEW — CHATGPT FINAL SUBMISSION-STATE REVIEW PENDING**
 
-## Release preflight
+App Store Connect confirmed **1項目が提出されました** and then **審査待ち** for the sole iOS **1.0.1 (4)** item. Submission date: **2026-09-03 16:58 JST**.
 
-Read-only App Store Connect inspection on 2026-09-03 confirmed public version **1.0**, selected public build **3**, state **配信準備完了**, and uploaded builds **1, 2, 3**. The upload-history filter was **すべて** and all three were **終了**. No draft/in-review app version appeared in the distribution sidebar; App Review showed only completed and deleted submissions.
+Current public release remains **1.0 (3)**. Candidate **1.0.1 (4) is SUBMITTED / NOT YET PUBLICLY RELEASED**. Automatic release after approval is selected, without phased release. No manual release action occurred.
 
-Selected target: **1.0.1 (4)**. Current app remains **PUBLICLY RELEASED**; this WU-18 hotfix is **NOT YET RELEASED**.
+## Gates and identity
 
-## Exact source and evidence
-
-- Baseline main: `ad25b3ea513c481bb27b7345cb272c183395d104`.
-- Reviewed WU-18 implementation: `31d4cf71060e1e6e05acba6b1d2d576966046f22`.
-- WU-18 reviewed snapshot: `9ec89202408dd153c8eff398933f33f97efd24aa`.
+- Pre-mutation Git: clean `main`, HEAD/origin/main `b6f8a506bf1feef4ecac685e9818b82de352bb5a`, ahead/behind 0/0.
+- Read-only precheck: public 1.0 (3), highest upload 3, no unexpected Build 4 or draft/in-review version.
 - Reviewed Packaging Commit: `e35868b0612d707c476fa51f2e1272bd9797850e`.
-- Observed State Snapshot: `b210f0bbe6f751435fd307608081f272b81ad6ed`.
-- Exact ChatGPT Release Candidate Review Receipt: `docs/REVIEW_LOG.md`; Decision **PASS**.
-- Packaging delta: project version/build fields plus one focused test name/expectations.
-- Production functional delta: **0**; production directory Git tree is identical across the reviewed lineage.
-- XCTest: **182 passed / 0 failed / 0 skipped**.
-- All four required builds: **PASS**.
-- Fresh signed archive and App Store distribution export: **PASS**.
-- Apple Distribution, strict codesign, get-task-allow=false, Team/Bundle ID/version/build, encryption=false, PrivacyInfo, no unexpected frameworks/plugins, Continue / 続ける: **PASS**.
-- IPA SHA-256: `0e974c87797d0c2a1a694f9fd680ea71f0a72994e8f0be6240d0d84f1a808636`.
-- Full artifact paths, commands and audit: `docs/evidence/WU-19/PUBLIC_HOTFIX_RELEASE_CANDIDATE.md`.
+- Observed WU-19 State Snapshot: `b210f0bbe6f751435fd307608081f272b81ad6ed`.
+- Exact archive: `AgendaCue-1.0.1-4-e35868b.xcarchive`.
+- Organizer upload: **PASS**, 1.0.1 (4), version/build management disabled, Cloud Managed Apple Distribution signing, correct Team/Bundle ID, `get-task-allow=false`.
+- Processing: **PASS**, upload history **終了**, TestFlight **提出準備完了**, binary **確認済み**, non-exempt encryption **いいえ**.
+- New App Store version 1.0.1 / selected Build 4: **PASS**.
+- Owner-provided Japanese/English What's New and Review Notes saved: **PASS**.
+- Existing metadata preserved; non-inherited promotional text carried forward unchanged from public 1.0 in both languages. Screenshots remain six per localization. Pricing/availability, privacy, and age rating were not edited.
+- Add for Review: **PASS**; summary contained only iOS 1.0.1 (4).
+- Submit / actual post-submit status: **PASS / 審査待ち**.
+- Warnings / unresolved submission blockers: **none observed**. Apple approval/public release are not claimed.
 
-## Safety and limitations
+## Safety and evidence
 
-Physical WU-18 Gate was previously PASS on the exact reviewed implementation lineage. WU-19 did not execute or claim a new physical cycle. Browser inspection established the public release baseline without modifying App Store Connect. Existing local signing assets were used without provisioning updates.
+No production source, tests, project settings, marketing version, or build changes. No new archive or Build 5. Exact source archive content checksum and reviewed local IPA SHA-256 remained unchanged after upload. Organizer's permitted distribution packaging/signing is distinct from the reviewed local export; the local IPA hash is not claimed as the uploaded package hash.
 
-App Store Connect remained **READ ONLY / NOT MUTATED** during WU-19 packaging. Upload and submission = **NOT STARTED**. Current public release = **1.0 (3)**; candidate **1.0.1 (4) = NOT YET RELEASED**.
+Reviewed IPA: `CalendarAlarmFeasibility.ipa`, SHA-256 `0e974c87797d0c2a1a694f9fd680ea71f0a72994e8f0be6240d0d84f1a808636`.
 
-## Review Sync and closure contract
+Sanitized timeline, artifact mapping, metadata text, and limitations: `docs/evidence/WU-20/HOTFIX_APP_REVIEW_SUBMISSION.md`. Only sanitized release-state evidence is stored in Git; no credentials, session data, private keys, contact details, or calendar event data are included.
 
-This Review Sync changes Git docs only. Production source, tests, Xcode version/build, reviewed archive, and IPA are unchanged. The owner authorized a normal WU-19 branch push followed by fast-forward-only main merge and normal main push, with equality, reachability, clean working tree, and 0/0 ahead/behind verification. No merge commit, squash, rebase, or force push.
-
-Authoritative release identity: Packaging Commit `e35868b0612d707c476fa51f2e1272bd9797850e` → exact reviewed archive `/private/tmp/AgendaCue-WU19-uyonHi/AgendaCue-1.0.1-4-e35868b.xcarchive` → future App Store Connect Build 4. Reviewed export: `/private/tmp/AgendaCue-WU19-uyonHi/Export/CalendarAlarmFeasibility.ipa`; the SHA-256 above remains release evidence. Review Sync does not recreate/rebuild the archive or modify the IPA.
-
-After main closure, **STOP**. Next phase is separate hotfix upload/submission. No version/build change, repackage, upload, version 1.0.1 creation, Build 4 selection, Review Notes edit, Add/Submit for Review, or release is authorized here.
+One docs-only evidence commit belongs to `wu-20-hotfix-app-review-submission`. Normal push only; **no main merge**. After clean/equality/0/0 verification, **STOP for ChatGPT final submission-state review**.

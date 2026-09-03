@@ -245,3 +245,21 @@ The local exported IPA hash remains release evidence.
 - This Review Sync is docs-only; no production source, tests, Xcode version/build, archive, or IPA changes.
 - Owner-authorized closure: one docs-only Review Sync commit, normal `wu-19-public-hotfix-release` push, fast-forward-only merge into `main`, normal main push; verify equality, reachability of all three WU-19 commits, clean working tree, and 0/0 ahead/behind. No merge commit, squash, rebase, or force push.
 - After main closure: **STOP**. Next phase is separate hotfix upload/submission. Do not repackage, increment build, upload, create version 1.0.1, select Build 4, edit Review Notes, Add for Review, Submit for Review, or release.
+
+## WU-20 Submission-State Review Target — 2026-09-03
+
+- Work Unit: **WU-20 — Hotfix Upload / App Review Submission**.
+- Branch: `wu-20-hotfix-app-review-submission`; unchanged main / baseline `b6f8a506bf1feef4ecac685e9818b82de352bb5a`.
+- Reviewed Packaging Commit: `e35868b0612d707c476fa51f2e1272bd9797850e`; WU-19 State Snapshot `b210f0bbe6f751435fd307608081f272b81ad6ed`.
+- Exact reviewed archive: `AgendaCue-1.0.1-4-e35868b.xcarchive` → App Store Connect **1.0.1 (4)**.
+- No rebuild/rearchive, version/build change, Build 5, production source/test/project change. Original archive content and reviewed local IPA hash unchanged; Organizer used permitted distribution packaging/signing with version/build management disabled.
+- Upload / processing: **PASS**, binary **確認済み**, correct version/build/Bundle ID, no export-compliance blocker.
+- New version **1.0.1**, selected **Build 4**, owner-provided Japanese/English What's New and Review Notes saved; existing metadata preserved.
+- Add for Review / Submit for Review: **PASS**. Final submission contained exactly one iOS 1.0.1 (4) item.
+- Actual App Store Connect state: **審査待ち / Waiting for Review**, submitted **2026-09-03 16:58 JST**.
+- Release policy: **automatic after approval**, all users, no phased release.
+- Current public: **1.0 (3) — PUBLICLY RELEASED**. Candidate **1.0.1 (4) — SUBMITTED / NOT YET PUBLICLY RELEASED**.
+- Warnings / unresolved submission blockers: **none observed**. Apple approval/release remains pending.
+- Full sanitized evidence: `docs/evidence/WU-20/HOTFIX_APP_REVIEW_SUBMISSION.md`.
+- Review target: this single docs-only submission evidence commit. **ChatGPT final submission-state review PENDING**, not an invented PASS receipt.
+- Stop after normal WU-20 push and equality/0/0/clean verification. **Do not merge main yet**; no further external release action.
