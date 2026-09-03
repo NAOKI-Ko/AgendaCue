@@ -2,46 +2,39 @@
 
 ## Current state
 
-- Current Work Unit: **WU-18 — Physical Device Permission State Recovery**
-- Status: **PASS / REVIEWED**
-- Branch: `wu-18-physical-permission-recovery`
-- WU-18 baseline `main`: `6b75fb90a2c153e34fcc6fe5f307c2558eb5383b`
-- Build 3 Source SHA: `620296af562afd37eda7a59263371c51cd64b046`
-- WU-18 Implementation Commit: `31d4cf71060e1e6e05acba6b1d2d576966046f22`
+- Current Work Unit: **WU-19 — Public Hotfix Release Packaging**
+- Status: **RELEASE CANDIDATE PACKAGE PASS — CHATGPT REVIEW PENDING**
+- Branch: `wu-19-public-hotfix-release`
+- Baseline / unchanged main: `ad25b3ea513c481bb27b7345cb272c183395d104`
+- Current app: **PUBLICLY RELEASED — 1.0 (3)**, verified read-only in App Store Connect on 2026-09-03.
+- Highest uploaded build: **3**; no draft or in-review app version observed.
+- Candidate: **1.0.1 (4) — NOT YET RELEASED**
+- Packaging Commit: `e35868b0612d707c476fa51f2e1272bd9797850e`
+- State Snapshot: this docs-only commit
+- App Store Connect: **READ ONLY / NOT MUTATED**
+- Upload / submission: **NOT STARTED**
+
+## Reviewed implementation lineage
+
+- WU-18: **CLOSED / PASS / REVIEWED**
+- Reviewed Implementation: `31d4cf71060e1e6e05acba6b1d2d576966046f22`
 - Reviewed State Snapshot: `9ec89202408dd153c8eff398933f33f97efd24aa`
-- Review Sync: this docs-only commit
-- App Store Version/Build: **1.0 (3)** unchanged
-- WU-18 Build 4: **NOT CREATED**
-- WU-18 App Store Connect mutation: **NOT PERFORMED**
-- Current app: **PUBLICLY RELEASED**
-- WU-18 fix/update release: **NOT YET RELEASED**
+- WU-18 Review Sync / baseline main: `ad25b3ea513c481bb27b7345cb272c183395d104`
+- Production source tree is byte-identical across the reviewed implementation, baseline main, and WU-19 Packaging Commit.
+- Functional production delta: **0**. Only Debug/Release version/build settings and focused version/build test expectations changed.
+- Physical WU-18 Gate: **previously PASS on the exact reviewed implementation lineage**. No new PD-01..PD-06 run is claimed in WU-19.
 
-## Confirmed root cause
+## Verification and artifacts
 
-Physical iPhone logs confirmed that `requestFullAccessToEvents()` returned `true` while the same-process static EventKit authorization status remained `.notDetermined` until process relaunch. Build 3 discarded the request result twice, refreshed from the stale raw state, advanced to Alarm, and persisted onboarding completion without valid Calendar state. This produced `onboardingCompleted=true` plus `calendarPermission != .authorized`, exactly matching the observed Calendar recovery screen.
+- Complete XCTest: **182 passed / 0 failed / 0 skipped**.
+- Debug Simulator, Release Simulator, unsigned Device Debug, unsigned Device Release: **PASS**.
+- Fresh signed Release archive from clean Packaging Commit: **PASS**.
+- Local App Store distribution export and strict archive/IPA codesign: **PASS**.
+- IPA: `/private/tmp/AgendaCue-WU19-uyonHi/Export/CalendarAlarmFeasibility.ipa`
+- IPA SHA-256: `0e974c87797d0c2a1a694f9fd680ea71f0a72994e8f0be6240d0d84f1a808636`
+- Distribution identity, Team, Bundle ID, 1.0.1 (4), get-task-allow=false, encryption=false, privacy manifest, and Continue / 続ける CTA: **PASS**.
+- Exact evidence and archive mapping: `docs/evidence/WU-19/PUBLIC_HOTFIX_RELEASE_CANDIDATE.md`.
 
-## WU-18 implementation
+## Stop line
 
-- Retains the EventKit request outcome during the same-process `.notDetermined` lag.
-- Uses a maximum of three yielded authoritative reads; no sleep or infinite polling.
-- Lets later conclusive OS authorization override the retained result.
-- Gives `EventKitCalendarSource` the same coherent permission provider.
-- Enforces Calendar-authorized-before-Alarm and Calendar+Alarm-authorized-before-completion invariants.
-- Publishes activation permission refresh before reconciliation.
-- Adds DEBUG/internal state diagnostics without user/calendar content.
-
-## Verification
-
-- Focused permission/onboarding XCTest: PASS.
-- Complete XCTest: **PASS — 182 passed, 0 failed, 0 skipped**.
-- Debug Simulator: PASS.
-- Release Simulator: PASS.
-- Unsigned Device Debug: PASS.
-- Unsigned Device Release: PASS.
-- Physical iPhone 17 / iOS 26.6.1: PD-01, PD-02, PD-03, PD-04, PD-05, PD-06 PASS as recorded in `docs/evidence/WU-18/PHYSICAL_PERMISSION_RECOVERY.md`.
-- Physical Device Gate: **PASS for WU-18 permission recovery scope**.
-- ChatGPT exact-SHA review: **PASS** for Implementation Commit `31d4cf71060e1e6e05acba6b1d2d576966046f22`, with State Snapshot `9ec89202408dd153c8eff398933f33f97efd24aa` observed.
-
-## Closure contract
-
-Push this docs-only Review Sync commit, fast-forward-only merge the WU-18 branch into `main`, push `main`, prove local/remote equality, then stop. Do not create Build 4, archive, upload, or mutate App Store Connect. The current app is already public; the WU-18 fix itself is not yet released.
+Push the WU-19 branch, verify exact local/remote equality and 0/0 ahead/behind, then **STOP for ChatGPT Release Candidate Review**. Do not merge main, upload, create/edit an App Store version, select a build, edit Review Notes, add/submit for review, or release.
