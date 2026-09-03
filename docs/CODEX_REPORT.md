@@ -2,7 +2,11 @@
 
 ## WU-20 result
 
-**SUBMISSION PASS — WAITING FOR REVIEW — CHATGPT FINAL SUBMISSION-STATE REVIEW PENDING**
+**WU-20: PASS / REVIEWED / SUBMISSION COMPLETE**
+
+ChatGPT final submission-state review: **PASS** for Evidence Commit `691403c5613d6d47f30363d4043c92b290736834`. The exact final receipt is in `docs/REVIEW_LOG.md`.
+
+Submission workflow: **COMPLETE**. External state: **WAITING FOR REVIEW**. Apple review: **PENDING**. Public release 1.0.1: **NOT YET COMPLETE**. External-state confirmation is from the owner's final review receipt; this docs-only Review Sync does not re-inspect or mutate App Store Connect.
 
 App Store Connect confirmed **1項目が提出されました** and then **審査待ち** for the sole iOS **1.0.1 (4)** item. Submission date: **2026-09-03 16:58 JST**.
 
@@ -32,4 +36,6 @@ Reviewed IPA: `CalendarAlarmFeasibility.ipa`, SHA-256 `0e974c87797d0c2a1a694f9fd
 
 Sanitized timeline, artifact mapping, metadata text, and limitations: `docs/evidence/WU-20/HOTFIX_APP_REVIEW_SUBMISSION.md`. Only sanitized release-state evidence is stored in Git; no credentials, session data, private keys, contact details, or calendar event data are included.
 
-One docs-only evidence commit belongs to `wu-20-hotfix-app-review-submission`. Normal push only; **no main merge**. After clean/equality/0/0 verification, **STOP for ChatGPT final submission-state review**.
+The sanitized Evidence Commit and one docs-only Review Sync commit belong to `wu-20-hotfix-app-review-submission`. The owner authorizes normal branch push, fast-forward-only merge into main, and normal main push, with clean/equality/0/0 and both commits' reachability verified. No merge commit, squash, rebase, or force push.
+
+After main closure, **STOP — wait for Apple App Review**. Do not cancel the submission, replace Build 4, create Build 5, change 1.0.1 metadata, or manually release. No production source/tests/project settings/version/build/archive/IPA changes are part of this Review Sync.

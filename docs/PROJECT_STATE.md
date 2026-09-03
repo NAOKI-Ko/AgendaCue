@@ -3,12 +3,15 @@
 ## Current state
 
 - Current Work Unit: **WU-20 — Hotfix Upload / App Review Submission**.
-- Status: **SUBMITTED / WAITING FOR REVIEW — CHATGPT FINAL SUBMISSION-STATE REVIEW PENDING**.
-- Branch: `wu-20-hotfix-app-review-submission`.
-- Unchanged main / baseline: `b6f8a506bf1feef4ecac685e9818b82de352bb5a`.
+- Status: **PASS / REVIEWED / SUBMISSION COMPLETE**.
+- WU branch: `wu-20-hotfix-app-review-submission`; owner-authorized closure into `main` is fast-forward-only.
+- WU-20 baseline main: `b6f8a506bf1feef4ecac685e9818b82de352bb5a`.
+- Reviewed Evidence Commit: `691403c5613d6d47f30363d4043c92b290736834`.
+- ChatGPT final submission-state review: **PASS**; exact receipt in `docs/REVIEW_LOG.md`.
+- Submission workflow: **COMPLETE**. Apple review: **PENDING**. Public release 1.0.1: **NOT YET COMPLETE**.
 - Current public release: **PUBLICLY RELEASED — 1.0 (3)**.
 - Candidate: **1.0.1 (4) — SUBMITTED / NOT YET PUBLICLY RELEASED**.
-- Actual App Store Connect status: **審査待ち / Waiting for Review**.
+- External state: **WAITING FOR REVIEW / 審査待ち**, as confirmed in the owner's final review receipt; no new App Store Connect inspection or mutation during this docs-only Review Sync.
 - Submission date: **2026-09-03 16:58 JST**.
 - Upload, processing, version creation, Build 4 selection, metadata, Review Notes, Add/Submit for Review, and post-submit verification: **PASS**.
 - Release method: **automatic after approval**, all users, no phased release; existing intended automatic policy preserved.
@@ -38,4 +41,6 @@
 
 ## Stop line
 
-After one docs-only submission evidence commit and normal WU-20 branch push, verify equality, ahead/behind 0/0, and clean working tree, then **STOP for ChatGPT final submission-state review**. Do not merge main, rebuild/rearchive, increment version/build, create Build 5, cancel/replace the submission, or manually release. Do not claim 1.0.1 is public until App Store Connect shows it released/ready for distribution.
+Owner-authorized closure: one docs-only Review Sync commit, normal WU-20 branch push, fast-forward-only merge into main, and normal main push. Verify local/remote equality, evidence/review-sync reachability, ahead/behind 0/0, and clean working tree. No merge commit, squash, rebase, or force push.
+
+After main closure, **STOP — wait for Apple App Review**. Do not cancel the submission, replace Build 4, create Build 5, rebuild/rearchive, change version/build or 1.0.1 metadata, or manually release. Do not claim 1.0.1 is public.

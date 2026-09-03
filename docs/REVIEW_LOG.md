@@ -263,3 +263,64 @@ The local exported IPA hash remains release evidence.
 - Full sanitized evidence: `docs/evidence/WU-20/HOTFIX_APP_REVIEW_SUBMISSION.md`.
 - Review target: this single docs-only submission evidence commit. **ChatGPT final submission-state review PENDING**, not an invented PASS receipt.
 - Stop after normal WU-20 push and equality/0/0/clean verification. **Do not merge main yet**; no further external release action.
+
+## WU-20 Final Submission-State Review Sync — 2026-09-03
+
+ChatGPT final submission-state review:
+
+PASS
+
+Reviewed Evidence Commit:
+
+691403c5613d6d47f30363d4043c92b290736834
+
+WU-20 baseline main:
+
+b6f8a506bf1feef4ecac685e9818b82de352bb5a
+
+Current external state:
+
+- Current public release: 1.0 (3)
+- Submitted candidate: 1.0.1 (4)
+- App Store Connect status: Waiting for Review / 審査待ち
+- Submission time: 2026-09-03 16:58 JST
+- Release method: automatic after approval
+- Phased release: disabled
+
+### FINAL REVIEW RECEIPT
+
+Decision: PASS
+
+Accepted:
+
+- exact reviewed WU-19 archive used
+- no rebuild / rearchive
+- no Build 5
+- no production source/test/project-setting change
+- Upload PASS
+- Processing PASS
+- processed identity = 1.0.1 (4)
+- correct Bundle ID
+- App Store version 1.0.1 created
+- Build 4 selected
+- Japanese/English What's New saved
+- Review Notes saved
+- Add for Review PASS
+- Submit for Review PASS
+- actual post-submit status verified as Waiting for Review
+- current public version remains 1.0 (3)
+- 1.0.1 (4) is correctly recorded as SUBMITTED / NOT YET PUBLIC
+- public evidence sanitization PASS
+- Submission ID / internal Build ID not present in public Git history
+- no credentials/session/private/calendar data in evidence
+
+### Review Sync / closure state
+
+- WU-20: **PASS / REVIEWED / SUBMISSION COMPLETE**.
+- Submission workflow: **COMPLETE**; Apple review: **PENDING**; public release 1.0.1: **NOT YET COMPLETE**.
+- External state: **WAITING FOR REVIEW**; current public release **1.0 (3)**; candidate **1.0.1 (4) — NOT YET PUBLIC**.
+- External state is supplied by the owner's final review receipt. No new App Store Connect inspection or mutation occurs during this docs-only Review Sync.
+- Historical submission evidence and its pending-review stop line above describe the pre-review state; this receipt supersedes that stop line.
+- Owner-authorized closure: one docs-only Review Sync commit, normal WU-20 push, fast-forward-only merge into main, normal main push; verify local/remote equality, Evidence/Review Sync reachability, clean working tree, and ahead/behind 0/0.
+- No merge commit, squash, rebase, force push, source/test/project-setting/version/build/archive/IPA change.
+- After main closure: **STOP — wait for Apple App Review**. Do not cancel the current submission, replace Build 4, create Build 5, modify 1.0.1 metadata, manually release, or claim 1.0.1 is public.
